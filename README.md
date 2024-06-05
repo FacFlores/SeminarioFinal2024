@@ -49,6 +49,11 @@ Para instalar y configurar el sistema de gestión de consorcios, siga los siguie
    git clone [URL del repositorio]
    ```
 
+###
+
+export GO_ENV=development
+go run main.go
+
 2. **Instalar dependencias**:
 
    ```bash

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -20,10 +19,6 @@ func ConnectDatabase() {
 	dbName := utils.GetEnv("DB_NAME", "SeminarioFF")
 	dbSSLMode := utils.GetEnv("DB_SSLMODE", "disable")
 	dbPassword := utils.GetEnv("DB_PASSWORD", "postgres")
-	ginMode := utils.GetEnv("GIN_MODE", "debug")
-
-	// Set Gin mode
-	gin.SetMode(ginMode)
 
 	// Form the connection string
 	dsn := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=%s password=%s", dbHost, dbUser, dbName, dbSSLMode, dbPassword)

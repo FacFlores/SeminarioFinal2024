@@ -86,3 +86,35 @@ Para cualquier consulta o sugerencia, puede contactar al desarrollador:
 ## Licencia
 
 Este proyecto está licenciado bajo la [GNU GENERAL PUBLIC LICENSE] - vea el archivo [LICENSE] para más detalles.
+
+
+
+
+Production Deploy:
+docker-compose build 
+docker-compose up
+
+
+
+
+
+Development Deploy:
+
+Database
+```bash
+docker run -d `
+  --name postgres-db `
+  -e POSTGRES_USER=postgres `
+  -e POSTGRES_PASSWORD=postgres `
+  -e POSTGRES_DB=SeminarioFF `
+  -v pgdata:/var/lib/postgresql/data `
+  -p 5432:5432 `
+  postgres:latest
+```
+
+
+
+Backend:
+
+$env:GO_ENV="development" # or whatever environment you need
+go run main.go

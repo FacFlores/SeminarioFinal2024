@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	r := gin.Default()
 	utils.LoadEnv()
-
 	// Set Gin mode
 	ginMode := utils.GetEnv("GIN_MODE", "debug")
 	gin.SetMode(ginMode)
 
-	// Initialize database
+	r := gin.Default()
+
+	// Connect to database
 	config.ConnectDatabase()
 
 	// Setup routes

@@ -18,5 +18,5 @@ type User struct {
 	Password       string    `json:"password" gorm:"not null"`
 	LastLogin      time.Time `json:"last_login"`
 	ProfilePicture string    `json:"profile_picture"`
-	IsActive       bool      `json:"is_active" gorm:"default:true"`
+	IsActive       bool      `json:"is_active" gorm:"default:false"`
 }

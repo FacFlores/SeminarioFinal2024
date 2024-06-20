@@ -11,12 +11,29 @@ func SetupRoutes(router *gin.Engine) {
 	// User routes
 	users := router.Group("/users")
 	{
-		users.GET("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.FindUsers) // GET /users
-		users.POST("/register", controllers.CreateUser)                                                   // POST /users/register
-		users.POST("/login", controllers.Login)                                                           // POST /users/login
+		users.GET("", middlewares.AuthMiddleware(), middlewares.UserMiddleware(), controllers.FindUsers) // GET /users
+		users.GET("/active", middlewares.AuthMiddleware(), controllers.FindActiveUsers)                  // GET /users/active
+		users.GET("/inactive", middlewares.AuthMiddleware(), controllers.FindInactiveUsers)              // GET /users/active
+		users.POST("/register", controllers.CreateUser)                                                  // POST /users/register
+		users.POST("/login", controllers.Login)                                                          // POST /users/login
+	}
+	// Admin routes
+
+	admin := router.Group("/admin")
+	{
+		admin.POST("/register", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateAdmin)                         // POST /admin/register
+		admin.PUT("/toggle-user-status/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.ToggleUserActiveStatus) // PUT /admin/toggle-user-status/:id
+		admin.DELETE("users/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUser)                        // DELETE /admin/users/:id
+
 	}
 
-	// Health check routes
+	// Roles routes
+	roles := router.Group("/roles")
+	{
+		roles.GET("/", controllers.CreateAdmin) // GET /roles
+	}
+
+	// Health check route
 	router.GET("/health-check", controllers.HealthCheck) // GET /health-check
 
 }

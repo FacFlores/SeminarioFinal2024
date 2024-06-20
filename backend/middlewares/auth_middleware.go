@@ -91,7 +91,7 @@ func UserMiddleware() gin.HandlerFunc {
 		}
 
 		role := user.(models.User).Role.Name
-		if role != "Owner" && role != "Roomer" && role != "Admin" {
+		if role != "User" && role != "Admin" {
 			c.JSON(http.StatusForbidden, gin.H{"error": "User does not have the necessary role"})
 			c.Abort()
 			return

@@ -12,8 +12,7 @@ import (
 func SeedRoles(DB *gorm.DB) {
 	roles := []models.Role{
 		{Name: "Admin", Description: "Consortium Administrator"},
-		{Name: "Owner", Description: "Property Owner"},
-		{Name: "Roomer", Description: "Property Roomer"},
+		{Name: "User", Description: "Property Owner or Roomer"},
 	}
 
 	for _, role := range roles {

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"backend/database"
 	"backend/models"
 	"backend/utils"
 	"fmt"
@@ -31,5 +32,7 @@ func ConnectDatabase() {
 	}
 
 	fmt.Println("Database connected")
-	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.User{}, &models.Role{})
+	database.SeedData(DB)
+
 }

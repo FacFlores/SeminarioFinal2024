@@ -30,7 +30,11 @@ func SetupRoutes(router *gin.Engine) {
 	// Roles routes
 	roles := router.Group("/roles")
 	{
-		roles.GET("/", controllers.CreateAdmin) // GET /roles
+		roles.GET("", controllers.GetAllRoles)                                                                    // GET /roles
+		roles.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoleByName)                              // POST /roles/name
+		roles.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoleByID)                                  // GET /roles/:id
+		roles.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRole)       // POST /roles
+		roles.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRole) // DELETE /roles/:id
 	}
 
 	// Health check route

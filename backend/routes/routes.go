@@ -90,6 +90,16 @@ func SetupRoutes(router *gin.Engine) {
 		units.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetUnitsByConsortium)                                        // GET /units/consortium/:consortium_id
 	}
 
+	// Coefficient routes
+	coefficients := router.Group("/coefficients")
+	{
+		coefficients.GET("", controllers.GetAllCoefficients)                                                                    // GET /coefficients
+		coefficients.GET("/:id", controllers.GetCoefficientByID)                                                                // GET /coefficients/:id
+		coefficients.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateCoefficient)       // POST /coefficients
+		coefficients.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateCoefficient)    // PUT /coefficients/:id
+		coefficients.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteCoefficient) // DELETE /coefficients/:id
+	}
+
 	// Health check route
 	router.GET("/health-check", controllers.HealthCheck) // GET /health-check
 

@@ -21,7 +21,7 @@ func DeleteRoomer(id string) error {
 
 func GetRoomerByID(id string) (models.Roomer, error) {
 	var roomer models.Roomer
-	if err := config.DB.First(&roomer, "id = ?", id).Error; err != nil {
+	if err := config.DB.Preload("User").Preload("User.Role").First(&roomer, "id = ?", id).Error; err != nil {
 		return roomer, err
 	}
 	return roomer, nil
@@ -29,7 +29,7 @@ func GetRoomerByID(id string) (models.Roomer, error) {
 
 func GetRoomerByName(name string) (models.Roomer, error) {
 	var roomer models.Roomer
-	if err := config.DB.Where("name = ?", name).First(&roomer).Error; err != nil {
+	if err := config.DB.Preload("User").Preload("User.Role").Where("name = ?", name).First(&roomer).Error; err != nil {
 		return roomer, err
 	}
 	return roomer, nil
@@ -37,7 +37,7 @@ func GetRoomerByName(name string) (models.Roomer, error) {
 
 func GetAllRoomers() ([]models.Roomer, error) {
 	var roomers []models.Roomer
-	if err := config.DB.Find(&roomers).Error; err != nil {
+	if err := config.DB.Preload("User").Preload("User.Role").Find(&roomers).Error; err != nil {
 		return nil, err
 	}
 	return roomers, nil
@@ -55,7 +55,29 @@ func UpdateRoomer(id string, updatedData models.Roomer) (models.Roomer, error) {
 	roomer.Dni = updatedData.Dni
 	roomer.Cuit = updatedData.Cuit
 
-	if err := config.DB.Updates(&roomer).Error; err != nil {
+	if err := config.DB.Save(&roomer).Error; err != nil {
+		return roomer, err
+	}
+
+	if err := config.DB.Preload("User").Preload("User.Role").First(&roomer, "id = ?", id).Error; err != nil {
+		return roomer, err
+	}
+
+	return roomer, nil
+}
+
+func AssignUserToRoomer(roomerID, userID uint) (models.Roomer, error) {
+	var roomer models.Roomer
+	if err := config.DB.First(&roomer, roomerID).Error; err != nil {
+		return roomer, err
+	}
+
+	roomer.UserID = &userID
+	if err := config.DB.Save(&roomer).Error; err != nil {
+		return roomer, err
+	}
+
+	if err := config.DB.Preload("User").Preload("User.Role").First(&roomer, roomerID).Error; err != nil {
 		return roomer, err
 	}
 

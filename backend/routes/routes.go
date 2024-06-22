@@ -40,23 +40,25 @@ func SetupRoutes(router *gin.Engine) {
 	// Owner routes
 	owners := router.Group("/owners")
 	{
-		owners.GET("", middlewares.AuthMiddleware(), controllers.GetAllOwners)                                      // GET /owners
-		owners.GET("/:id", middlewares.AuthMiddleware(), controllers.GetOwnerByID)                                  // GET /owners/:id
-		owners.POST("/name", middlewares.AuthMiddleware(), controllers.GetOwnerByName)                              // POST /owners/name
-		owners.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateOwner)       // POST /owners
-		owners.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateOwner)    // PUT /owners/:id
-		owners.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteOwner) // DELETE /owners/:id
+		owners.GET("", middlewares.AuthMiddleware(), controllers.GetAllOwners)                                                                    // GET /owners
+		owners.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateOwner)                                     // POST /owners
+		owners.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateOwner)                                  // PUT /owners/:id
+		owners.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteOwner)                               // DELETE /owners/:id
+		owners.PUT("/assign-user/:owner_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignUserToOwner) // PUT /owners/assign-user/:owner_id/:user_id
+		owners.GET("/:id", middlewares.AuthMiddleware(), controllers.GetOwnerByID)                                                                // GET /owners/:id
+		owners.POST("/name", middlewares.AuthMiddleware(), controllers.GetOwnerByName)                                                            // POST /owners/name
 	}
 
 	// Roomer routes
 	roomers := router.Group("/roomers")
 	{
-		roomers.GET("", middlewares.AuthMiddleware(), controllers.GetAllRoomers)                                      // GET /roomers
-		roomers.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoomerByID)                                  // GET /roomers/:id
-		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)                              // POST /roomers/name
-		roomers.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRoomer)       // POST /roomers
-		roomers.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateRoomer)    // PUT /roomers/:id
-		roomers.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRoomer) // DELETE /roomers/:id
+		roomers.GET("", middlewares.AuthMiddleware(), controllers.GetAllRoomers)                                                                     // GET /roomers
+		roomers.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRoomer)                                      // POST /roomers
+		roomers.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateRoomer)                                   // PUT /roomers/:id
+		roomers.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRoomer)                                // DELETE /roomers/:id
+		roomers.PUT("/assign-user/:roomer_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignUserToRoomer) // PUT /roomers/assign-user/:roomer_id/:user_id
+		roomers.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoomerByID)                                                                 // GET /roomers/:id
+		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)                                                             // POST /roomers/name
 	}
 
 	// Health check route

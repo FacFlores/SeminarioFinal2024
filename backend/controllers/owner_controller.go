@@ -4,6 +4,7 @@ import (
 	"backend/models"
 	"backend/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -118,4 +119,29 @@ func DeleteOwner(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Owner deleted"})
+}
+
+func AssignUserToOwner(c *gin.Context) {
+	ownerIDStr := c.Param("owner_id")
+	userIDStr := c.Param("user_id")
+
+	ownerID, err := strconv.ParseUint(ownerIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid owner ID"})
+		return
+	}
+
+	userID, err := strconv.ParseUint(userIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	owner, err := services.AssignUserToOwner(uint(ownerID), uint(userID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, owner)
 }

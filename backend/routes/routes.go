@@ -100,6 +100,15 @@ func SetupRoutes(router *gin.Engine) {
 		coefficients.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteCoefficient) // DELETE /coefficients/:id
 	}
 
+	concepts := router.Group("/concepts")
+	{
+		concepts.GET("", controllers.GetAllConcepts)                                                                    // GET /concepts
+		concepts.GET("/:id", controllers.GetConceptByID)                                                                // GET /concepts/:id
+		concepts.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConcept)       // POST /concepts
+		concepts.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConcept)    // PUT /concepts/:id
+		concepts.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConcept) // DELETE /concepts/:id
+	}
+
 	// Health check route
 	router.GET("/health-check", controllers.HealthCheck) // GET /health-check
 

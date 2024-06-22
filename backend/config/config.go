@@ -32,7 +32,7 @@ func ConnectDatabase() {
 	}
 
 	fmt.Println("Database connected")
-	DB.AutoMigrate(&models.User{}, &models.Role{}, &models.Owner{}, &models.Roomer{})
+	DB.AutoMigrate(&models.User{}, &models.Role{}, &models.Owner{}, &models.Roomer{}, &models.Consortium{})
 	database.SeedData(DB)
 
 }

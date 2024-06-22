@@ -61,6 +61,17 @@ func SetupRoutes(router *gin.Engine) {
 		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)                                                             // POST /roomers/name
 	}
 
+	// Consortium routes
+	consortiums := router.Group("/consortiums")
+	{
+		consortiums.GET("", controllers.GetAllConsortiums)                                                                    // GET /consortiums
+		consortiums.GET("/:id", controllers.GetConsortiumByID)                                                                // GET /consortiums/:id
+		consortiums.POST("/name", controllers.GetConsortiumByName)                                                            // POST /consortiums/name
+		consortiums.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConsortium)       // POST /consortiums
+		consortiums.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortium)    // PUT /consortiums/:id
+		consortiums.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortium) // DELETE /consortiums/:id
+	}
+
 	// Health check route
 	router.GET("/health-check", controllers.HealthCheck) // GET /health-check
 

@@ -37,6 +37,28 @@ func SetupRoutes(router *gin.Engine) {
 		roles.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRole) // DELETE /roles/:id
 	}
 
+	// Owner routes
+	owners := router.Group("/owners")
+	{
+		owners.GET("", middlewares.AuthMiddleware(), controllers.GetAllOwners)                                      // GET /owners
+		owners.GET("/:id", middlewares.AuthMiddleware(), controllers.GetOwnerByID)                                  // GET /owners/:id
+		owners.POST("/name", middlewares.AuthMiddleware(), controllers.GetOwnerByName)                              // POST /owners/name
+		owners.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateOwner)       // POST /owners
+		owners.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateOwner)    // PUT /owners/:id
+		owners.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteOwner) // DELETE /owners/:id
+	}
+
+	// Roomer routes
+	roomers := router.Group("/roomers")
+	{
+		roomers.GET("", middlewares.AuthMiddleware(), controllers.GetAllRoomers)                                      // GET /roomers
+		roomers.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoomerByID)                                  // GET /roomers/:id
+		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)                              // POST /roomers/name
+		roomers.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRoomer)       // POST /roomers
+		roomers.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateRoomer)    // PUT /roomers/:id
+		roomers.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRoomer) // DELETE /roomers/:id
+	}
+
 	// Health check route
 	router.GET("/health-check", controllers.HealthCheck) // GET /health-check
 

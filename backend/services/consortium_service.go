@@ -19,6 +19,19 @@ func DeleteConsortium(id string) error {
 	return nil
 }
 
+func GetConsortiumByUnit(unitID uint) (models.Consortium, error) {
+	var unit models.Unit
+	if err := config.DB.First(&unit, unitID).Error; err != nil {
+		return models.Consortium{}, err
+	}
+
+	var consortium models.Consortium
+	if err := config.DB.First(&consortium, unit.ConsortiumID).Error; err != nil {
+		return consortium, err
+	}
+	return consortium, nil
+}
+
 func GetConsortiumByID(id string) (models.Consortium, error) {
 	var consortium models.Consortium
 	if err := config.DB.First(&consortium, "id = ?", id).Error; err != nil {

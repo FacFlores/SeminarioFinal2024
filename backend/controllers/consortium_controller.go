@@ -4,6 +4,7 @@ import (
 	"backend/models"
 	"backend/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -105,4 +106,21 @@ func DeleteConsortium(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Consortium deleted"})
+}
+
+func GetConsortiumByUnit(c *gin.Context) {
+	unitIDStr := c.Param("unit_id")
+	unitID, err := strconv.ParseUint(unitIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid unit ID"})
+		return
+	}
+
+	consortium, err := services.GetConsortiumByUnit(uint(unitID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, consortium)
 }

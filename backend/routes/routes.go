@@ -70,6 +70,24 @@ func SetupRoutes(router *gin.Engine) {
 		consortiums.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConsortium)       // POST /consortiums
 		consortiums.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortium)    // PUT /consortiums/:id
 		consortiums.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortium) // DELETE /consortiums/:id
+		consortiums.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetConsortiumByUnit)                      // GET /consortiums/unit/:unit_id
+
+	}
+
+	// Unit routes
+	units := router.Group("/units")
+	{
+		units.GET("", controllers.GetAllUnits)                                                                                                         // GET /units
+		units.GET("/:id", controllers.GetUnitByID)                                                                                                     // GET /units/:id
+		units.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateUnit)                                            // POST /units
+		units.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnit)                                         // PUT /units/:id
+		units.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUnit)                                      // DELETE /units/:id
+		units.PUT("/assign-owner/:unit_id/:owner_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignOwnerToUnit)      // PUT /units/assign-owner/:unit_id/:owner_id
+		units.PUT("/assign-roomer/:unit_id/:roomer_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignRoomerToUnit)   // PUT /units/assign-roomer/:unit_id/:roomer_id
+		units.PUT("/remove-owner/:unit_id/:owner_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveOwnerFromUnit)    // PUT /units/remove-owner/:unit_id/:owner_id
+		units.PUT("/remove-roomer/:unit_id/:roomer_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveRoomerFromUnit) // PUT /units/remove-roomer/:unit_id/:roomer_id
+		units.POST("/name", middlewares.AuthMiddleware(), controllers.GetUnitByName)                                                                   // POST /units/name
+		units.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetUnitsByConsortium)                                        // GET /units/consortium/:consortium_id
 	}
 
 	// Health check route

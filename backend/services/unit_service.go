@@ -6,9 +6,25 @@ import (
 )
 
 func CreateUnit(unit models.Unit) (models.Unit, error) {
-	if err := config.DB.Create(&unit).Error; err != nil {
+	tx := config.DB.Begin()
+
+	if err := tx.Create(&unit).Error; err != nil {
+		tx.Rollback()
 		return unit, err
 	}
+
+	unitLedger := models.UnitLedger{
+		UnitID:  unit.ID,
+		Balance: 0,
+	}
+
+	if err := tx.Create(&unitLedger).Error; err != nil {
+		tx.Rollback()
+		return unit, err
+	}
+
+	tx.Commit()
+
 	return unit, nil
 }
 

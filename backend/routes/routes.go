@@ -11,109 +11,137 @@ func SetupRoutes(router *gin.Engine) {
 	// User routes
 	users := router.Group("/users")
 	{
-		users.GET("", middlewares.AuthMiddleware(), middlewares.UserMiddleware(), controllers.FindUsers) // GET /users
-		users.GET("/active", middlewares.AuthMiddleware(), controllers.FindActiveUsers)                  // GET /users/active
-		users.GET("/inactive", middlewares.AuthMiddleware(), controllers.FindInactiveUsers)              // GET /users/active
-		users.POST("/register", controllers.CreateUser)                                                  // POST /users/register
-		users.POST("/login", controllers.Login)                                                          // POST /users/login
+		users.GET("", middlewares.AuthMiddleware(), middlewares.UserMiddleware(), controllers.FindUsers)
+		users.GET("/active", middlewares.AuthMiddleware(), controllers.FindActiveUsers)
+		users.GET("/inactive", middlewares.AuthMiddleware(), controllers.FindInactiveUsers)
+		users.POST("/register", controllers.CreateUser)
+		users.POST("/login", controllers.Login)
 	}
 	// Admin routes
 
 	admin := router.Group("/admin")
 	{
-		admin.POST("/register", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateAdmin)                         // POST /admin/register
-		admin.PUT("/toggle-user-status/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.ToggleUserActiveStatus) // PUT /admin/toggle-user-status/:id
-		admin.DELETE("users/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUser)                        // DELETE /admin/users/:id
+		admin.POST("/register", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateAdmin)
+		admin.PUT("/toggle-user-status/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.ToggleUserActiveStatus)
+		admin.DELETE("users/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUser)
 
 	}
 
 	// Roles routes
 	roles := router.Group("/roles")
 	{
-		roles.GET("", controllers.GetAllRoles)                                                                    // GET /roles
-		roles.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoleByName)                              // POST /roles/name
-		roles.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoleByID)                                  // GET /roles/:id
-		roles.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRole)       // POST /roles
-		roles.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRole) // DELETE /roles/:id
+		roles.GET("", controllers.GetAllRoles)
+		roles.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoleByName)
+		roles.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoleByID)
+		roles.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRole)
+		roles.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRole)
 	}
 
 	// Owner routes
 	owners := router.Group("/owners")
 	{
-		owners.GET("", middlewares.AuthMiddleware(), controllers.GetAllOwners)                                                                    // GET /owners
-		owners.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateOwner)                                     // POST /owners
-		owners.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateOwner)                                  // PUT /owners/:id
-		owners.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteOwner)                               // DELETE /owners/:id
+		owners.GET("", middlewares.AuthMiddleware(), controllers.GetAllOwners)
+		owners.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateOwner)
+		owners.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateOwner)
+		owners.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteOwner)
 		owners.PUT("/assign-user/:owner_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignUserToOwner) // PUT /owners/assign-user/:owner_id/:user_id
-		owners.GET("/:id", middlewares.AuthMiddleware(), controllers.GetOwnerByID)                                                                // GET /owners/:id
-		owners.POST("/name", middlewares.AuthMiddleware(), controllers.GetOwnerByName)                                                            // POST /owners/name
+		owners.GET("/:id", middlewares.AuthMiddleware(), controllers.GetOwnerByID)
+		owners.POST("/name", middlewares.AuthMiddleware(), controllers.GetOwnerByName)
 	}
 
 	// Roomer routes
 	roomers := router.Group("/roomers")
 	{
-		roomers.GET("", middlewares.AuthMiddleware(), controllers.GetAllRoomers)                                                                     // GET /roomers
-		roomers.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRoomer)                                      // POST /roomers
-		roomers.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateRoomer)                                   // PUT /roomers/:id
-		roomers.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRoomer)                                // DELETE /roomers/:id
+		roomers.GET("", middlewares.AuthMiddleware(), controllers.GetAllRoomers)
+		roomers.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateRoomer)
+		roomers.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateRoomer)
+		roomers.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteRoomer)
 		roomers.PUT("/assign-user/:roomer_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignUserToRoomer) // PUT /roomers/assign-user/:roomer_id/:user_id
-		roomers.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoomerByID)                                                                 // GET /roomers/:id
-		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)                                                             // POST /roomers/name
+		roomers.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoomerByID)
+		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)
 	}
 
 	// Consortium routes
 	consortiums := router.Group("/consortiums")
 	{
-		consortiums.GET("", controllers.GetAllConsortiums)                                                                    // GET /consortiums
-		consortiums.GET("/:id", controllers.GetConsortiumByID)                                                                // GET /consortiums/:id
-		consortiums.POST("/name", controllers.GetConsortiumByName)                                                            // POST /consortiums/name
-		consortiums.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConsortium)       // POST /consortiums
-		consortiums.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortium)    // PUT /consortiums/:id
-		consortiums.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortium) // DELETE /consortiums/:id
-		consortiums.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetConsortiumByUnit)                      // GET /consortiums/unit/:unit_id
+		consortiums.GET("", controllers.GetAllConsortiums)
+		consortiums.GET("/:id", controllers.GetConsortiumByID)
+		consortiums.POST("/name", controllers.GetConsortiumByName)
+		consortiums.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConsortium)
+		consortiums.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortium)
+		consortiums.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortium)
+		consortiums.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetConsortiumByUnit)
 
 	}
 
 	// Unit routes
 	units := router.Group("/units")
 	{
-		units.GET("", controllers.GetAllUnits)                                                                                                         // GET /units
-		units.GET("/:id", controllers.GetUnitByID)                                                                                                     // GET /units/:id
-		units.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateUnit)                                            // POST /units
-		units.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnit)                                         // PUT /units/:id
-		units.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUnit)                                      // DELETE /units/:id
+		units.GET("", controllers.GetAllUnits)
+		units.GET("/:id", controllers.GetUnitByID)
+		units.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateUnit)
+		units.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnit)
+		units.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUnit)
 		units.PUT("/assign-owner/:unit_id/:owner_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignOwnerToUnit)      // PUT /units/assign-owner/:unit_id/:owner_id
 		units.PUT("/assign-roomer/:unit_id/:roomer_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignRoomerToUnit)   // PUT /units/assign-roomer/:unit_id/:roomer_id
 		units.PUT("/remove-owner/:unit_id/:owner_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveOwnerFromUnit)    // PUT /units/remove-owner/:unit_id/:owner_id
 		units.PUT("/remove-roomer/:unit_id/:roomer_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveRoomerFromUnit) // PUT /units/remove-roomer/:unit_id/:roomer_id
-		units.POST("/name", middlewares.AuthMiddleware(), controllers.GetUnitByName)                                                                   // POST /units/name
-		units.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetUnitsByConsortium)                                        // GET /units/consortium/:consortium_id
+		units.POST("/name", middlewares.AuthMiddleware(), controllers.GetUnitByName)
+		units.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetUnitsByConsortium)
 	}
 
 	// Coefficient routes
 	coefficients := router.Group("/coefficients")
 	{
-		coefficients.GET("", controllers.GetAllCoefficients)                                                                    // GET /coefficients
-		coefficients.GET("/:id", controllers.GetCoefficientByID)                                                                // GET /coefficients/:id
-		coefficients.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateCoefficient)       // POST /coefficients
-		coefficients.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateCoefficient)    // PUT /coefficients/:id
-		coefficients.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteCoefficient) // DELETE /coefficients/:id
+		coefficients.GET("", controllers.GetAllCoefficients)
+		coefficients.GET("/:id", controllers.GetCoefficientByID)
+		coefficients.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateCoefficient)
+		coefficients.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateCoefficient)
+		coefficients.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteCoefficient)
 	}
 
 	// Concept routes
 	concepts := router.Group("/concepts")
 	{
-		concepts.GET("", controllers.GetAllConcepts)                                                                    // GET /concepts
-		concepts.GET("/:id", controllers.GetConceptByID)                                                                // GET /concepts/:id
-		concepts.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConcept)       // POST /concepts
-		concepts.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConcept)    // PUT /concepts/:id
-		concepts.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConcept) // DELETE /concepts/:id
+		concepts.GET("", controllers.GetAllConcepts)
+		concepts.GET("/:id", controllers.GetConceptByID)
+		concepts.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConcept)
+		concepts.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConcept)
+		concepts.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConcept)
 	}
 
 	// Unit Coefficient routes
 	unitCoefficients := router.Group("/unit-coefficients")
 	{
-		unitCoefficients.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnitCoefficients) // POST /unit-coefficients
+		unitCoefficients.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnitCoefficients)
+	}
+
+	// Ledger routes
+	ledger := router.Group("/ledger")
+	{
+		ledger.POST("/transaction", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RecordTransaction)
+		ledger.GET("/balance/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitBalance)
+		ledger.GET("/transactions/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitTransactions)
+	}
+
+	// ConsortiumExpense routes
+	consortiumExpenses := router.Group("/consortium-expenses")
+	{
+		consortiumExpenses.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConsortiumExpense)
+		consortiumExpenses.GET("/:id", middlewares.AuthMiddleware(), controllers.GetConsortiumExpenseByID)
+		consortiumExpenses.GET("", middlewares.AuthMiddleware(), controllers.GetAllConsortiumExpenses)
+		consortiumExpenses.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortiumExpense)
+		consortiumExpenses.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortiumExpense)
+	}
+
+	// UnitExpense routes
+	unitExpenses := router.Group("/unit-expenses")
+	{
+		unitExpenses.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateUnitExpense)
+		unitExpenses.GET("/:id", middlewares.AuthMiddleware(), controllers.GetUnitExpenseByID)
+		unitExpenses.GET("", middlewares.AuthMiddleware(), controllers.GetAllUnitExpenses)
+		unitExpenses.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnitExpense)
+		unitExpenses.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUnitExpense)
 	}
 
 	// Health check route

@@ -56,7 +56,6 @@ func UpdateUnitCoefficients(coefficientID uint, consortiumID uint, unitPercentag
 
 	for _, up := range unitPercentages {
 		up.CoefficientID = coefficientID
-		up.ConsortiumID = consortiumID
 		if err := config.DB.Create(&up).Error; err != nil {
 			return nil, err
 		}

@@ -47,7 +47,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Retrieve user information from the database and set it in the context
+		// Retrieves user information from the database and set it in the context
 		var user models.User
 		if err := config.DB.Preload("Role").First(&user, "id = ?", claims.Subject).Error; err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
@@ -80,7 +80,7 @@ func AdminMiddleware() gin.HandlerFunc {
 	}
 }
 
-// Checks if the user has owner, roomer or admin role
+// Checks if the user has user or admin role
 func UserMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user, exists := c.Get("user")
@@ -101,7 +101,7 @@ func UserMiddleware() gin.HandlerFunc {
 	}
 }
 
-// GenerateToken generates a new JWT token for a given user ID
+// Generates a new JWT token for a given user ID
 func GenerateToken(userID uint) (string, error) {
 	claims := &jwt.StandardClaims{
 		Subject:   strconv.FormatUint(uint64(userID), 10),

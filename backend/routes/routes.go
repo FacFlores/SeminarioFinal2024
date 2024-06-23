@@ -100,6 +100,7 @@ func SetupRoutes(router *gin.Engine) {
 		coefficients.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteCoefficient) // DELETE /coefficients/:id
 	}
 
+	// Concept routes
 	concepts := router.Group("/concepts")
 	{
 		concepts.GET("", controllers.GetAllConcepts)                                                                    // GET /concepts
@@ -107,6 +108,12 @@ func SetupRoutes(router *gin.Engine) {
 		concepts.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateConcept)       // POST /concepts
 		concepts.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConcept)    // PUT /concepts/:id
 		concepts.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConcept) // DELETE /concepts/:id
+	}
+
+	// Unit Coefficient routes
+	unitCoefficients := router.Group("/unit-coefficients")
+	{
+		unitCoefficients.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnitCoefficients) // POST /unit-coefficients
 	}
 
 	// Health check route

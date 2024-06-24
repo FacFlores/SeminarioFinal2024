@@ -54,11 +54,6 @@ func CreateUnitExpense(c *gin.Context) {
 
 	services.UpdateConsortium(consortium.ID, consortium)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update consortium bill number"})
-		return
-	}
-
 	createdExpense, err := services.CreateUnitExpense(expense)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

@@ -75,7 +75,12 @@ func GetAllConsortiums(c *gin.Context) {
 
 func UpdateConsortium(c *gin.Context) {
 	idParam := c.Param("id")
-	id, err := strconv.ParseUint(idParam, 10, 32)
+	id, parseErr := strconv.ParseUint(idParam, 10, 32)
+
+	if parseErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid consortium ID"})
+		return
+	}
 
 	var input struct {
 		Name    string `json:"name"`

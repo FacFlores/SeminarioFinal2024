@@ -33,9 +33,14 @@ func CreateUnit(c *gin.Context) {
 }
 
 func GetUnitByID(c *gin.Context) {
-	id := c.Param("id")
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid consortium ID"})
+		return
+	}
 
-	unit, err := services.GetUnitByID(id)
+	unit, err := services.GetUnitByID(uint(id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Unit not found"})
 		return

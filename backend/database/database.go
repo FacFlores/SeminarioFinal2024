@@ -233,8 +233,8 @@ func SeedConsortiumExpenses(DB *gorm.DB) {
 	DB.First(&consortium, "name = ?", "Test Consortium")
 
 	expenses := []models.ConsortiumExpense{
-		{Description: "Test Expense 1", BillNumber: 1, Amount: 1000.0, ConceptID: 1, ExpensePeriod: time.Now(), Distributed: false, ConsortiumID: consortium.ID},
-		{Description: "Test Expense 2", BillNumber: 2, Amount: 2000.0, ConceptID: 2, ExpensePeriod: time.Now(), Distributed: false, ConsortiumID: consortium.ID},
+		{Description: "Test Expense 1", BillNumber: 1, Amount: 1000.0, ConceptID: 1, ExpensePeriod: time.Now(), LiquidatePeriod: time.Now(), Distributed: false, ConsortiumID: consortium.ID},
+		{Description: "Test Expense 2", BillNumber: 2, Amount: 2000.0, ConceptID: 2, ExpensePeriod: time.Now(), LiquidatePeriod: time.Now(), Distributed: false, ConsortiumID: consortium.ID},
 	}
 
 	for _, expense := range expenses {

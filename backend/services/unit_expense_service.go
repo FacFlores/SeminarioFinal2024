@@ -3,6 +3,7 @@ package services
 import (
 	"backend/config"
 	"backend/models"
+	"errors"
 )
 
 func CreateUnitExpense(expense models.UnitExpense) (models.UnitExpense, error) {
@@ -12,26 +13,14 @@ func CreateUnitExpense(expense models.UnitExpense) (models.UnitExpense, error) {
 	return expense, nil
 }
 
-func GetUnitExpenseByID(id string) (models.UnitExpense, error) {
-	var expense models.UnitExpense
-	if err := config.DB.First(&expense, "id = ?", id).Error; err != nil {
-		return expense, err
-	}
-	return expense, nil
-}
-
-func GetAllUnitExpenses() ([]models.UnitExpense, error) {
-	var expenses []models.UnitExpense
-	if err := config.DB.Find(&expenses).Error; err != nil {
-		return nil, err
-	}
-	return expenses, nil
-}
-
 func UpdateUnitExpense(id string, updatedData models.UnitExpense) (models.UnitExpense, error) {
 	var expense models.UnitExpense
 	if err := config.DB.First(&expense, "id = ?", id).Error; err != nil {
 		return expense, err
+	}
+
+	if expense.Liquidated || expense.Paid {
+		return expense, errors.New("cannot update a liquidated or paid expense")
 	}
 
 	expense.Description = updatedData.Description
@@ -40,10 +29,6 @@ func UpdateUnitExpense(id string, updatedData models.UnitExpense) (models.UnitEx
 	expense.ConceptID = updatedData.ConceptID
 	expense.ExpensePeriod = updatedData.ExpensePeriod
 	expense.LiquidatePeriod = updatedData.LiquidatePeriod
-	expense.Liquidated = updatedData.Liquidated
-	expense.Paid = updatedData.Paid
-	expense.UnitID = updatedData.UnitID
-	expense.ConsortiumExpenseID = updatedData.ConsortiumExpenseID
 
 	if err := config.DB.Save(&expense).Error; err != nil {
 		return expense, err
@@ -53,8 +38,41 @@ func UpdateUnitExpense(id string, updatedData models.UnitExpense) (models.UnitEx
 }
 
 func DeleteUnitExpense(id string) error {
-	if err := config.DB.Delete(&models.UnitExpense{}, id).Error; err != nil {
+	var expense models.UnitExpense
+	if err := config.DB.First(&expense, "id = ?", id).Error; err != nil {
+		return err
+	}
+
+	if expense.Liquidated || expense.Paid {
+		return errors.New("cannot delete a liquidated or paid expense")
+	}
+
+	if err := config.DB.Delete(&expense).Error; err != nil {
 		return err
 	}
 	return nil
+}
+
+func GetAllUnitExpenses() ([]models.UnitExpense, error) {
+	var expenses []models.UnitExpense
+	if err := config.DB.Preload("Concept").Preload("Unit").Find(&expenses).Error; err != nil {
+		return nil, err
+	}
+	return expenses, nil
+}
+
+func GetUnitExpensesByUnit(unitID uint) ([]models.UnitExpense, error) {
+	var expenses []models.UnitExpense
+	if err := config.DB.Preload("Concept").Preload("Unit").Where("unit_id = ?", unitID).Find(&expenses).Error; err != nil {
+		return nil, err
+	}
+	return expenses, nil
+}
+
+func GetUnitExpensesByUnitAndStatus(unitID uint, liquidated, paid bool) ([]models.UnitExpense, error) {
+	var expenses []models.UnitExpense
+	if err := config.DB.Preload("Concept").Preload("Unit").Where("unit_id = ? AND liquidated = ? AND paid = ?", unitID, liquidated, paid).Find(&expenses).Error; err != nil {
+		return nil, err
+	}
+	return expenses, nil
 }

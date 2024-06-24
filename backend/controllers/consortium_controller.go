@@ -74,7 +74,8 @@ func GetAllConsortiums(c *gin.Context) {
 }
 
 func UpdateConsortium(c *gin.Context) {
-	id := c.Param("id")
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
 
 	var input struct {
 		Name    string `json:"name"`
@@ -86,7 +87,7 @@ func UpdateConsortium(c *gin.Context) {
 		return
 	}
 
-	updatedConsortium, err := services.UpdateConsortium(id, models.Consortium{
+	updatedConsortium, err := services.UpdateConsortium(uint(id), models.Consortium{
 		Name:    input.Name,
 		Address: input.Address,
 		Cuit:    input.Cuit,

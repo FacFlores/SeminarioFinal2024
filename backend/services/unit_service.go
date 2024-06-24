@@ -35,7 +35,7 @@ func DeleteUnit(id string) error {
 	return nil
 }
 
-func GetUnitByID(id string) (models.Unit, error) {
+func GetUnitByID(id uint) (models.Unit, error) {
 	var unit models.Unit
 	if err := config.DB.Preload("Consortium").Preload("Owners").Preload("Roomers").First(&unit, "id = ?", id).Error; err != nil {
 		return unit, err

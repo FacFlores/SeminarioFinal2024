@@ -56,7 +56,7 @@ func GetAllConsortiums() ([]models.Consortium, error) {
 	return consortiums, nil
 }
 
-func UpdateConsortium(id string, updatedData models.Consortium) (models.Consortium, error) {
+func UpdateConsortium(id uint, updatedData models.Consortium) (models.Consortium, error) {
 	var consortium models.Consortium
 	if err := config.DB.First(&consortium, "id = ?", id).Error; err != nil {
 		return consortium, err
@@ -65,6 +65,7 @@ func UpdateConsortium(id string, updatedData models.Consortium) (models.Consorti
 	consortium.Name = updatedData.Name
 	consortium.Address = updatedData.Address
 	consortium.Cuit = updatedData.Cuit
+	consortium.BillNumber = updatedData.BillNumber
 
 	if err := config.DB.Updates(&consortium).Error; err != nil {
 		return consortium, err

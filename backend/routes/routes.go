@@ -132,16 +132,21 @@ func SetupRoutes(router *gin.Engine) {
 		consortiumExpenses.GET("", middlewares.AuthMiddleware(), controllers.GetAllConsortiumExpenses)
 		consortiumExpenses.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortiumExpense)
 		consortiumExpenses.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortiumExpense)
+		consortiumExpenses.POST("/distribute/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DistributeConsortiumExpense)
+		consortiumExpenses.GET("/distributed/:consortium_id", middlewares.AuthMiddleware(), controllers.GetDistributedConsortiumExpensesByConsortium)
+		consortiumExpenses.GET("/non-distributed/:consortium_id", middlewares.AuthMiddleware(), controllers.GetNonDistributedConsortiumExpensesByConsortium)
+
 	}
 
 	// UnitExpense routes
 	unitExpenses := router.Group("/unit-expenses")
 	{
-		unitExpenses.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateUnitExpense)
-		unitExpenses.GET("/:id", middlewares.AuthMiddleware(), controllers.GetUnitExpenseByID)
 		unitExpenses.GET("", middlewares.AuthMiddleware(), controllers.GetAllUnitExpenses)
-		unitExpenses.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateUnitExpense)
-		unitExpenses.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUnitExpense)
+		unitExpenses.GET("/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitExpensesByUnit)
+		unitExpenses.POST("", middlewares.AuthMiddleware(), controllers.CreateUnitExpense)
+		unitExpenses.PUT("/:id", middlewares.AuthMiddleware(), controllers.UpdateUnitExpense)
+		unitExpenses.DELETE("/:id", middlewares.AuthMiddleware(), controllers.DeleteUnitExpense)
+		unitExpenses.GET("/status/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitExpensesByUnitAndStatus)
 	}
 
 	// Health check route

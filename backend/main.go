@@ -27,8 +27,6 @@ func main() {
 	routes.SetupRoutes(r)
 
 	// Get the port from the environment variable
-	port := utils.GetEnv("PORT", "8080")
-	log.Printf("Server running on port %s", port)
 
 	// Run the server
 	r.Run()

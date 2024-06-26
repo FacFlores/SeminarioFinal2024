@@ -49,26 +49,26 @@ func CreateUser(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func AuthenticateUser(email, password string) (string, error) {
+func AuthenticateUser(email, password string) (string, models.User, error) {
 	var user models.User
 	if err := config.DB.Preload("Role").Where("email = ?", email).First(&user).Error; err != nil {
-		return "", errors.New("invalid email or password")
+		return "", user, errors.New("invalid email or password")
 	}
 
 	if !utils.CheckPasswordHash(password, user.Password) {
-		return "", errors.New("invalid email or password")
+		return "", user, errors.New("invalid email or password")
 	}
 
 	if !user.IsActive {
-		return "", errors.New("user account is inactive")
+		return "", user, errors.New("user account is inactive")
 	}
 
 	token, err := middlewares.GenerateToken(user.ID)
 	if err != nil {
-		return "", err
+		return "", user, err
 	}
 
-	return token, nil
+	return token, user, nil
 }
 
 func ToggleUserActiveStatus(user models.User) (models.User, error) {

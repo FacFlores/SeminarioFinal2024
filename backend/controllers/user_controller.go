@@ -135,13 +135,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := services.AuthenticateUser(input.Email, input.Password)
+	token, user, err := services.AuthenticateUser(input.Email, input.Password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+		"user":  user,
+	})
 }
 
 func ToggleUserActiveStatus(c *gin.Context) {

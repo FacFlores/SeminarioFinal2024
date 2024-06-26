@@ -40,6 +40,10 @@ func DistributeConsortiumExpense(expenseID uint) error {
 		return errors.New("consortium expense not found")
 	}
 
+	if expense.Distributed {
+		return errors.New("expense has already been distributed")
+	}
+
 	var units []models.Unit
 	if err := config.DB.Where("consortium_id = ?", expense.ConsortiumID).Find(&units).Error; err != nil {
 		return errors.New("could not find units")
@@ -47,7 +51,7 @@ func DistributeConsortiumExpense(expenseID uint) error {
 
 	for _, unit := range units {
 		var unitCoefficient models.UnitCoefficient
-		if err := config.DB.Where("unit_id = ?", unit.ID).First(&unitCoefficient).Error; err != nil {
+		if err := config.DB.Where("unit_id = ? AND coefficient_id = ?", unit.ID, expense.Concept.CoefficientID).First(&unitCoefficient).Error; err != nil {
 			return errors.New("could not find unit coefficient")
 		}
 

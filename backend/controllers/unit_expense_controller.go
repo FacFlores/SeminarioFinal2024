@@ -63,6 +63,69 @@ func CreateUnitExpense(c *gin.Context) {
 	c.JSON(http.StatusOK, createdExpense)
 }
 
+func LiquidateUnitExpense(c *gin.Context) {
+	idParam := c.Param("id")
+	id, parseErr := strconv.ParseUint(idParam, 10, 32)
+	if parseErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid expense ID"})
+		return
+	}
+
+	liquidatedExpense, err := services.LiquidateUnitExpense(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, liquidatedExpense)
+}
+
+func LiquidateUnitExpensesByPeriod(c *gin.Context) {
+	unitIDParam := c.Param("unit_id")
+	unitID, parseErr := strconv.ParseUint(unitIDParam, 10, 32)
+	if parseErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid unit ID"})
+		return
+	}
+
+	periodStr := c.Query("period")
+	period, err := time.Parse("2006-01-02", periodStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid period format"})
+		return
+	}
+
+	if err := services.LiquidateUnitExpensesByPeriod(uint(unitID), period); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Unit expenses liquidated successfully"})
+}
+
+func LiquidateConsortiumExpensesByPeriod(c *gin.Context) {
+	consortiumIDParam := c.Param("consortium_id")
+	consortiumID, parseErr := strconv.ParseUint(consortiumIDParam, 10, 32)
+	if parseErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid consortium ID"})
+		return
+	}
+
+	periodStr := c.Query("period")
+	period, err := time.Parse("2006-01-02", periodStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid period format"})
+		return
+	}
+
+	if err := services.LiquidateConsortiumExpensesByPeriod(uint(consortiumID), period); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Consortium expenses liquidated successfully"})
+}
+
 func UpdateUnitExpense(c *gin.Context) {
 	id := c.Param("id")
 

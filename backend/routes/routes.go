@@ -135,7 +135,7 @@ func SetupRoutes(router *gin.Engine) {
 		consortiumExpenses.POST("/distribute/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DistributeConsortiumExpense)
 		consortiumExpenses.GET("/distributed/:consortium_id", middlewares.AuthMiddleware(), controllers.GetDistributedConsortiumExpensesByConsortium)
 		consortiumExpenses.GET("/non-distributed/:consortium_id", middlewares.AuthMiddleware(), controllers.GetNonDistributedConsortiumExpensesByConsortium)
-
+		consortiumExpenses.PUT("/liquidate-by-period/:consortium_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateConsortiumExpensesByPeriod)
 	}
 
 	// UnitExpense routes
@@ -147,6 +147,10 @@ func SetupRoutes(router *gin.Engine) {
 		unitExpenses.PUT("/:id", middlewares.AuthMiddleware(), controllers.UpdateUnitExpense)
 		unitExpenses.DELETE("/:id", middlewares.AuthMiddleware(), controllers.DeleteUnitExpense)
 		unitExpenses.GET("/status/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitExpensesByUnitAndStatus)
+		unitExpenses.PUT("/liquidate/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateUnitExpense)
+		unitExpenses.PUT("/liquidate-by-period/:unit_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateUnitExpensesByPeriod)
+		unitExpenses.POST("/:unit_expense_id/pay", middlewares.AuthMiddleware(), controllers.MakePayment) // POST /unit-expenses/:unit_expense_id/pay
+
 	}
 
 	// Health check route

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class StorageService {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -14,7 +15,6 @@ class StorageService {
       } else {
         await _secureStorage.write(key: 'auth_token', value: token);
       }
-      print('Token saved: $token');
     } catch (e) {
       print('Error saving token: $e');
     }
@@ -43,7 +43,6 @@ class StorageService {
       } else {
         await _secureStorage.write(key: 'user_data', value: userJson);
       }
-      print('User data saved: $userJson');
     } catch (e) {
       print('Error saving user data: $e');
     }
@@ -58,7 +57,6 @@ class StorageService {
       } else {
         userJson = await _secureStorage.read(key: 'user_data');
       }
-      print('Retrieved user data: $userJson');
       if (userJson != null) {
         return jsonDecode(userJson);
       }
@@ -78,9 +76,21 @@ class StorageService {
         await _secureStorage.delete(key: 'auth_token');
         await _secureStorage.delete(key: 'user_data');
       }
-      print('Token and user data deleted');
     } catch (e) {
       print('Error deleting token and user data: $e');
+    }
+  }
+
+  Future<bool> checkTokenValidity() async {
+    final token = await getToken();
+    if (token == null) return false;
+
+    try {
+      bool isExpired = JwtDecoder.isExpired(token);
+      return !isExpired;
+    } catch (e) {
+      print('Error checking token validity: $e');
+      return false;
     }
   }
 }

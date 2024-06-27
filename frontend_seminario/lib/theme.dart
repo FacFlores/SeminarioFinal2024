@@ -4,10 +4,10 @@ class AppTheme {
   // Define colors
   static const Color lightBackground = Color(0xFFE6E6FA);
   static const Color successColor = Color(0xFF9FD356);
-  static const Color alertColor = Color(0xFFFBB13C);
+  static const Color alertColor = Color(0xFFE6E600);
   static const Color infoColor = Color(0xFF3C91E6);
   static const Color dangerColor = Color(0xFFBA2D0B);
-  static const Color accentColor = Color(0xFF091E05);
+  static const Color accentColor = Color(0xFFC76634);
   static const Color primaryColor = Color(0xFF3F2E56);
 
   // Define text styles

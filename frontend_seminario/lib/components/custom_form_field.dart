@@ -6,6 +6,7 @@ class CustomFormField extends StatelessWidget {
   final String labelText;
   final String? Function(String?)? validator;
   final bool obscureText;
+  final Function(String)? onChanged; 
 
   const CustomFormField({
     super.key,
@@ -13,6 +14,7 @@ class CustomFormField extends StatelessWidget {
     required this.labelText,
     this.validator,
     this.obscureText = false,
+    this.onChanged, 
   });
 
   @override
@@ -31,6 +33,7 @@ class CustomFormField extends StatelessWidget {
       ),
       validator: validator,
       style: AppTheme.textMedium,
+      onChanged: onChanged, 
     );
   }
 }

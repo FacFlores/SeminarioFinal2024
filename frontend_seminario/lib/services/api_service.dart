@@ -1,11 +1,10 @@
 import 'dart:convert';
+import 'package:frontend_seminario/utils/config.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'storage_service.dart';
 
 class ApiService {
-  static final String baseUrl =
-      dotenv.get('BACKEND_BASE_URL', fallback: 'http://localhost:8080');
+  static const String baseUrl = Config.apiUrl;
   static final StorageService storageService = StorageService();
 
   static Future<http.Response> login(String email, String password) async {
@@ -24,8 +23,6 @@ class ApiService {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['token'];
       final user = responseBody['user'];
-      print('Token: $token');
-      print('User: $user');
       await storageService.saveToken(token);
       await storageService.saveUserData(user);
     } else {

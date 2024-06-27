@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_seminario/screens/login_screen.dart';
-import 'package:frontend_seminario/screens/register_screen.dart';
-import 'package:frontend_seminario/screens/admin_dashboard.dart';
-import 'package:frontend_seminario/screens/user_dashboard.dart';
 import 'package:frontend_seminario/theme.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend_seminario/services/storage_service.dart';
+import 'package:frontend_seminario/routes/routes.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env.development");
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final AppRouter appRouter = AppRouter(StorageService());
+  final storageService = StorageService();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Sistema de Gestion de Consorcio',
       theme: AppTheme.themeData,
-      home: const LoginScreen(),
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterScreen(),
-        '/admin-dashboard': (context) => const AdminDashboard(),
-        '/user-dashboard': (context) => const UserDashboard(),
-      },
+      routerDelegate: appRouter.router.routerDelegate,
+      routeInformationParser: appRouter.router.routeInformationParser,
+      routeInformationProvider: appRouter.router.routeInformationProvider,
     );
   }
 }

@@ -9,12 +9,21 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: AppTheme.themeData.elevatedButtonTheme.style,
-      child: Text(
-        text,
-        style: AppTheme.textBold,
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.accentColor,
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        child: Text(
+          text,
+          style: AppTheme.textBold.copyWith(color: Colors.white),
+        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-// lib/screens/admin_settings_page.dart
 import 'package:flutter/material.dart';
 
 class AdminSettingsPage extends StatelessWidget {

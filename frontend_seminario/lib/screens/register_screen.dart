@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:frontend_seminario/components/custom_toast.dart';
+import 'package:frontend_seminario/components/custom_toast_widget.dart';
 import 'package:frontend_seminario/services/api_service.dart';
 import 'package:frontend_seminario/components/custom_form_field.dart';
 import 'package:frontend_seminario/components/custom_button.dart';
-import 'package:frontend_seminario/theme.dart';
+import 'package:frontend_seminario/components/password_criteria_widget.dart';
+import 'package:frontend_seminario/theme/theme.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -22,14 +24,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _dniController = TextEditingController();
 
-  String? _passwordError;
-  bool _isPasswordDirty = false;
+  bool _isEmailValid = false;
+
+  bool get _isFormValid {
+    return _formKey.currentState?.validate() ?? false;
+  }
 
   void _register() async {
-    setState(() {
-      _isPasswordDirty = true;
-    });
-    if (_formKey.currentState!.validate()) {
+    if (_isFormValid) {
       final response = await ApiService.register(
         _nameController.text,
         _emailController.text,
@@ -40,18 +42,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-          msg: 'Registro exitoso',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
-        context.go('/login');
+        if (mounted) {
+          CustomToast.show(
+              'Solicitud de Registro enviada a administrador, espere la activacion de su cuenta',
+              ToastType.info,
+              context);
+          context.go('/login');
+        }
       } else {
-        Fluttertoast.showToast(
-          msg: 'Error ${response.statusCode}: ${response.body}',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        if (mounted) {
+          CustomToast.show('Error ${response.statusCode}: ${response.body}',
+              ToastType.error, context);
+        }
       }
     }
   }
@@ -82,8 +84,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _checkPasswordValidation(String value) {
+    setState(() {});
+  }
+
+  void _validateEmail(String value) {
     setState(() {
-      _passwordError = _validatePassword(value);
+      _isEmailValid = RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value);
     });
   }
 
@@ -116,6 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   child: Form(
                     key: _formKey,
+                    onChanged: () => setState(() {}),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -131,33 +138,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Ingrese un email';
                             }
+                            if (!_isEmailValid) {
+                              return 'Ingrese un email válido';
+                            }
                             return null;
                           },
+                          onChanged: _validateEmail,
                         ),
                         const SizedBox(height: 20),
                         CustomFormField(
                           controller: _passwordController,
                           labelText: 'Contraseña',
                           obscureText: true,
-                          validator: (value) {
-                            if (!_isPasswordDirty) {
-                              return _validatePassword(value);
-                            }
-                            return null;
-                          },
+                          validator: _validatePassword,
                           onChanged: _checkPasswordValidation,
                         ),
-                        if (_isPasswordDirty && _passwordError != null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              _passwordError!,
-                              style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 12,
-                              ),
+                        const SizedBox(height: 20),
+                        Column(
+                          children: [
+                            buildPasswordCriteria(
+                              'La contraseña debe tener al menos 8 caracteres',
+                              _passwordController.text.length >= 8,
                             ),
-                          ),
+                            buildPasswordCriteria(
+                              'La contraseña debe incluir al menos una letra mayúscula',
+                              RegExp(r'(?=.*[A-Z])')
+                                  .hasMatch(_passwordController.text),
+                            ),
+                            buildPasswordCriteria(
+                              'La contraseña debe incluir al menos una letra minúscula',
+                              RegExp(r'(?=.*[a-z])')
+                                  .hasMatch(_passwordController.text),
+                            ),
+                            buildPasswordCriteria(
+                              'La contraseña debe incluir al menos un número',
+                              RegExp(r'(?=.*\d)')
+                                  .hasMatch(_passwordController.text),
+                            ),
+                            buildPasswordCriteria(
+                              'La contraseña debe incluir al menos un carácter especial',
+                              RegExp(r'(?=.*[!@#\$%\^&\*\.\,\(\)\-\_\+\=\[\]\{\}\|\\;:\\"<>\?\/\x27])')
+                                  .hasMatch(_passwordController.text),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 20),
                         Row(
                           children: [
@@ -221,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const SizedBox(height: 20),
                         CustomButton(
                           text: 'Solicitar Registro',
-                          onPressed: _register,
+                          onPressed: _isFormValid ? _register : () {},
                         ),
                         const SizedBox(height: 20),
                         Row(

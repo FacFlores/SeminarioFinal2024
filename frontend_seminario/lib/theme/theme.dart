@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class AppTheme {
   // Define colors
   static const Color lightBackground = Color(0xFFE6E6FA);
-  static const Color successColor = Color(0xFF9FD356);
-  static const Color alertColor = Color(0xFFE6E600);
-  static const Color infoColor = Color(0xFF3C91E6);
+  static const Color successColor = Color(0xFF5B881C);
+  static const Color alertColor = Color(0xFFB9B910);
+  static const Color infoColor = Color(0xFF327DC9);
   static const Color dangerColor = Color(0xFFBA2D0B);
   static const Color accentColor = Color(0xFFC76634);
   static const Color primaryColor = Color(0xFF3F2E56);

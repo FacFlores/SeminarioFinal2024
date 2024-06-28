@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_seminario/theme.dart';
+import 'package:frontend_seminario/theme/theme.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
-import 'package:frontend_seminario/routes/routes.dart';
+import 'package:frontend_seminario/routes/app_router.dart';
 
 void main() async {
   runApp(MyApp());

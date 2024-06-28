@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend_seminario/components/custom_toast_widget.dart';
 import 'package:frontend_seminario/services/api_service.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
 import 'package:frontend_seminario/components/custom_form_field.dart';
 import 'package:frontend_seminario/components/custom_button.dart';
-import 'package:frontend_seminario/theme.dart';
+import 'package:frontend_seminario/theme/theme.dart';
+import 'package:frontend_seminario/components/custom_toast.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,6 +44,13 @@ class _LoginScreenState extends State<LoginScreen> {
         await StorageService().saveUserData(user);
         return true;
       } else {
+        if (mounted) {
+          CustomToast.show(
+            'Error ${response.statusCode}: ${jsonDecode(response.body)['error']}',
+            ToastType.error,
+            context,
+          );
+        }
         return false;
       }
     }
@@ -63,9 +72,6 @@ class _LoginScreenState extends State<LoginScreen> {
           context.go('/user-dashboard');
         }
       }
-    } else {
-      // Handle failed login
-      print('Login failed');
     }
   }
 
@@ -124,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 20),
                         CustomFormField(
                           controller: _passwordController,
-                          labelText: 'Password',
+                          labelText: 'Contraseña',
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {

@@ -4,12 +4,14 @@ import "github.com/jinzhu/gorm"
 
 type Document struct {
 	gorm.Model
-	Name         string `gorm:"not null"`
-	ContentType  string `gorm:"not null"`
-	Content      []byte `gorm:"type:bytea"`
-	Visibility   string `gorm:"not null"` // Visibility level: "public", "unit", "consortium", "admin"
-	UnitID       uint   `gorm:"default:null"`
-	ConsortiumID uint   `gorm:"default:null"`
+	Name         string      `gorm:"not null"`
+	ContentType  string      `gorm:"not null"`
+	Content      []byte      `gorm:"type:bytea"`
+	Visibility   string      `gorm:"not null"` // Visibility level: "public", "unit", "consortium", "admin"
+	UnitID       *uint       `gorm:"default:null"`
+	Unit         *Unit       `gorm:"foreignKey:UnitID"`
+	ConsortiumID *uint       `gorm:"default:null"`
+	Consortium   *Consortium `gorm:"foreignKey:ConsortiumID"`
 }
 
 const (

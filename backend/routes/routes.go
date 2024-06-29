@@ -72,6 +72,11 @@ func SetupRoutes(router *gin.Engine) {
 		consortiums.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortium)
 		consortiums.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortium)
 		consortiums.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetConsortiumByUnit)
+		//TODO POSTMAN THIS
+		consortiums.POST("/consortium_services", controllers.CreateConsortiumService)
+		consortiums.GET("/consortium_services/:consortium_id/services", controllers.GetConsortiumServices)
+		consortiums.PUT("/consortium_services/:service_id/status", controllers.UpdateConsortiumServiceStatus)
+		consortiums.PUT("/consortium_services/:service_id/next_maintenance", controllers.ScheduleNextMaintenance)
 
 	}
 

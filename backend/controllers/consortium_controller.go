@@ -5,6 +5,7 @@ import (
 	"backend/services"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -129,4 +130,114 @@ func GetConsortiumByUnit(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, consortium)
+}
+
+func CreateConsortiumService(c *gin.Context) {
+	var input struct {
+		ConsortiumID  uint   `json:"consortium_id"`
+		Name          string `json:"name"`
+		Description   string `json:"description"`
+		ScheduledDate string `json:"scheduled_date"`
+		ExpiryDate    string `json:"expiry_date"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	scheduledDate, err := time.Parse(time.RFC3339, input.ScheduledDate)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid scheduled date"})
+		return
+	}
+
+	expiryDate, err := time.Parse(time.RFC3339, input.ExpiryDate)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid expiry date"})
+		return
+	}
+
+	service, err := services.CreateConsortiumService(input.ConsortiumID, input.Name, input.Description, scheduledDate, expiryDate)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, service)
+}
+
+func GetConsortiumServices(c *gin.Context) {
+	consortiumIDParam := c.Param("consortium_id")
+	consortiumID, err := strconv.ParseUint(consortiumIDParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid consortium ID"})
+		return
+	}
+
+	services, err := services.GetConsortiumServices(uint(consortiumID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, services)
+}
+
+func UpdateConsortiumServiceStatus(c *gin.Context) {
+	serviceIDParam := c.Param("service_id")
+	serviceID, err := strconv.ParseUint(serviceIDParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid service ID"})
+		return
+	}
+
+	var input struct {
+		Status string `json:"status"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = services.UpdateConsortiumServiceStatus(uint(serviceID), input.Status)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Service status updated"})
+}
+
+func ScheduleNextMaintenance(c *gin.Context) {
+	serviceIDParam := c.Param("service_id")
+	serviceID, err := strconv.ParseUint(serviceIDParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid service ID"})
+		return
+	}
+
+	var input struct {
+		NextMaintenance string `json:"next_maintenance"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	nextMaintenance, err := time.Parse(time.RFC3339, input.NextMaintenance)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid next maintenance date"})
+		return
+	}
+
+	err = services.ScheduleNextMaintenance(uint(serviceID), nextMaintenance)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Next maintenance scheduled"})
 }

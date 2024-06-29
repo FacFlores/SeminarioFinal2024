@@ -17,6 +17,15 @@ func FindUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+func GetAdminUsers(c *gin.Context) {
+	admins, err := services.GetAllAdmins()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, admins)
+}
+
 func FindActiveUsers(c *gin.Context) {
 	users, err := services.GetActiveUsers()
 	if err != nil {

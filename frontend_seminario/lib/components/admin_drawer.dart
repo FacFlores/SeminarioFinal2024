@@ -1,3 +1,4 @@
+// lib/components/admin_drawer.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -119,37 +120,18 @@ class _AdminDrawerState extends State<AdminDrawer> {
               }
             },
           ),
-          Theme(
-            data: Theme.of(context).copyWith(
-              dividerColor: Colors.transparent,
-            ),
-            child: ExpansionTile(
-              leading: const Icon(Icons.dashboard, color: AppTheme.accentColor),
-              title: const Text(
-                'Dashboard',
-                style: AppTheme.textMedium,
-              ),
-              children: [
-                ListTile(
-                  title: const Text('Sub Menu 1', style: AppTheme.textSmall),
-                  onTap: () {
-                    context.go('/admin-dashboard/submenu1');
-                  },
-                ),
-                ListTile(
-                  title: const Text('Sub Menu 2', style: AppTheme.textSmall),
-                  onTap: () {
-                    context.go('/admin-dashboard/submenu2');
-                  },
-                ),
-              ],
-            ),
+          ListTile(
+            leading: const Icon(Icons.dashboard, color: AppTheme.accentColor),
+            title: const Text('Dashboard', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin');
+            },
           ),
           ListTile(
-            leading: const Icon(Icons.settings, color: AppTheme.accentColor),
-            title: const Text('Settings'),
+            leading: const Icon(Icons.business, color: AppTheme.accentColor),
+            title: const Text('Consorcios', style: AppTheme.textMedium),
             onTap: () {
-              context.go('/admin-settings');
+              context.go('/admin/consortiums');
             },
           ),
           ListTile(

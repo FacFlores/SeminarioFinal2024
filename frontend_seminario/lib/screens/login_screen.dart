@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend_seminario/components/custom_toast_widget.dart';
-import 'package:frontend_seminario/services/api_service.dart';
+import 'package:frontend_seminario/services/api/user_api_service.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
 import 'package:frontend_seminario/components/custom_form_field.dart';
 import 'package:frontend_seminario/components/custom_button.dart';
@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
-      final response = await ApiService.login(
+      final response = await UserApiService.loginUser(
         _emailController.text,
         _passwordController.text,
       );

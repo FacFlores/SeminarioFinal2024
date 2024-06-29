@@ -61,3 +61,8 @@ func GetUnitTransactions(unitID uint) ([]models.Transaction, error) {
 	}
 	return transactions, nil
 }
+
+func SoftDeleteUnitLedgerByUnitID(unitID uint) error {
+	result := config.DB.Where("unit_id = ?", unitID).Delete(&models.UnitLedger{})
+	return result.Error
+}

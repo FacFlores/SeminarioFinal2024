@@ -3,6 +3,7 @@ package services
 import (
 	"backend/config"
 	"backend/models"
+	"time"
 )
 
 func CreateUnit(unit models.Unit) (models.Unit, error) {
@@ -29,9 +30,11 @@ func CreateUnit(unit models.Unit) (models.Unit, error) {
 }
 
 func DeleteUnit(id string) error {
-	if err := config.DB.Delete(&models.Unit{}, id).Error; err != nil {
+	result := config.DB.Unscoped().Model(&models.Unit{}).Where("id = ?", id).Update("deleted_at", time.Now())
+	if err := result.Error; err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -45,7 +48,7 @@ func GetUnitByID(id uint) (models.Unit, error) {
 
 func GetUnitByName(name string) (models.Unit, error) {
 	var unit models.Unit
-	if err := config.DB.Preload("Consortium").Preload("Owners").Preload("Roomers").Where("name = ?", name).First(&unit).Error; err != nil {
+	if err := config.DB.Preload("Consortium").Preload("Owners").Preload("Roomers").Where("name = ?", name).Where("deleted_at IS NULL").First(&unit).Error; err != nil {
 		return unit, err
 	}
 	return unit, nil
@@ -53,7 +56,9 @@ func GetUnitByName(name string) (models.Unit, error) {
 
 func GetAllUnits() ([]models.Unit, error) {
 	var units []models.Unit
-	if err := config.DB.Preload("Consortium").Preload("Owners").Preload("Roomers").Find(&units).Error; err != nil {
+	result := config.DB.Preload("Consortium").Preload("Owners").Preload("Roomers").Where("deleted_at IS NULL").Find(&units)
+
+	if err := result.Error; err != nil {
 		return nil, err
 	}
 	return units, nil
@@ -77,6 +82,22 @@ func UpdateUnit(id string, updatedData models.Unit) (models.Unit, error) {
 	}
 
 	return unit, nil
+}
+
+func GetOwnersByUnitID(unitID uint) ([]models.Owner, error) {
+	var unit models.Unit
+	if err := config.DB.Preload("Owners").First(&unit, unitID).Error; err != nil {
+		return nil, err
+	}
+	return unit.Owners, nil
+}
+
+func GetRoomersByUnitID(unitID uint) ([]models.Roomer, error) {
+	var unit models.Unit
+	if err := config.DB.Preload("Roomers").First(&unit, unitID).Error; err != nil {
+		return nil, err
+	}
+	return unit.Roomers, nil
 }
 
 func AssignOwnerToUnit(unitID, ownerID uint) (models.Unit, error) {
@@ -173,7 +194,7 @@ func RemoveRoomerFromUnit(unitID, roomerID uint) (models.Unit, error) {
 
 func GetUnitsByConsortium(consortiumID uint) ([]models.Unit, error) {
 	var units []models.Unit
-	if err := config.DB.Where("consortium_id = ?", consortiumID).Preload("Consortium").Preload("Owners").Preload("Roomers").Find(&units).Error; err != nil {
+	if err := config.DB.Where("consortium_id = ?", consortiumID).Preload("Consortium").Preload("Owners").Preload("Roomers").Where("deleted_at IS NULL").Find(&units).Error; err != nil {
 		return nil, err
 	}
 	return units, nil

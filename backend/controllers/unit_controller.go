@@ -32,6 +32,40 @@ func CreateUnit(c *gin.Context) {
 	c.JSON(http.StatusOK, createdUnit)
 }
 
+func GetOwnersByUnitID(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid unit ID"})
+		return
+	}
+
+	owners, err := services.GetOwnersByUnitID(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, owners)
+}
+
+func GetRoomersByUnitID(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid unit ID"})
+		return
+	}
+
+	roomers, err := services.GetRoomersByUnitID(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, roomers)
+}
+
 func GetUnitByID(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.ParseUint(idParam, 10, 32)

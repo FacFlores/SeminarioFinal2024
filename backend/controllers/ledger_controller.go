@@ -71,3 +71,20 @@ func GetUnitTransactions(c *gin.Context) {
 
 	c.JSON(http.StatusOK, transactions)
 }
+
+func SoftDeleteUnitLedgerByUnitID(c *gin.Context) {
+	unitIDParam := c.Param("unit_id")
+	unitID, err := strconv.ParseUint(unitIDParam, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid unit ID"})
+		return
+	}
+
+	err = services.SoftDeleteUnitLedgerByUnitID(uint(unitID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Unit ledger soft deleted"})
+}

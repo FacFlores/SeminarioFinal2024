@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_seminario/components/custom_toast.dart';
 import 'package:frontend_seminario/components/custom_toast_widget.dart';
-import 'package:frontend_seminario/services/api_service.dart';
+import 'package:frontend_seminario/services/api/user_api_service.dart';
 import 'package:frontend_seminario/components/custom_form_field.dart';
 import 'package:frontend_seminario/components/custom_button.dart';
 import 'package:frontend_seminario/components/password_criteria_widget.dart';
@@ -35,14 +35,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _register() async {
     if (_isFormValid) {
-      final response = await ApiService.register(
-        _nameController.text,
-        _emailController.text,
-        _passwordController.text,
-        _surnameController.text,
-        _phoneController.text,
-        _dniController.text,
-      );
+      Map<String, dynamic> userData = {
+        'name': _nameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+        'surname': _surnameController.text,
+        'phone': _phoneController.text,
+        'dni': _dniController.text,
+      };
+
+      final response = await UserApiService.registerUser(userData);
 
       if (response.statusCode == 200) {
         if (mounted) {

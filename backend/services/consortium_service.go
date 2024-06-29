@@ -3,6 +3,7 @@ package services
 import (
 	"backend/config"
 	"backend/models"
+	"time"
 )
 
 func CreateConsortium(consortium models.Consortium) (models.Consortium, error) {
@@ -13,9 +14,11 @@ func CreateConsortium(consortium models.Consortium) (models.Consortium, error) {
 }
 
 func DeleteConsortium(id string) error {
-	if err := config.DB.Delete(&models.Consortium{}, id).Error; err != nil {
+	result := config.DB.Unscoped().Model(&models.Consortium{}).Where("id = ?", id).Update("deleted_at", time.Now())
+	if err := result.Error; err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -50,7 +53,7 @@ func GetConsortiumByName(name string) (models.Consortium, error) {
 
 func GetAllConsortiums() ([]models.Consortium, error) {
 	var consortiums []models.Consortium
-	if err := config.DB.Find(&consortiums).Error; err != nil {
+	if err := config.DB.Where("deleted_at IS NULL").Find(&consortiums).Error; err != nil {
 		return nil, err
 	}
 	return consortiums, nil

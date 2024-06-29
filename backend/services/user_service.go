@@ -16,6 +16,14 @@ func GetAllUsers() ([]models.User, error) {
 	return users, nil
 }
 
+func GetAllAdmins() ([]models.User, error) {
+	var admins []models.User
+	if err := config.DB.Preload("Role").Where("name = ?", "Admin").Find(&admins).Error; err != nil {
+		return nil, err
+	}
+	return admins, nil
+}
+
 func GetActiveUsers() ([]models.User, error) {
 	var users []models.User
 	if err := config.DB.Preload("Role").Where("is_active = ?", true).Find(&users).Error; err != nil {

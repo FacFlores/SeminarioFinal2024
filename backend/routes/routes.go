@@ -24,6 +24,7 @@ func SetupRoutes(router *gin.Engine) {
 		admin.POST("/register", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateAdmin)
 		admin.PUT("/toggle-user-status/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.ToggleUserActiveStatus)
 		admin.DELETE("users/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteUser)
+		admin.GET("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.GetAdminUsers)
 
 	}
 
@@ -88,6 +89,9 @@ func SetupRoutes(router *gin.Engine) {
 		units.PUT("/remove-roomer/:unit_id/:roomer_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveRoomerFromUnit) // PUT /units/remove-roomer/:unit_id/:roomer_id
 		units.POST("/name", middlewares.AuthMiddleware(), controllers.GetUnitByName)
 		units.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetUnitsByConsortium)
+		units.GET("/:id/owners", middlewares.AuthMiddleware(), controllers.GetOwnersByUnitID)   // New endpoint
+		units.GET("/:id/roomers", middlewares.AuthMiddleware(), controllers.GetRoomersByUnitID) // New endpoint
+
 	}
 
 	// Coefficient routes
@@ -122,6 +126,8 @@ func SetupRoutes(router *gin.Engine) {
 		ledger.POST("/transaction", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RecordTransaction)
 		ledger.GET("/balance/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitBalance)
 		ledger.GET("/transactions/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitTransactions)
+		ledger.DELETE("/soft-delete/:unit_id", controllers.SoftDeleteUnitLedgerByUnitID)
+
 	}
 
 	// ConsortiumExpense routes
@@ -150,7 +156,25 @@ func SetupRoutes(router *gin.Engine) {
 		unitExpenses.PUT("/liquidate/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateUnitExpense)
 		unitExpenses.PUT("/liquidate-by-period/:unit_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateUnitExpensesByPeriod)
 		unitExpenses.POST("/:unit_expense_id/pay", middlewares.AuthMiddleware(), controllers.MakePayment) // POST /unit-expenses/:unit_expense_id/pay
+		//TODO CREATE AUTOMATIC PAYMENT
+	}
 
+	//TODO POSTMAN THIS
+	documents := router.Group("/documents")
+	{
+		documents.POST("", controllers.UploadDocument)
+		documents.GET("/:id", controllers.GetDocumentByID)
+
+	}
+
+	notifications := router.Group("/notifications")
+	{
+		notifications.POST("/", controllers.CreateNotification)
+		notifications.PUT("/:id/mark-read", controllers.MarkNotificationAsRead)
+		notifications.DELETE("/:id", controllers.DeleteNotification)
+		notifications.GET("/role/:role", controllers.GetNotificationsByTargetRole)
+		notifications.GET("/unit/:unit_id", controllers.GetNotificationsByTargetUnit)
+		notifications.GET("/consortium/:consortium_id", controllers.GetNotificationsByTargetConsortium)
 	}
 
 	// Health check route

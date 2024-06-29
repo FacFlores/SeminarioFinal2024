@@ -4,6 +4,7 @@ import 'package:frontend_seminario/screens/register_screen.dart';
 import 'package:frontend_seminario/screens/admin_dashboard.dart';
 import 'package:frontend_seminario/screens/user_dashboard.dart';
 import 'package:frontend_seminario/screens/admin_settings_page.dart';
+import 'package:frontend_seminario/screens/user_settings_page.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
 
 class AppRouter {
@@ -68,6 +69,10 @@ class AppRouter {
           final admin = await _isAdmin();
           return admin ? null : '/login';
         },
+      ),
+      GoRoute(
+        path: '/user-settings',
+        builder: (context, state) => const UserSettingsPage(),
       ),
       // Fallback route for unknown paths
       GoRoute(

@@ -6,7 +6,9 @@ class CustomFormField extends StatelessWidget {
   final String labelText;
   final String? Function(String?)? validator;
   final bool obscureText;
-  final Function(String)? onChanged; 
+  final Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final Widget? suffixIcon;
 
   const CustomFormField({
     super.key,
@@ -14,7 +16,9 @@ class CustomFormField extends StatelessWidget {
     required this.labelText,
     this.validator,
     this.obscureText = false,
-    this.onChanged, 
+    this.onChanged,
+    this.keyboardType,
+    this.suffixIcon,
   });
 
   @override
@@ -22,6 +26,7 @@ class CustomFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: AppTheme.textMedium,
@@ -30,10 +35,11 @@ class CustomFormField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
+        suffixIcon: suffixIcon,
       ),
       validator: validator,
       style: AppTheme.textMedium,
-      onChanged: onChanged, 
+      onChanged: onChanged,
     );
   }
 }

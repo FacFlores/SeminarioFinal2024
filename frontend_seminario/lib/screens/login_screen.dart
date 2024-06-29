@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   Future<bool> _login() async {
     if (_formKey.currentState!.validate()) {
@@ -120,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         CustomFormField(
                           controller: _emailController,
                           labelText: 'Email',
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Ingrese un email';
@@ -131,13 +133,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         CustomFormField(
                           controller: _passwordController,
                           labelText: 'Contraseña',
-                          obscureText: true,
+                          obscureText: _obscurePassword,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Ingrese una contraseña';
                             }
                             return null;
                           },
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                         ),
                         const SizedBox(height: 20),
                         if (_isLoading)

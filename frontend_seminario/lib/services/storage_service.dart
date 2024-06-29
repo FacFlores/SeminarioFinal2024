@@ -81,6 +81,10 @@ class StorageService {
     }
   }
 
+  Future<void> logout() async {
+    await deleteToken();
+  }
+
   Future<bool> checkTokenValidity() async {
     final token = await getToken();
     if (token == null) return false;

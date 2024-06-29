@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend_seminario/components/custom_toast.dart';
 import 'package:frontend_seminario/components/custom_toast_widget.dart';
 import 'package:frontend_seminario/services/api_service.dart';
+import 'package:frontend_seminario/services/storage_service.dart';
 import 'package:frontend_seminario/components/custom_form_field.dart';
 import 'package:frontend_seminario/components/custom_button.dart';
 import 'package:frontend_seminario/components/password_criteria_widget.dart';
@@ -20,11 +22,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _surnameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dniController = TextEditingController();
 
   bool _isEmailValid = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   bool get _isFormValid {
     return _formKey.currentState?.validate() ?? false;
@@ -83,6 +88,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return null;
   }
 
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Confirme su contraseña';
+    }
+    if (value != _passwordController.text) {
+      return 'Las contraseñas no coinciden';
+    }
+    return null;
+  }
+
   void _checkPasswordValidation(String value) {
     setState(() {});
   }
@@ -134,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         CustomFormField(
                           controller: _emailController,
                           labelText: 'Email',
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Ingrese un email';
@@ -149,9 +165,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         CustomFormField(
                           controller: _passwordController,
                           labelText: 'Contraseña',
-                          obscureText: true,
+                          obscureText: _obscurePassword,
                           validator: _validatePassword,
                           onChanged: _checkPasswordValidation,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        CustomFormField(
+                          controller: _confirmPasswordController,
+                          labelText: 'Confirmar Contraseña',
+                          obscureText: _obscureConfirmPassword,
+                          validator: _validateConfirmPassword,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
                         ),
                         const SizedBox(height: 20),
                         Column(

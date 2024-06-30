@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:frontend_seminario/services/api/user_api_service.dart';
 import 'package:pdf/pdf.dart';
@@ -192,6 +191,7 @@ class PdfGenerationPageState extends State<PdfGenerationPage> {
     final bytes = await pdf.save();
     final blob = html.Blob([bytes], 'application/pdf');
     final url = html.Url.createObjectUrlFromBlob(blob);
+    // ignore: unused_local_variable
     final anchor = html.AnchorElement(href: url)
       ..setAttribute('download', '$unitName.pdf')
       ..click();

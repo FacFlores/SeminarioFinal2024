@@ -60,16 +60,16 @@ class UserManagementPageState extends State<UserManagementPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this user?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea borrar este usuario?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -102,7 +102,7 @@ class UserManagementPageState extends State<UserManagementPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'User Management',
+      title: 'Gestion de Usuarios',
       body: _buildUserList(),
       isAdmin: true,
       storageService: StorageService(),
@@ -121,7 +121,7 @@ class UserManagementPageState extends State<UserManagementPage> {
               foregroundColor: Colors.white,
               backgroundColor: AppTheme.accentColor,
             ),
-            child: const Text('Add User'),
+            child: const Text('Agregar Usuario'),
           ),
           const SizedBox(height: 16),
           Expanded(
@@ -141,9 +141,9 @@ class UserManagementPageState extends State<UserManagementPage> {
                       children: [
                         Text('Email: ${user['email']}',
                             style: AppTheme.textSmall),
-                        Text('Role: ${user['role']['name']}',
+                        Text('Rol: ${user['role']['name']}',
                             style: AppTheme.textSmall),
-                        Text('Status: ${isActive ? 'Active' : 'Inactive'}',
+                        Text('Estado: ${isActive ? 'Active' : 'Inactive'}',
                             style: AppTheme.textSmall),
                       ],
                     ),

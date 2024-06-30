@@ -82,7 +82,8 @@ class ConceptDialogState extends State<ConceptDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.conceptId == null ? 'Create Concept' : 'Edit Concept'),
+      title:
+          Text(widget.conceptId == null ? 'Crear Concepto' : 'Editar Concepto'),
       content: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Form(
@@ -94,7 +95,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                     TextFormField(
                       controller: _nameController,
                       decoration: const InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Nombre',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -104,7 +105,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Por favor ingrese un nombre';
                         }
                         return null;
                       },
@@ -113,7 +114,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                     TextFormField(
                       controller: _descriptionController,
                       decoration: const InputDecoration(
-                        labelText: 'Description',
+                        labelText: 'Descripción',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -123,7 +124,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a description';
+                          return 'Por favor introduzca una descripción';
                         }
                         return null;
                       },
@@ -145,7 +146,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                         });
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Priority',
+                        labelText: 'Prioridad',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -169,7 +170,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                         });
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Origin',
+                        labelText: 'Origen',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -182,7 +183,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                     TextFormField(
                       controller: _typeController,
                       decoration: const InputDecoration(
-                        labelText: 'Type',
+                        labelText: 'Tipo',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -192,7 +193,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a type';
+                          return 'Por favor ingrese un tipo';
                         }
                         return null;
                       },
@@ -214,7 +215,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                         });
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Coefficient',
+                        labelText: 'Coeficiente',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -224,7 +225,7 @@ class ConceptDialogState extends State<ConceptDialog> {
                       ),
                       validator: (value) {
                         if (value == null) {
-                          return 'Please select a coefficient';
+                          return 'Por favor seleccione un coeficiente';
                         }
                         return null;
                       },
@@ -236,7 +237,7 @@ class ConceptDialogState extends State<ConceptDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmallBold),
+          child: const Text('Cancelar', style: AppTheme.textSmallBold),
         ),
         ElevatedButton(
           onPressed: _saveConcept,
@@ -244,7 +245,7 @@ class ConceptDialogState extends State<ConceptDialog> {
             foregroundColor: Colors.white,
             backgroundColor: AppTheme.primaryColor,
           ),
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

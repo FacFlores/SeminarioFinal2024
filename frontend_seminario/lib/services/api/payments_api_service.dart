@@ -4,17 +4,23 @@ import 'base_api_service.dart';
 
 class PaymentsApiService extends BaseApiService {
   // Pay for a unit expense
-  static Future<http.Response> payUnitExpense(int unitExpenseId, double amount, String description) async {
+  static Future<http.Response> payUnitExpense(
+      int unitExpenseId, Map<String, dynamic> postData) async {
     final headers = await BaseApiService.getCommonHeaders();
-    final body = jsonEncode({
-      'amount': amount,
-      'description': description
-    });
-
     return http.post(
-      Uri.parse('${BaseApiService.baseUrl}/unit-expenses/$unitExpenseId/pay'),
+        Uri.parse('${BaseApiService.baseUrl}/unit-expenses/$unitExpenseId/pay'),
+        headers: headers,
+        body: jsonEncode(postData));
+  }
+
+  // Pay automatic
+  static Future<http.Response> automaticPayment(
+      Map<String, dynamic> postData) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.post(
+      Uri.parse('${BaseApiService.baseUrl}/unit-expenses/auto-pay'),
       headers: headers,
-      body: body
+      body: jsonEncode(postData),
     );
   }
 }

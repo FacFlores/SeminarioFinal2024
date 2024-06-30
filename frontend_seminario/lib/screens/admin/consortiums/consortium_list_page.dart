@@ -57,16 +57,16 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this consortium?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea eliminar el consorcio?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -86,7 +86,7 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Consortium Management',
+      title: 'Gestion de Consorcios',
       body: _buildConsortiumList(),
       isAdmin: true,
       storageService: StorageService(),
@@ -105,7 +105,7 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
               foregroundColor: Colors.white,
               backgroundColor: AppTheme.accentColor,
             ),
-            child: const Text('Add Consortium'),
+            child: const Text('Agregar Consorcio'),
           ),
           const SizedBox(height: 16),
           Expanded(
@@ -120,7 +120,7 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Address: ${consortium['address']}',
+                        Text('Direccion: ${consortium['address']}',
                             style: AppTheme.textSmall),
                         Text('CUIT: ${consortium['cuit']}',
                             style: AppTheme.textSmall),

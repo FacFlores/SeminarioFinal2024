@@ -86,12 +86,12 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Manage Owners and Roomers', style: AppTheme.textBold),
+      title: const Text('Gestionar Propietarios', style: AppTheme.textBold),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Owners:', style: AppTheme.textBold),
+            const Text('Propietarios:', style: AppTheme.textBold),
             ...owners.map((owner) => ListTile(
                   title: Text(owner['name'], style: AppTheme.textSmall),
                   trailing: IconButton(
@@ -114,10 +114,10 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
                 backgroundColor: AppTheme.accentColor,
                 textStyle: AppTheme.textSmallBold,
               ),
-              child: const Text('Add Owner'),
+              child: const Text('Agregar Propietario'),
             ),
             const SizedBox(height: 16),
-            const Text('Roomers:', style: AppTheme.textBold),
+            const Text('Inquilinos:', style: AppTheme.textBold),
             ...roomers.map((roomer) => ListTile(
                   title: Text(roomer['name'], style: AppTheme.textSmall),
                   trailing: IconButton(
@@ -140,7 +140,7 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
                 backgroundColor: AppTheme.accentColor,
                 textStyle: AppTheme.textSmallBold,
               ),
-              child: const Text('Add Roomer'),
+              child: const Text('Agregar Inquilino'),
             ),
           ],
         ),
@@ -148,7 +148,7 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
       backgroundColor: AppTheme.lightBackground,
@@ -189,7 +189,7 @@ class SelectOwnerDialogState extends State<SelectOwnerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Select Owner', style: AppTheme.textBold),
+      title: const Text('Seleccione un Propietario', style: AppTheme.textBold),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -239,7 +239,7 @@ class SelectRoomerDialogState extends State<SelectRoomerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Select Roomer', style: AppTheme.textBold),
+      title: const Text('Seleccione un Inquilino', style: AppTheme.textBold),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

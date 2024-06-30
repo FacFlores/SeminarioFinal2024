@@ -58,9 +58,8 @@ class ConsortiumDialogState extends State<ConsortiumDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.consortiumId == null
-          ? 'Create Consortium'
-          : 'Edit Consortium'),
+      title: Text(
+          widget.consortiumId == null ? 'Crear Consorcio' : 'Editar Consorcio'),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -70,10 +69,10 @@ class ConsortiumDialogState extends State<ConsortiumDialog> {
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
-                    labelText: 'Name', labelStyle: AppTheme.textSmall),
+                    labelText: 'Nombre', labelStyle: AppTheme.textSmall),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
+                    return 'Por favor ingrese un nombre';
                   }
                   return null;
                 },
@@ -82,10 +81,10 @@ class ConsortiumDialogState extends State<ConsortiumDialog> {
               TextFormField(
                 controller: _addressController,
                 decoration: const InputDecoration(
-                    labelText: 'Address', labelStyle: AppTheme.textSmall),
+                    labelText: 'Dirección', labelStyle: AppTheme.textSmall),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an address';
+                    return 'Ingrese una dirección';
                   }
                   return null;
                 },
@@ -97,7 +96,7 @@ class ConsortiumDialogState extends State<ConsortiumDialog> {
                     labelText: 'CUIT', labelStyle: AppTheme.textSmall),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a CUIT';
+                    return 'Ingrese un CUIT';
                   }
                   return null;
                 },
@@ -109,11 +108,11 @@ class ConsortiumDialogState extends State<ConsortiumDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmall),
+          child: const Text('Cancelar', style: AppTheme.textSmall),
         ),
         TextButton(
           onPressed: _saveConsortium,
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

@@ -111,12 +111,12 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Assign to Owners or Roomers'),
+      title: const Text('Asignar a Propietarios o Inquilinos'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Current Owners:', style: AppTheme.textBold),
+            const Text('Propietarios asignados:', style: AppTheme.textBold),
             ...currentOwners.map((owner) => ListTile(
                   title: Text(owner['name'], style: AppTheme.textSmall),
                   trailing: IconButton(
@@ -126,7 +126,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
                   ),
                 )),
             const Divider(),
-            const Text('Current Roomers:', style: AppTheme.textBold),
+            const Text('Inquilinos asignados:', style: AppTheme.textBold),
             ...currentRoomers.map((roomer) => ListTile(
                   title: Text(roomer['name'], style: AppTheme.textSmall),
                   trailing: IconButton(
@@ -136,7 +136,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
                   ),
                 )),
             const Divider(),
-            const Text('Available Owners:', style: AppTheme.textBold),
+            const Text('Propietarios sin usuario asignado:', style: AppTheme.textBold),
             ...availableOwners.map((owner) => ListTile(
                   title: Text(owner['name'], style: AppTheme.textSmall),
                   trailing: IconButton(
@@ -146,7 +146,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
                   ),
                 )),
             const Divider(),
-            const Text('Available Roomers:', style: AppTheme.textBold),
+            const Text('Inquilinos sin usuario asignado:', style: AppTheme.textBold),
             ...availableRoomers.map((roomer) => ListTile(
                   title: Text(roomer['name'], style: AppTheme.textSmall),
                   trailing: IconButton(
@@ -161,7 +161,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close', style: AppTheme.textSmallBold),
+          child: const Text('Cerrar', style: AppTheme.textSmallBold),
         ),
       ],
     );

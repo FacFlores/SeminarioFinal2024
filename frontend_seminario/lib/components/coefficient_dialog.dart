@@ -60,8 +60,8 @@ class CoefficientDialogState extends State<CoefficientDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.coefficientId == null
-          ? 'Create Coefficient'
-          : 'Edit Coefficient'),
+          ? 'Crear Coeficiente'
+          : 'Editar Coeficiente'),
       content: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Form(
@@ -73,7 +73,7 @@ class CoefficientDialogState extends State<CoefficientDialog> {
                     TextFormField(
                       controller: _nameController,
                       decoration: const InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Nombre',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -83,14 +83,14 @@ class CoefficientDialogState extends State<CoefficientDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Por favor ingrese un nombre para el coeficiente';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 16),
                     CheckboxListTile(
-                      title: const Text('Distributable',
+                      title: const Text('Distribuible?',
                           style: AppTheme.textSmall),
                       value: _distributable,
                       onChanged: (bool? value) {
@@ -106,7 +106,7 @@ class CoefficientDialogState extends State<CoefficientDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmallBold),
+          child: const Text('Cancelar', style: AppTheme.textSmallBold),
         ),
         ElevatedButton(
           onPressed: _saveCoefficient,
@@ -114,7 +114,7 @@ class CoefficientDialogState extends State<CoefficientDialog> {
             foregroundColor: Colors.white,
             backgroundColor: AppTheme.primaryColor,
           ),
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

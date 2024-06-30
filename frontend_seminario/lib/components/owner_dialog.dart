@@ -67,7 +67,8 @@ class OwnerDialogState extends State<OwnerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.ownerId == null ? 'Create Owner' : 'Edit Owner'),
+      title: Text(
+          widget.ownerId == null ? 'Crear Propietario' : 'Editar Propietario'),
       content: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Form(
@@ -79,7 +80,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                     TextFormField(
                       controller: _nameController,
                       decoration: const InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Nombre',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -89,7 +90,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Ingrese un nombre';
                         }
                         return null;
                       },
@@ -98,7 +99,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                     TextFormField(
                       controller: _surnameController,
                       decoration: const InputDecoration(
-                        labelText: 'Surname',
+                        labelText: 'Apellido',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -108,7 +109,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a surname';
+                          return 'Ingrese un apellido';
                         }
                         return null;
                       },
@@ -117,7 +118,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                     TextFormField(
                       controller: _phoneController,
                       decoration: const InputDecoration(
-                        labelText: 'Phone',
+                        labelText: 'Telefono',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -127,7 +128,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a phone number';
+                          return 'Ingrese un telefono';
                         }
                         return null;
                       },
@@ -146,7 +147,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a DNI';
+                          return 'Ingrese un DNI';
                         }
                         return null;
                       },
@@ -165,7 +166,7 @@ class OwnerDialogState extends State<OwnerDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a CUIT';
+                          return 'Ingrese un CUIT';
                         }
                         return null;
                       },
@@ -177,7 +178,7 @@ class OwnerDialogState extends State<OwnerDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmallBold),
+          child: const Text('Cancelar', style: AppTheme.textSmallBold),
         ),
         ElevatedButton(
           onPressed: _saveOwner,
@@ -185,7 +186,7 @@ class OwnerDialogState extends State<OwnerDialog> {
             foregroundColor: Colors.white,
             backgroundColor: AppTheme.primaryColor,
           ),
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

@@ -56,16 +56,16 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this concept?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea eliminar este concepto?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -84,7 +84,7 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Manage Concepts',
+      title: 'Gestionar Conceptos',
       body: _buildContent(),
       isAdmin: true,
       storageService: StorageService(),
@@ -103,7 +103,7 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
               foregroundColor: Colors.white,
               backgroundColor: AppTheme.accentColor,
             ),
-            child: const Text('Add Concept'),
+            child: const Text('Agregar Concepto'),
           ),
           const SizedBox(height: 16),
           Expanded(
@@ -118,15 +118,15 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Description: ${concept['description']}',
+                        Text('Descripcion: ${concept['description']}',
                             style: AppTheme.textSmall),
-                        Text('Type: ${concept['type']}',
+                        Text('Tipo: ${concept['type']}',
                             style: AppTheme.textSmall),
-                        Text('Origin: ${concept['origin']}',
+                        Text('Origen: ${concept['origin']}',
                             style: AppTheme.textSmall),
-                        Text('Coefficient: ${concept['coefficient']['name']}',
+                        Text('Coeficiente: ${concept['coefficient']['name']}',
                             style: AppTheme.textSmall),
-                        Text('Priority: ${concept['priority']}',
+                        Text('Prioridad: ${concept['priority']}',
                             style: AppTheme.textSmall),
                       ],
                     ),

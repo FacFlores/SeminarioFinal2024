@@ -164,7 +164,8 @@ class ExpenseDialogState extends State<ExpenseDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.expenseId == null ? 'Create Expense' : 'Edit Expense'),
+      title:
+          Text(widget.expenseId == null ? 'Crear Expensa' : 'Editar Expensa'),
       content: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Form(
@@ -176,7 +177,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                     TextFormField(
                       controller: _descriptionController,
                       decoration: const InputDecoration(
-                        labelText: 'Description',
+                        labelText: 'Descripción',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -186,7 +187,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a description';
+                          return 'Ingrese una descripción';
                         }
                         return null;
                       },
@@ -196,7 +197,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                       controller: _amountController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        labelText: 'Amount',
+                        labelText: 'Cantidad',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -206,7 +207,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter an amount';
+                          return 'Por favor ingrese una cantidad';
                         }
                         return null;
                       },
@@ -222,7 +223,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                                         .format(_expenseDate!)
                                     : ''),
                             decoration: const InputDecoration(
-                              labelText: 'Expense Date',
+                              labelText: 'Fecha de Expensa',
                               labelStyle: AppTheme.textSmall,
                               filled: true,
                               fillColor: AppTheme.lightBackground,
@@ -254,7 +255,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                                         .format(_liquidateDate!)
                                     : ''),
                             decoration: const InputDecoration(
-                              labelText: 'Liquidate Date',
+                              labelText: 'Fecha para liquidar',
                               labelStyle: AppTheme.textSmall,
                               filled: true,
                               fillColor: AppTheme.lightBackground,
@@ -278,7 +279,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                     const SizedBox(height: 16),
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
-                        labelText: 'Select Concept',
+                        labelText: 'Seleccione un Concepto',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -301,7 +302,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                       },
                       validator: (value) {
                         if (value == null) {
-                          return 'Please select a concept';
+                          return 'Por favor seleccione un concepto';
                         }
                         return null;
                       },
@@ -309,7 +310,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                     const SizedBox(height: 16),
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
-                        labelText: 'Select Consortium',
+                        labelText: 'Seleccione un Consorcio',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -334,7 +335,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                       },
                       validator: (value) {
                         if (value == null) {
-                          return 'Please select a consortium';
+                          return 'Por favor seleccione un Consorcio';
                         }
                         return null;
                       },
@@ -343,7 +344,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                       const SizedBox(height: 16),
                       DropdownButtonFormField<int>(
                         decoration: const InputDecoration(
-                          labelText: 'Select Unit',
+                          labelText: 'Seleccione una Propiedad',
                           labelStyle: AppTheme.textSmall,
                           filled: true,
                           fillColor: AppTheme.lightBackground,
@@ -367,7 +368,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
                         },
                         validator: (value) {
                           if (value == null) {
-                            return 'Please select a unit';
+                            return 'Por favor seleccione una Propiedad';
                           }
                           return null;
                         },
@@ -380,7 +381,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmallBold),
+          child: const Text('Cancelar', style: AppTheme.textSmallBold),
         ),
         ElevatedButton(
           onPressed: _saveExpense,
@@ -388,7 +389,7 @@ class ExpenseDialogState extends State<ExpenseDialog> {
             foregroundColor: Colors.white,
             backgroundColor: AppTheme.primaryColor,
           ),
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

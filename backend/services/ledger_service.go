@@ -18,11 +18,12 @@ func RecordTransaction(transaction models.Transaction) (models.Transaction, erro
 		return transaction, err
 	}
 
-	var expensas models.UnitExpense
-	if err := config.DB.First(&expensas, "id = ?", transaction.ExpenseID).Error; err != nil {
-		return transaction, err
+	if transaction.ExpenseID != nil {
+		var expense models.UnitExpense
+		if err := config.DB.First(&expense, "id = ?", *transaction.ExpenseID).Error; err != nil {
+			return transaction, err
+		}
 	}
-
 	if concept.Origin == "Debe" {
 		ledger.Balance -= transaction.Amount
 	} else if concept.Origin == "Haber" {

@@ -48,7 +48,7 @@ class UnitDialogState extends State<UnitDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.unitId == null ? 'Create Unit' : 'Edit Unit'),
+      title: Text(widget.unitId == null ? 'Crear Unidad' : 'Editar Unidad'),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -57,10 +57,10 @@ class UnitDialogState extends State<UnitDialog> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name', labelStyle: AppTheme.textSmall),
+                decoration: const InputDecoration(labelText: 'Nombre', labelStyle: AppTheme.textSmall),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
+                    return 'Por favor ingrese un nombre';
                   }
                   return null;
                 },
@@ -72,11 +72,11 @@ class UnitDialogState extends State<UnitDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmall),
+          child: const Text('Cancelar', style: AppTheme.textSmall),
         ),
         TextButton(
           onPressed: _saveUnit,
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

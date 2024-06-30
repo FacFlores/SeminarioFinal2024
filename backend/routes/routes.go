@@ -176,7 +176,7 @@ func SetupRoutes(router *gin.Engine) {
 		unitExpenses.PUT("/liquidate/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateUnitExpense)
 		unitExpenses.PUT("/liquidate-by-period/:unit_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.LiquidateUnitExpensesByPeriod)
 		unitExpenses.POST("/:unit_expense_id/pay", middlewares.AuthMiddleware(), controllers.MakePayment) // POST /unit-expenses/:unit_expense_id/pay
-		//TODO CREATE AUTOMATIC PAYMENT
+		unitExpenses.POST("/auto-pay", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AutoPayUnitExpensesHandler)
 	}
 
 	//TODO POSTMAN THIS

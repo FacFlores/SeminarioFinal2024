@@ -56,17 +56,16 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content:
-            const Text('Are you sure you want to delete this coefficient?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea eliminar el Coeficiente?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -86,7 +85,7 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Manage Coefficients',
+      title: 'Gestionar Coeficientes',
       body: _buildContent(),
       isAdmin: true,
       storageService: StorageService(),
@@ -105,7 +104,7 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
               foregroundColor: Colors.white,
               backgroundColor: AppTheme.accentColor,
             ),
-            child: const Text('Add Coefficient'),
+            child: const Text('Agregar Coeficiente'),
           ),
           const SizedBox(height: 16),
           Expanded(
@@ -119,7 +118,7 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
                     title:
                         Text(coefficient['name'], style: AppTheme.textMedium),
                     subtitle: Text(
-                        'Distributable: ${coefficient['distributable']}',
+                        'Distribuible? : ${coefficient['distributable']}',
                         style: AppTheme.textSmall),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,

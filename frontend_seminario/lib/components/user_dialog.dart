@@ -75,7 +75,7 @@ class UserDialogState extends State<UserDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.userId == null ? 'Create User' : 'Edit User'),
+      title: Text(widget.userId == null ? 'Crear Usuario' : 'Editar Usuario'),
       content: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Form(
@@ -87,7 +87,7 @@ class UserDialogState extends State<UserDialog> {
                     TextFormField(
                       controller: _nameController,
                       decoration: const InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Nombre',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -97,7 +97,7 @@ class UserDialogState extends State<UserDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Ingrese un nombre';
                         }
                         return null;
                       },
@@ -106,7 +106,7 @@ class UserDialogState extends State<UserDialog> {
                     TextFormField(
                       controller: _surnameController,
                       decoration: const InputDecoration(
-                        labelText: 'Surname',
+                        labelText: 'Apellido',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -116,7 +116,7 @@ class UserDialogState extends State<UserDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a surname';
+                          return 'Ingrese un apellido';
                         }
                         return null;
                       },
@@ -135,7 +135,7 @@ class UserDialogState extends State<UserDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter an email';
+                          return 'Ingrese un email';
                         }
                         return null;
                       },
@@ -144,7 +144,7 @@ class UserDialogState extends State<UserDialog> {
                     TextFormField(
                       controller: _phoneController,
                       decoration: const InputDecoration(
-                        labelText: 'Phone',
+                        labelText: 'Telefono',
                         labelStyle: AppTheme.textSmall,
                         filled: true,
                         fillColor: AppTheme.lightBackground,
@@ -154,7 +154,7 @@ class UserDialogState extends State<UserDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a phone number';
+                          return 'Ingrese un numero de telefono';
                         }
                         return null;
                       },
@@ -173,7 +173,7 @@ class UserDialogState extends State<UserDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a DNI';
+                          return 'Ingrese un DNI';
                         }
                         return null;
                       },
@@ -183,7 +183,7 @@ class UserDialogState extends State<UserDialog> {
                       TextFormField(
                         controller: _passwordController,
                         decoration: const InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'Contraseña',
                           labelStyle: AppTheme.textSmall,
                           filled: true,
                           fillColor: AppTheme.lightBackground,
@@ -194,7 +194,7 @@ class UserDialogState extends State<UserDialog> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a password';
+                            return 'Ingrese contraseña';
                           }
                           return null;
                         },
@@ -216,7 +216,7 @@ class UserDialogState extends State<UserDialog> {
                           });
                         },
                         decoration: const InputDecoration(
-                          labelText: 'Role',
+                          labelText: 'Rol',
                           labelStyle: AppTheme.textSmall,
                           filled: true,
                           fillColor: AppTheme.lightBackground,
@@ -233,7 +233,7 @@ class UserDialogState extends State<UserDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel', style: AppTheme.textSmallBold),
+          child: const Text('Cancelar', style: AppTheme.textSmallBold),
         ),
         ElevatedButton(
           onPressed: _saveUser,
@@ -241,7 +241,7 @@ class UserDialogState extends State<UserDialog> {
             foregroundColor: Colors.white,
             backgroundColor: AppTheme.primaryColor,
           ),
-          child: const Text('Save', style: AppTheme.textSmallBold),
+          child: const Text('Guardar', style: AppTheme.textSmallBold),
         ),
       ],
     );

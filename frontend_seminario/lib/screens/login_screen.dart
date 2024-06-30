@@ -68,9 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) {
         final role = user['role']['name'];
         if (role == 'Admin') {
-          context.go('/admin-dashboard');
+          context.go('/admin');
         } else {
-          context.go('/user-dashboard');
+          context.go('/user');
         }
       }
     }

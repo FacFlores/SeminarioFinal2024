@@ -114,16 +114,16 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this expense?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea eliminar esta expensa?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -144,16 +144,16 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this expense?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea borrar esta expensa?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -170,6 +170,45 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
     }
   }
 
+  void _distributeConsortiumExpense(int expenseId) async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar Distribucion'),
+        content: const Text('Esta seguro que desea distribuir la expensa?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      final response =
+          await ConsortiumExpensesApiService.distributeConsortiumExpense(
+              expenseId);
+      if (mounted) {
+        if (response.statusCode == 200) {
+          _loadConsortiumExpenses(); // Refresh list after distribution
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Expensa distribuida exitosamente')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Fallo al distribuir')),
+          );
+          // Handle errors
+        }
+      }
+    }
+  }
+
   String _formatDate(String dateStr) {
     final DateTime dateTime = DateTime.parse(dateStr);
     return DateFormat('yyyy-MM-dd').format(dateTime);
@@ -178,7 +217,7 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Manage Expenses',
+      title: 'Gestionar Expensas',
       isAdmin: true, // Set according to the user's role
       storageService: StorageService(), // Provide the storage service instance
       body: Padding(
@@ -192,10 +231,10 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
                 foregroundColor: Colors.white,
                 backgroundColor: AppTheme.accentColor,
               ),
-              child: const Text('Add Consortium Expense'),
+              child: const Text('Agregar Expensa de Consorcio'),
             ),
             const SizedBox(height: 16),
-            const Text('Consortium Expenses', style: AppTheme.textBold),
+            const Text('Expensas de Consorcio', style: AppTheme.textBold),
             if (isLoading)
               const Center(child: CircularProgressIndicator())
             else
@@ -212,15 +251,15 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Amount: ${expense['amount']}'),
-                            Text('Bill Number: ${expense['bill_number']}'),
-                            Text('Concept: ${expense['concept']['name']}'),
+                            Text('Cantidad: ${expense['amount']}'),
                             Text(
-                                'Consortium: ${expense['consortium']['name']}'),
+                                'Numero de Factura: ${expense['bill_number']}'),
+                            Text('Concepto: ${expense['concept']['name']}'),
+                            Text('Consorcio: ${expense['consortium']['name']}'),
                             Text(
-                                'Expense Period: ${_formatDate(expense['expense_period'])}'),
+                                'Fecha de Expensa: ${_formatDate(expense['expense_period'])}'),
                             Text(
-                                'Liquidate Period: ${_formatDate(expense['liquidate_period'])}'),
+                                'Periodo de Liquidacion: ${_formatDate(expense['liquidate_period'])}'),
                           ],
                         ),
                         trailing: Row(
@@ -238,6 +277,12 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
                               onPressed: () =>
                                   _deleteConsortiumExpense(expense['ID']),
                             ),
+                            IconButton(
+                              icon: const Icon(Icons.send,
+                                  color: AppTheme.successColor),
+                              onPressed: () =>
+                                  _distributeConsortiumExpense(expense['ID']),
+                            ),
                           ],
                         ),
                       ),
@@ -252,10 +297,10 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
                 foregroundColor: Colors.white,
                 backgroundColor: AppTheme.accentColor,
               ),
-              child: const Text('Add Unit Expense'),
+              child: const Text('Agregar Expensa de Unidad'),
             ),
             const SizedBox(height: 16),
-            const Text('Unit Expenses', style: AppTheme.textBold),
+            const Text('Expensas de Unidades', style: AppTheme.textBold),
             if (isLoading)
               const Center(child: CircularProgressIndicator())
             else
@@ -272,14 +317,15 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Amount: ${expense['amount']}'),
-                            Text('Bill Number: ${expense['bill_number']}'),
-                            Text('Concept: ${expense['concept']['name']}'),
-                            Text('Unit: ${expense['unit']['name']}'),
+                            Text('Cantidad: ${expense['amount']}'),
                             Text(
-                                'Expense Period: ${_formatDate(expense['expense_period'])}'),
+                                'Numero de Factura: ${expense['bill_number']}'),
+                            Text('Concepto: ${expense['concept']['name']}'),
+                            Text('Unidad: ${expense['unit']['name']}'),
                             Text(
-                                'Liquidate Period: ${_formatDate(expense['liquidate_period'])}'),
+                                'Fecha de Expensa: ${_formatDate(expense['expense_period'])}'),
+                            Text(
+                                'Periodo de Liquidacion: ${_formatDate(expense['liquidate_period'])}'),
                           ],
                         ),
                         trailing: Row(

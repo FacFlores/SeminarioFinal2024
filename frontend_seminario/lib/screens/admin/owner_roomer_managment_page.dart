@@ -91,16 +91,16 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this owner?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea eliminar el propietario?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -120,16 +120,16 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this roomer?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea eliminar el inquilino?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -148,7 +148,7 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Owner and Roomer Management',
+      title: 'Gestion de Consorcistas',
       body: _buildManagementList(),
       isAdmin: true,
       storageService: StorageService(),
@@ -170,7 +170,7 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
                   foregroundColor: Colors.white,
                   backgroundColor: AppTheme.accentColor,
                 ),
-                child: const Text('Add Owner'),
+                child: const Text('Agregar Propietario'),
               ),
               ElevatedButton(
                 onPressed: () => _createOrUpdateRoomer(),
@@ -178,12 +178,12 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
                   foregroundColor: Colors.white,
                   backgroundColor: AppTheme.accentColor,
                 ),
-                child: const Text('Add Roomer'),
+                child: const Text('Agregar Inquilino'),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          const Text('Owners', style: AppTheme.textBold),
+          const Text('Propietarios', style: AppTheme.textBold),
           Expanded(
             child: ListView.builder(
               itemCount: owners.length,
@@ -196,9 +196,9 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Surname: ${owner['surname']}',
+                        Text('Apellido: ${owner['surname']}',
                             style: AppTheme.textSmall),
-                        Text('Phone: ${owner['phone']}',
+                        Text('Telefono: ${owner['phone']}',
                             style: AppTheme.textSmall),
                         Text('DNI: ${owner['dni']}', style: AppTheme.textSmall),
                       ],
@@ -224,7 +224,7 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
             ),
           ),
           const SizedBox(height: 16),
-          const Text('Roomers', style: AppTheme.textBold),
+          const Text('Inquilinos', style: AppTheme.textBold),
           Expanded(
             child: ListView.builder(
               itemCount: roomers.length,
@@ -237,9 +237,9 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Surname: ${roomer['surname']}',
+                        Text('Apellido: ${roomer['surname']}',
                             style: AppTheme.textSmall),
-                        Text('Phone: ${roomer['phone']}',
+                        Text('Telefono: ${roomer['phone']}',
                             style: AppTheme.textSmall),
                         Text('DNI: ${roomer['dni']}',
                             style: AppTheme.textSmall),

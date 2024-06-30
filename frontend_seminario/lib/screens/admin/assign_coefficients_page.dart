@@ -117,7 +117,8 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
         units.fold(0, (sum, unit) => sum + (unit['percentage'] ?? 0));
     if (totalPercentage != 100) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Total percentage must be 100%')),
+        const SnackBar(
+            content: Text('El porcentaje total debe ser igual a 100%')),
       );
       return;
     }
@@ -136,11 +137,13 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
     UnitCoefficientsApiService.createUnitsCoefficients(data).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Coefficients updated successfully')),
+          const SnackBar(
+              content: Text(
+                  'Coeficientes de propiedades actualizados correctamente')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to update coefficients')),
+          const SnackBar(content: Text('Fallo al actualizar coeficientes')),
         );
       }
     });
@@ -149,7 +152,7 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Assign Coefficients',
+      title: 'Asignar Porcentajes a Propiedades',
       isAdmin: true,
       storageService: StorageService(),
       body: Padding(
@@ -159,7 +162,7 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
           children: [
             DropdownButtonFormField<int>(
               decoration: const InputDecoration(
-                labelText: 'Select Consortium',
+                labelText: 'Seleccione un Consorcio',
                 labelStyle: AppTheme.textSmall,
                 filled: true,
                 fillColor: AppTheme.lightBackground,
@@ -184,7 +187,7 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
             const SizedBox(height: 16),
             DropdownButtonFormField<int>(
               decoration: const InputDecoration(
-                labelText: 'Select Coefficient',
+                labelText: 'Seleccione un Coeficiente',
                 labelStyle: AppTheme.textSmall,
                 filled: true,
                 fillColor: AppTheme.lightBackground,
@@ -222,7 +225,7 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
                             Text(unit['unit_name'], style: AppTheme.textMedium),
                         subtitle: Row(
                           children: [
-                            const Text('Percentage: ',
+                            const Text('Porcentaje: ',
                                 style: AppTheme.textSmall),
                             Expanded(
                               child: TextFormField(
@@ -258,7 +261,7 @@ class AssignCoefficientsPageState extends State<AssignCoefficientsPage> {
                 foregroundColor: Colors.white,
                 backgroundColor: AppTheme.primaryColor,
               ),
-              child: const Text('Update Coefficients',
+              child: const Text('Actualizar Coeficientes',
                   style: AppTheme.textSmallBold),
             ),
           ],

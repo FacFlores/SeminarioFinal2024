@@ -136,6 +136,44 @@ class _AdminDrawerState extends State<AdminDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.description_outlined,
+                color: AppTheme.accentColor),
+            title: const Text('Liquidar', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/liquidations');
+            },
+          ),
+          ExpansionTile(
+            leading:
+                const Icon(Icons.payments_sharp, color: AppTheme.accentColor),
+            title: const Text('Pagos', style: AppTheme.textMedium),
+            children: [
+              ListTile(
+                leading:
+                    const Icon(Icons.handshake, color: AppTheme.accentColor),
+                title: const Text('Pago Manual', style: AppTheme.textSmall),
+                onTap: () {
+                  context.go('/admin/payments/manual');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.payment, color: AppTheme.accentColor),
+                title: const Text('Pago Automatico', style: AppTheme.textSmall),
+                onTap: () {
+                  context.go('/admin/payments/automatic');
+                },
+              ),
+            ],
+          ),
+          ListTile(
+            leading: const Icon(Icons.wallet,
+                color: AppTheme.accentColor),
+            title: const Text('Balance de Unidades', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/unit-balances');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.business, color: AppTheme.accentColor),
             title: const Text('Consorcios', style: AppTheme.textMedium),
             onTap: () {

@@ -28,11 +28,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
   int activeUsers = 0;
   int inactiveUsers = 0;
   int totalOwnersAndRoomers = 0;
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
     _fetchDashboardData();
+    _fetchUserData();
   }
 
   Future<void> _fetchDashboardData() async {
@@ -63,11 +65,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
         isLoading = false;
       });
     } catch (e) {
-      // Handle errors appropriately here
       setState(() {
         isLoading = false;
       });
-      print('Error fetching data: $e');
+    }
+  }
+
+  Future<void> _fetchUserData() async {
+    final user = await storageService.getUserData();
+    if (user != null) {
+      setState(() {
+        userName = '${user['name']} ${user['surname']}';
+      });
     }
   }
 
@@ -82,8 +91,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Welcome, Admin!',
+                  Text(
+                    'Bienvenido, $userName!',
                     style: AppTheme.titleMedium,
                   ),
                   const SizedBox(height: 20),
@@ -107,12 +116,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       children: [
-        _buildInfoCard('Total Consortiums', totalConsortiums.toString()),
-        _buildInfoCard('Total Units', totalUnits.toString()),
+        _buildInfoCard('Consorcios Registrados', totalConsortiums.toString()),
+        _buildInfoCard('Propiedades Registradas', totalUnits.toString()),
         _buildInfoCard(
-            'Total Owners + Roomers', totalOwnersAndRoomers.toString()),
-        _buildInfoCard('Total Users',
-            '$totalUsers (Active: $activeUsers, Inactive: $inactiveUsers)'),
+            'Consorcistas Registrados', totalOwnersAndRoomers.toString()),
+        _buildInfoCard('Usuarios del Sistema',
+            '$totalUsers (Activos: $activeUsers, Inactivos: $inactiveUsers)'),
       ],
     );
   }
@@ -150,15 +159,24 @@ class _AdminDashboardState extends State<AdminDashboard> {
       crossAxisSpacing: 10,
       children: [
         _buildActionButton(
-            'Create Consortium', Icons.add_business, '/create-consortium'),
-        _buildActionButton('Create Unit', Icons.add_home, '/create-unit'),
+            'Gestionar Consorcios', Icons.business, '/admin/consortiums'),
         _buildActionButton(
-            'Create Owner/Roomer', Icons.person_add, '/create-owner-roomer'),
+            'Gestionar Consorcistas', Icons.people, '/admin/people'),
+        _buildActionButton('Gestionar Usuarios', Icons.person, '/admin/users'),
         _buildActionButton(
-            'Create User', Icons.person_add_alt_1, '/create-user'),
+            'Gestionar Conceptos', Icons.category, '/admin/concepts'),
         _buildActionButton(
-            'Create Expense', Icons.add_shopping_cart, '/create-expense'),
-        _buildActionButton('Create Payment', Icons.payment, '/create-payment'),
+            'Gestionar Coeficientes', Icons.balance, '/admin/coefficients'),
+        _buildActionButton(
+            'Gestionar Expensas', Icons.monetization_on, '/admin/expenses'),
+        _buildActionButton('Liquidar Expensas', Icons.assignment_turned_in,
+            '/admin/liquidations'),
+        _buildActionButton(
+            'Realizar Pagos Manuales', Icons.payment, '/admin/payments/manual'),
+        _buildActionButton('Realizar Pagos Automaticos', Icons.autorenew,
+            '/admin/payments/automatic'),
+        _buildActionButton('Ver Balances de Unidades',
+            Icons.account_balance_wallet, '/admin/unit-balances'),
       ],
     );
   }

@@ -1,10 +1,14 @@
 import 'package:frontend_seminario/screens/admin/assign_coefficients_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_list_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_units_page.dart';
+import 'package:frontend_seminario/screens/admin/liquidation_page.dart';
 import 'package:frontend_seminario/screens/admin/manage_coefficients_page.dart';
 import 'package:frontend_seminario/screens/admin/manage_concepts_page.dart';
 import 'package:frontend_seminario/screens/admin/manage_expenses_page.dart';
+import 'package:frontend_seminario/screens/admin/manual_payment_page.dart';
 import 'package:frontend_seminario/screens/admin/owner_roomer_managment_page.dart';
+import 'package:frontend_seminario/screens/admin/automatic_payment_page.dart';
+import 'package:frontend_seminario/screens/admin/unit_ledger_page.dart';
 import 'package:frontend_seminario/screens/admin/user_managment_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend_seminario/screens/login_screen.dart';
@@ -177,6 +181,50 @@ class AppRouter {
       GoRoute(
         path: '/admin/expenses',
         builder: (context, state) => const ManageExpensesPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/liquidations',
+        builder: (context, state) => const LiquidationPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/payments/manual',
+        builder: (context, state) => const ManualPaymentPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/payments/automatic',
+        builder: (context, state) => const AutomaticPaymentPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/unit-balances',
+        builder: (context, state) => const UnitLedgerPage(),
         redirect: (context, state) async {
           final admin = await _isAdmin();
           if (!admin) {

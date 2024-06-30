@@ -70,7 +70,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
         _loadUnits(); // Refresh list after update
       } else {
         // Handle errors
-        _showErrorDialog('Failed to save unit. Please try again.');
+        _showErrorDialog('Fallo al guardar la unidad.');
       }
     }
   }
@@ -79,16 +79,16 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this unit?'),
+        title: const Text('Confirmar Borrado'),
+        content: const Text('Esta seguro que desea borrar la unidad?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel', style: AppTheme.textSmall),
+            child: const Text('Cancelar', style: AppTheme.textSmall),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete', style: AppTheme.textSmallBold),
+            child: const Text('Borrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -100,7 +100,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
         _loadUnits(); // Refresh list after deletion
       } else {
         // Handle errors
-        _showErrorDialog('Failed to delete unit. Please try again.');
+        _showErrorDialog('Error al borrar la unidad.');
       }
     }
   }
@@ -122,7 +122,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close', style: AppTheme.textSmallBold),
+            child: const Text('Cerrar', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -132,7 +132,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Units of $consortiumName',
+      title: 'Unidades de $consortiumName',
       body: _buildUnitList(),
       isAdmin: true,
       storageService: StorageService(),
@@ -154,7 +154,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
                   foregroundColor: Colors.white,
                   backgroundColor: AppTheme.primaryColor,
                 ),
-                child: const Text('Back to Consortiums'),
+                child: const Text('Volver a Consorcios'),
               ),
               ElevatedButton(
                 onPressed: () => _createOrUpdateUnit(),
@@ -162,7 +162,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
                   foregroundColor: Colors.white,
                   backgroundColor: AppTheme.accentColor,
                 ),
-                child: const Text('Add Unit'),
+                child: const Text('Agregar propiedad'),
               ),
             ],
           ),

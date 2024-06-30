@@ -92,7 +92,7 @@ class _UserDrawerState extends State<UserDrawer> {
                       _buildProfilePicture(profilePicture),
                       const SizedBox(height: 10),
                       Text(
-                        'Welcome, ${user['name']} ${user['surname']}',
+                        'Bienvenido, ${user['name']} ${user['surname']}',
                         style: AppTheme.titleMedium.copyWith(
                           color: Colors.white,
                         ),
@@ -108,7 +108,7 @@ class _UserDrawerState extends State<UserDrawer> {
                   ),
                   child: Center(
                     child: Text(
-                      'User Menu',
+                      'Menu de Usuario',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,

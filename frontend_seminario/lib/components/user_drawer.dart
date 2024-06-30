@@ -119,37 +119,26 @@ class _UserDrawerState extends State<UserDrawer> {
               }
             },
           ),
-          Theme(
-            data: Theme.of(context).copyWith(
-              dividerColor: Colors.transparent,
-            ),
-            child: ExpansionTile(
-              leading: const Icon(Icons.dashboard, color: AppTheme.accentColor),
-              title: const Text(
-                'Dashboard',
-                style: AppTheme.textMedium,
-              ),
-              children: [
-                ListTile(
-                  title: const Text('Sub Menu 1', style: AppTheme.textSmall),
-                  onTap: () {
-                    context.go('/user-dashboard/submenu1');
-                  },
-                ),
-                ListTile(
-                  title: const Text('Sub Menu 2', style: AppTheme.textSmall),
-                  onTap: () {
-                    context.go('/user-dashboard/submenu2');
-                  },
-                ),
-              ],
-            ),
+          ListTile(
+            leading: const Icon(Icons.dashboard, color: AppTheme.accentColor),
+            title: const Text('Dashboard'),
+            onTap: () {
+              context.go('/user');
+            },
           ),
           ListTile(
-            leading: const Icon(Icons.settings, color: AppTheme.accentColor),
-            title: const Text('Settings'),
+            leading: const Icon(Icons.payments, color: AppTheme.accentColor),
+            title: const Text('Expensas Pendientes'),
             onTap: () {
-              context.go('/user-settings');
+              context.go('/user/pending-expenses');
+            },
+          ),
+          ListTile(
+            leading:
+                const Icon(Icons.document_scanner, color: AppTheme.accentColor),
+            title: const Text('Documentos'),
+            onTap: () {
+              context.go('/user/documents');
             },
           ),
           ListTile(

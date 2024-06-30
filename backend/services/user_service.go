@@ -121,3 +121,39 @@ func UpdateUser(id uint, updateUser models.User) (models.User, error) {
 
 	return existingUser, nil
 }
+
+func GetUnitsByUser(userID uint) ([]models.Unit, error) {
+	var units []models.Unit
+	var unitIDs []uint
+	if err := config.DB.Table("units").
+		Joins("JOIN unit_owners ON units.id = unit_owners.unit_id").
+		Joins("JOIN owners ON owners.id = unit_owners.owner_id").
+		Where("owners.user_id = ?", userID).
+		Pluck("units.id", &unitIDs).Error; err != nil {
+		return nil, err
+	}
+	if err := config.DB.Table("units").
+		Joins("JOIN unit_roomers ON units.id = unit_roomers.unit_id").
+		Joins("JOIN roomers ON roomers.id = unit_roomers.roomer_id").
+		Where("roomers.user_id = ?", userID).
+		Pluck("units.id", &unitIDs).Error; err != nil {
+		return nil, err
+	}
+	unitIDMap := make(map[uint]bool)
+	for _, id := range unitIDs {
+		unitIDMap[id] = true
+	}
+	uniqueUnitIDs := []uint{}
+	for id := range unitIDMap {
+		uniqueUnitIDs = append(uniqueUnitIDs, id)
+	}
+	if err := config.DB.Preload("Owners").
+		Preload("Roomers").
+		Preload("Consortium").
+		Where("id IN (?)", uniqueUnitIDs).
+		Find(&units).Error; err != nil {
+		return nil, err
+	}
+
+	return units, nil
+}

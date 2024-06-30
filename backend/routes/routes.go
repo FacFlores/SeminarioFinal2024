@@ -18,6 +18,7 @@ func SetupRoutes(router *gin.Engine) {
 		users.POST("/login", controllers.Login)
 		users.GET("/:id", middlewares.AuthMiddleware(), controllers.GetUserByID)
 		users.PUT("/:id", middlewares.AuthMiddleware(), controllers.UpdateUser)
+		users.GET("/units/:userID", middlewares.AuthMiddleware(), controllers.GetUnitsByUser)
 
 	}
 	// Admin routes

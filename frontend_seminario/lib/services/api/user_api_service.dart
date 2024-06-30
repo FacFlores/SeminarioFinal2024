@@ -58,6 +58,15 @@ class UserApiService extends BaseApiService {
     );
   }
 
+  // Get UnitsByUser
+  static Future<http.Response> getUnitsByUser(int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.get(
+      Uri.parse('${BaseApiService.baseUrl}/users/units/$userId'),
+      headers: headers,
+    );
+  }
+
   // Edit User
   static Future<http.Response> updateUser(
       Map<String, dynamic> userData, int userId) async {

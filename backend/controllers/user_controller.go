@@ -205,3 +205,18 @@ func DeleteUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }
+
+func GetUnitsByUser(c *gin.Context) {
+	userIDStr := c.Param("userID")
+	userID, err := strconv.ParseUint(userIDStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+	units, err := services.GetUnitsByUser(uint(userID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch units"})
+		return
+	}
+	c.JSON(http.StatusOK, units)
+}

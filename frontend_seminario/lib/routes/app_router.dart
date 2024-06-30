@@ -10,6 +10,9 @@ import 'package:frontend_seminario/screens/admin/owner_roomer_managment_page.dar
 import 'package:frontend_seminario/screens/admin/automatic_payment_page.dart';
 import 'package:frontend_seminario/screens/admin/unit_ledger_page.dart';
 import 'package:frontend_seminario/screens/admin/user_managment_page.dart';
+import 'package:frontend_seminario/screens/user/pdf_generation_page.dart';
+import 'package:frontend_seminario/screens/user/pending_expenses_page.dart';
+import 'package:frontend_seminario/screens/user/unit_detail_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend_seminario/screens/login_screen.dart';
 import 'package:frontend_seminario/screens/register_screen.dart';
@@ -231,6 +234,31 @@ class AppRouter {
             return '/';
           }
           return null;
+        },
+      ),
+
+      GoRoute(
+        path: '/user/unit/:unitId',
+        builder: (context, state) {
+          final unitId = int.parse(state.pathParameters['unitId']!);
+          return UnitDetail(unitId: unitId);
+        },
+      ),
+
+      GoRoute(
+        path: '/user/pending-expenses',
+        builder: (context, state) => const PendingExpensesPage(),
+        redirect: (context, state) async {
+          final user = await _storageService.getUserData();
+          return user != null ? null : '/login';
+        },
+      ),
+      GoRoute(
+        path: '/user/documents',
+        builder: (context, state) => const PdfGenerationPage(),
+        redirect: (context, state) async {
+          final user = await _storageService.getUserData();
+          return user != null ? null : '/login';
         },
       ),
 

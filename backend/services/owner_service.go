@@ -19,11 +19,45 @@ func DeleteOwner(id string) error {
 	return nil
 }
 
+func GetOwnersNotLinkedToUser() ([]models.Owner, error) {
+	var owners []models.Owner
+	err := config.DB.Where("user_id IS NULL").Find(&owners).Error
+	if err != nil {
+		return nil, err
+	}
+	return owners, nil
+}
+
+func GetOwnersByUserID(userID uint) ([]models.Owner, error) {
+	var owners []models.Owner
+	err := config.DB.Where("user_id = ?", userID).Find(&owners).Error
+	if err != nil {
+		return nil, err
+	}
+	return owners, nil
+}
+
 func GetOwnerByID(id string) (models.Owner, error) {
 	var owner models.Owner
 	if err := config.DB.Preload("User").Preload("User.Role").First(&owner, "id = ?", id).Error; err != nil {
 		return owner, err
 	}
+	return owner, nil
+}
+
+func RemoveUserFromOwner(ownerID uint) (models.Owner, error) {
+	var owner models.Owner
+	err := config.DB.First(&owner, ownerID).Error
+	if err != nil {
+		return owner, err
+	}
+
+	owner.UserID = nil
+	err = config.DB.Save(&owner).Error
+	if err != nil {
+		return owner, err
+	}
+
 	return owner, nil
 }
 

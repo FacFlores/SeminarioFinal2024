@@ -13,4 +13,16 @@ class UnitCoefficientsApiService extends BaseApiService {
       body: jsonEncode(coefficientsData),
     );
   }
+
+  //Get Units & Coefficients by consortium and coefficient
+  static Future<http.Response> getUnitsWithCoefficients(
+      Map<String, dynamic> coefficientsData) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.post(
+      Uri.parse(
+          '${BaseApiService.baseUrl}/consortiums/units-with-coefficients'),
+      headers: headers,
+      body: jsonEncode(coefficientsData),
+    );
+  }
 }

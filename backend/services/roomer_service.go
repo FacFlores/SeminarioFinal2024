@@ -19,6 +19,40 @@ func DeleteRoomer(id string) error {
 	return nil
 }
 
+func GetRoomersNotLinkedToUser() ([]models.Roomer, error) {
+	var roomers []models.Roomer
+	err := config.DB.Where("user_id IS NULL").Find(&roomers).Error
+	if err != nil {
+		return nil, err
+	}
+	return roomers, nil
+}
+
+func GetRoomersByUserID(userID uint) ([]models.Roomer, error) {
+	var roomers []models.Roomer
+	err := config.DB.Where("user_id = ?", userID).Find(&roomers).Error
+	if err != nil {
+		return nil, err
+	}
+	return roomers, nil
+}
+
+func RemoveUserFromRoomer(roomerID uint) (models.Roomer, error) {
+	var roomer models.Roomer
+	err := config.DB.First(&roomer, roomerID).Error
+	if err != nil {
+		return roomer, err
+	}
+
+	roomer.UserID = nil
+	err = config.DB.Save(&roomer).Error
+	if err != nil {
+		return roomer, err
+	}
+
+	return roomer, nil
+}
+
 func GetRoomerByID(id string) (models.Roomer, error) {
 	var roomer models.Roomer
 	if err := config.DB.Preload("User").Preload("User.Role").First(&roomer, "id = ?", id).Error; err != nil {

@@ -12,6 +12,24 @@ class OwnersApiService extends BaseApiService {
     );
   }
 
+  // Get User Related Owners
+  static Future<http.Response> getOwnersByUser(int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.get(
+      Uri.parse('${BaseApiService.baseUrl}/owners/linked/$userId'),
+      headers: headers,
+    );
+  }
+
+  // Get Not Assigend Owners
+  static Future<http.Response> getNotAssignedOwners() async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.get(
+      Uri.parse('${BaseApiService.baseUrl}/owners/not-assigned'),
+      headers: headers,
+    );
+  }
+
   // Create Owner
   static Future<http.Response> createOwner(
       Map<String, dynamic> ownerData) async {
@@ -39,6 +57,17 @@ class OwnersApiService extends BaseApiService {
     return http.put(
       Uri.parse(
           '${BaseApiService.baseUrl}/owners/assign-user/$ownerId/$userId'),
+      headers: headers,
+    );
+  }
+
+  // Remove User of Owner
+  static Future<http.Response> removeUserOfOwner(
+      int ownerId, int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.put(
+      Uri.parse(
+          '${BaseApiService.baseUrl}/owners/remove-user/$ownerId/$userId'),
       headers: headers,
     );
   }

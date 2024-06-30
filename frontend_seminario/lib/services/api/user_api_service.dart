@@ -4,14 +4,14 @@ import 'base_api_service.dart';
 
 class UserApiService extends BaseApiService {
   // Register User
-  static Future<http.Response> registerUser(Map<String, dynamic> userData) async {
+  static Future<http.Response> registerUser(
+      Map<String, dynamic> userData) async {
     return http.post(
       Uri.parse('${BaseApiService.baseUrl}/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(userData),
     );
   }
-
 
   // User Login
   static Future<http.Response> loginUser(String email, String password) async {
@@ -46,6 +46,27 @@ class UserApiService extends BaseApiService {
     return http.get(
       Uri.parse('${BaseApiService.baseUrl}/users/active'),
       headers: headers,
+    );
+  }
+
+  // Get UserByID
+  static Future<http.Response> getUserByID(int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.get(
+      Uri.parse('${BaseApiService.baseUrl}/users/$userId'),
+      headers: headers,
+    );
+  }
+
+  // Edit User
+  static Future<http.Response> updateUser(
+      Map<String, dynamic> userData, int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+
+    return http.put(
+      Uri.parse('${BaseApiService.baseUrl}/users/$userId'),
+      headers: headers,
+      body: jsonEncode(userData),
     );
   }
 }

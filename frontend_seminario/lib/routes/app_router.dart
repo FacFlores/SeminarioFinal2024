@@ -1,5 +1,11 @@
+import 'package:frontend_seminario/screens/admin/assign_coefficients_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_list_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_units_page.dart';
+import 'package:frontend_seminario/screens/admin/manage_coefficients_page.dart';
+import 'package:frontend_seminario/screens/admin/manage_concepts_page.dart';
+import 'package:frontend_seminario/screens/admin/manage_expenses_page.dart';
+import 'package:frontend_seminario/screens/admin/owner_roomer_managment_page.dart';
+import 'package:frontend_seminario/screens/admin/user_managment_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend_seminario/screens/login_screen.dart';
 import 'package:frontend_seminario/screens/register_screen.dart';
@@ -99,11 +105,78 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: '/admin/people',
+        builder: (context, state) => const OwnerRoomerManagementPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
         path: '/admin/consortiums/:consortiumId/units',
         builder: (context, state) {
           final consortiumId = int.parse(state.pathParameters['consortiumId']!);
           return ConsortiumUnitsPage(consortiumId: consortiumId);
         },
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/users',
+        builder: (context, state) => const UserManagementPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+
+      GoRoute(
+        path: '/admin/concepts',
+        builder: (context, state) => const ManageConceptsPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/coefficients',
+        builder: (context, state) => const ManageCoefficientsPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/unit-coefficients',
+        builder: (context, state) => const AssignCoefficientsPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/admin/expenses',
+        builder: (context, state) => const ManageExpensesPage(),
         redirect: (context, state) async {
           final admin = await _isAdmin();
           if (!admin) {

@@ -72,4 +72,33 @@ class RoomerApiService extends BaseApiService {
       headers: headers,
     );
   }
+
+  // Remove User of Roomer
+  static Future<http.Response> removeUserOfRoomer(
+      int roomerId, int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.put(
+      Uri.parse(
+          '${BaseApiService.baseUrl}/roomers/remove-user/$roomerId/$userId'),
+      headers: headers,
+    );
+  }
+
+  // Get User Related Roomers
+  static Future<http.Response> getRoomersByUser(int userId) async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.get(
+      Uri.parse('${BaseApiService.baseUrl}/roomers/linked/$userId'),
+      headers: headers,
+    );
+  }
+
+  // Get User Related Roomers
+  static Future<http.Response> getNotAssignedRoomers() async {
+    final headers = await BaseApiService.getCommonHeaders();
+    return http.get(
+      Uri.parse('${BaseApiService.baseUrl}/roomers/not-assigned'),
+      headers: headers,
+    );
+  }
 }

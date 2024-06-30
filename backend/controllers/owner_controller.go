@@ -18,6 +18,49 @@ func GetAllOwners(c *gin.Context) {
 	c.JSON(http.StatusOK, owners)
 }
 
+func GetOwnersNotLinkedToUser(c *gin.Context) {
+	owners, err := services.GetOwnersNotLinkedToUser()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, owners)
+}
+
+func RemoveUserFromOwner(c *gin.Context) {
+	ownerIDStr := c.Param("owner_id")
+
+	ownerID, err := strconv.ParseUint(ownerIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid owner ID"})
+		return
+	}
+
+	owner, err := services.RemoveUserFromOwner(uint(ownerID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, owner)
+}
+
+func GetOwnersByUserID(c *gin.Context) {
+	userIDStr := c.Param("user_id")
+	userID, err := strconv.ParseUint(userIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	owners, err := services.GetOwnersByUserID(uint(userID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, owners)
+}
+
 func GetOwnerByID(c *gin.Context) {
 	id := c.Param("id")
 

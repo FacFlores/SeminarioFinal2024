@@ -16,6 +16,9 @@ func SetupRoutes(router *gin.Engine) {
 		users.GET("/inactive", middlewares.AuthMiddleware(), controllers.FindInactiveUsers)
 		users.POST("/register", controllers.CreateUser)
 		users.POST("/login", controllers.Login)
+		users.GET("/:id", middlewares.AuthMiddleware(), controllers.GetUserByID)
+		users.PUT("/:id", middlewares.AuthMiddleware(), controllers.UpdateUser)
+
 	}
 	// Admin routes
 
@@ -48,6 +51,12 @@ func SetupRoutes(router *gin.Engine) {
 		owners.PUT("/assign-user/:owner_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignUserToOwner) // PUT /owners/assign-user/:owner_id/:user_id
 		owners.GET("/:id", middlewares.AuthMiddleware(), controllers.GetOwnerByID)
 		owners.POST("/name", middlewares.AuthMiddleware(), controllers.GetOwnerByName)
+
+		owners.PUT("/remove-user/:owner_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveUserFromOwner)
+
+		owners.GET("/not-assigned", middlewares.AuthMiddleware(), controllers.GetOwnersNotLinkedToUser)
+		owners.GET("/linked/:user_id", middlewares.AuthMiddleware(), controllers.GetOwnersByUserID)
+
 	}
 
 	// Roomer routes
@@ -60,6 +69,11 @@ func SetupRoutes(router *gin.Engine) {
 		roomers.PUT("/assign-user/:roomer_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AssignUserToRoomer) // PUT /roomers/assign-user/:roomer_id/:user_id
 		roomers.GET("/:id", middlewares.AuthMiddleware(), controllers.GetRoomerByID)
 		roomers.POST("/name", middlewares.AuthMiddleware(), controllers.GetRoomerByName)
+		roomers.PUT("/remove-user/:roomer_id/:user_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveUserFromRoomer)
+
+		roomers.GET("/not-assigned", middlewares.AuthMiddleware(), controllers.GetRoomersNotLinkedToUser)
+		roomers.GET("/linked/:user_id", middlewares.AuthMiddleware(), controllers.GetRoomersByUserID)
+
 	}
 
 	// Consortium routes
@@ -77,6 +91,7 @@ func SetupRoutes(router *gin.Engine) {
 		consortiums.GET("/consortium_services/:consortium_id/services", controllers.GetConsortiumServices)
 		consortiums.PUT("/consortium_services/:service_id/status", controllers.UpdateConsortiumServiceStatus)
 		consortiums.PUT("/consortium_services/:service_id/next_maintenance", controllers.ScheduleNextMaintenance)
+		consortiums.POST("/units-with-coefficients", controllers.GetUnitsWithCoefficients)
 
 	}
 

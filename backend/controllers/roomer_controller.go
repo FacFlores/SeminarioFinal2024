@@ -17,6 +17,48 @@ func GetAllRoomers(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, roomers)
 }
+func GetRoomersNotLinkedToUser(c *gin.Context) {
+	roomers, err := services.GetRoomersNotLinkedToUser()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, roomers)
+}
+
+func GetRoomersByUserID(c *gin.Context) {
+	userIDStr := c.Param("user_id")
+	userID, err := strconv.ParseUint(userIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	roomers, err := services.GetRoomersByUserID(uint(userID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, roomers)
+}
+
+func RemoveUserFromRoomer(c *gin.Context) {
+	roomerIDStr := c.Param("roomer_id")
+
+	roomerID, err := strconv.ParseUint(roomerIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid roomer ID"})
+		return
+	}
+
+	roomer, err := services.RemoveUserFromRoomer(uint(roomerID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, roomer)
+}
 
 func GetRoomerByID(c *gin.Context) {
 	id := c.Param("id")

@@ -4,6 +4,7 @@ import (
 	"backend/models"
 	"backend/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -50,6 +51,29 @@ func GetUserByID(c *gin.Context) {
 	user, err := services.GetUserByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
+func UpdateUser(c *gin.Context) {
+	id := c.Param("id")
+	userID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	var updateUser models.User
+	if err := c.ShouldBindJSON(&updateUser); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := services.UpdateUser(uint(userID), updateUser)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found or failed to update"})
 		return
 	}
 

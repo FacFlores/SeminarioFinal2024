@@ -101,3 +101,23 @@ func DeleteUser(id string) error {
 	}
 	return nil
 }
+
+func UpdateUser(id uint, updateUser models.User) (models.User, error) {
+	var existingUser models.User
+	if err := config.DB.First(&existingUser, id).Error; err != nil {
+		return existingUser, err
+	}
+
+	existingUser.Name = updateUser.Name
+	existingUser.Email = updateUser.Email
+	existingUser.Surname = updateUser.Surname
+	existingUser.Phone = updateUser.Phone
+	existingUser.Dni = updateUser.Dni
+	existingUser.ProfilePicture = updateUser.ProfilePicture
+
+	if err := config.DB.Save(&existingUser).Error; err != nil {
+		return existingUser, err
+	}
+
+	return existingUser, nil
+}

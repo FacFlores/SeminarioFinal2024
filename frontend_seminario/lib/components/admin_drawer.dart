@@ -128,10 +128,56 @@ class _AdminDrawerState extends State<AdminDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.add_home_work_rounded,
+                color: AppTheme.accentColor),
+            title: const Text('Expensas', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/expenses');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.business, color: AppTheme.accentColor),
             title: const Text('Consorcios', style: AppTheme.textMedium),
             onTap: () {
               context.go('/admin/consortiums');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person_add_alt_1_rounded,
+                color: AppTheme.accentColor),
+            title: const Text('Usuarios', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/users');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.people, color: AppTheme.accentColor),
+            title: const Text('Consorcistas', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/people');
+            },
+          ),
+          ListTile(
+            leading:
+                const Icon(Icons.type_specimen, color: AppTheme.accentColor),
+            title: const Text('Conceptos', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/concepts');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.balance, color: AppTheme.accentColor),
+            title: const Text('Coeficientes', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/coefficients');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.percent, color: AppTheme.accentColor),
+            title:
+                const Text('Asignar Porcentajes', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/unit-coefficients');
             },
           ),
           ListTile(

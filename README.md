@@ -35,7 +35,7 @@ El desarrollo del sistema se realizó utilizando las siguientes tecnologías:
 
 - **Lenguajes de Programación**: Golang, Dart
 - **Frameworks y Librerías**: Flutter, Gin
-- **Base de Datos**: Postgresql
+- **Base de Datos**: PostgreSQL
 - **Herramientas de Desarrollo**: VSCode, Docker
 
 ## Instalación
@@ -45,75 +45,64 @@ Para instalar y configurar el sistema de gestión de consorcios, siga los siguie
 1. **Clonar el repositorio**:
 
    ```bash
-   git clone [URL del repositorio]
+   git clone https://github.com/FacFlores/SeminarioFinal2024.git
    ```
 
-###
+2. **Descargar Docker**:
 
-export GO_ENV=development
-go run main.go
+<https://www.docker.com/products/docker-desktop/>
 
-2. **Instalar dependencias**:
+3. **Buildear Docker Compose**:
+
+Desde la carpeta raiz del repositorio:
 
    ```bash
-   [Comandos para instalar dependencias]
+   docker-compose build
    ```
 
-3. **Configurar la base de datos**:
+4. **Inicializar el sistema mediante Docker Compose**:
 
    ```bash
-   [Instrucciones para configurar la base de datos]
-   ```
-
-4. **Iniciar el servidor**:
-
-   ```bash
-   [Comandos para iniciar el servidor]
+     docker-compose up
    ```
 
 ## Uso
 
-Una vez instalado y configurado, puede acceder al sistema a través de su navegador web en la dirección [URL de acceso al sistema]. Use las credenciales proporcionadas para iniciar sesión y comenzar a gestionar el consorcio.
+Una vez instalado y configurado, puede acceder al sistema a través de su navegador web en la dirección <http://localhost:3000/>. Use las credenciales proporcionadas para iniciar sesión y comenzar a gestionar el consorcio.
+
+### Credenciales
+
+El sistema posee una base de datos precargada con informacion basica para testing, dentro de las cuales estan las credenciales basicas de
+un usuario administrador y otro consorcista
+
+**Credenciales de Admin**
+admin@example.com
+adminpassword
+
+**Credenciales de Consorcista**
+user@example.com
+userpassword
+
+## Tests de Backend
+
+Adicionalmente dentro de la carpeta raiz del repositorio se encuentra una coleccion de Postman la cual puede ser utilizara para probar los
+endpoints del sistema
+
+ **Descargar Postman**
+
+ <https://www.postman.com/downloads/>
+
+ Una vez descargado e instalado, se puede importar el archivo Seminario.postman_collection.json para su prueba
+
+
+ # VIDEO TUTORIAL
+
+En caso de que no queden claras las instrucciones escritas se ha realizado un video instructivo de como poner en marcha el sistema
+https://drive.google.com/file/d/1u1SCYDp8AOR86XRsImS0t5OYw8f_pEsf/view?usp=sharing
 
 ## Contacto
 
 Para cualquier consulta o sugerencia, puede contactar al desarrollador:
 
-- **Correo Electrónico**: [Correo electrónico de contacto]
-- **LinkedIn**: [Perfil de LinkedIn]
-
-## Licencia
-
-Este proyecto está licenciado bajo la [GNU GENERAL PUBLIC LICENSE] - vea el archivo [LICENSE] para más detalles.
-
-
-
-
-Production Deploy:
-docker-compose build 
-docker-compose up
-
-
-
-
-
-Development Deploy:
-
-Database
-```bash
-docker run -d `
-  --name postgres-db `
-  -e POSTGRES_USER=postgres `
-  -e POSTGRES_PASSWORD=postgres `
-  -e POSTGRES_DB=SeminarioFF `
-  -v pgdata:/var/lib/postgresql/data `
-  -p 5432:5432 `
-  postgres:latest
-```
-
-
-
-Backend:
-
-$env:GO_ENV="development" # or whatever environment you need
-go run main.go
+- **Correo Electrónico**: <facundoalejan@hotmail.com>
+- **LinkedIn**: <https://www.linkedin.com/in/facundo-alejandro-flores/>

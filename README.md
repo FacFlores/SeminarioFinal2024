@@ -28,6 +28,7 @@ El sistema incluye las siguientes funcionalidades principales:
 - **Administración de Gastos y Pagos**: Control y seguimiento de los gastos comunes y pagos realizados por los propietarios e inquilinos.
 - **Visualizacion de Balances e Historial de Transacciones**: Registro de balances por propiedad accesibles para consorcistas y administradores
 - **Generación de Reportes**: Creación de informes detallados sobre la gestión del consorcio.
+- ** Y mucho mas!**
 
 ## Tecnologías Utilizadas
 

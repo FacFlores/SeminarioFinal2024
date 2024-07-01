@@ -26,18 +26,17 @@ El sistema incluye las siguientes funcionalidades principales:
 
 - **Gestión de Propietarios e Inquilinos**: Registro y seguimiento de los datos de contacto e información relevante.
 - **Administración de Gastos y Pagos**: Control y seguimiento de los gastos comunes y pagos realizados por los propietarios e inquilinos.
-- **Mantenimiento de Instalaciones**: Planificación y registro de las tareas de mantenimiento necesarias.
-- **Comunicaciones Internas**: Plataforma para la comunicación entre los miembros del consorcio y la administración.
+- **Visualizacion de Balances e Historial de Transacciones**: Registro de balances por propiedad accesibles para consorcistas y administradores
 - **Generación de Reportes**: Creación de informes detallados sobre la gestión del consorcio.
 
 ## Tecnologías Utilizadas
 
 El desarrollo del sistema se realizó utilizando las siguientes tecnologías:
 
-- **Lenguajes de Programación**: [Listado de lenguajes utilizados]
-- **Frameworks y Librerías**: [Listado de frameworks y librerías]
-- **Base de Datos**: [Sistema de gestión de bases de datos utilizado]
-- **Herramientas de Desarrollo**: [Herramientas adicionales empleadas]
+- **Lenguajes de Programación**: Golang, Dart
+- **Frameworks y Librerías**: Flutter, Gin
+- **Base de Datos**: Postgresql
+- **Herramientas de Desarrollo**: VSCode, Docker
 
 ## Instalación
 

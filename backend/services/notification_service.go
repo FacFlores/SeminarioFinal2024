@@ -3,49 +3,73 @@ package services
 import (
 	"backend/config"
 	"backend/models"
+	"errors"
 )
 
 func CreateNotification(notification models.Notification) (models.Notification, error) {
 	if err := config.DB.Create(&notification).Error; err != nil {
-		return models.Notification{}, err
+		return notification, err
 	}
 	return notification, nil
 }
 
-func MarkNotificationAsRead(id uint) error {
-	if err := config.DB.Model(&models.Notification{}).Where("id = ?", id).Update("is_read", true).Error; err != nil {
+func GetNotificationsByUser(userID string) ([]models.Notification, error) {
+	var notifications []models.Notification
+	if err := config.DB.Preload("SenderUser"). // Preloading sender details
+							Where("target_user_id = ?", userID).
+							Or("target_role IS NOT NULL").
+							Find(&notifications).Error; err != nil {
+		return nil, err
+	}
+	return notifications, nil
+}
+
+func GetNotificationsByTargetRole(role string) ([]models.Notification, error) {
+	var notifications []models.Notification
+	if err := config.DB.Preload("SenderUser").
+		Where("target_role = ?", role).
+		Find(&notifications).Error; err != nil {
+		return nil, err
+	}
+	return notifications, nil
+}
+
+func GetNotificationsByTargetUnit(unitID uint) ([]models.Notification, error) {
+	var notifications []models.Notification
+	if err := config.DB.Preload("SenderUser").
+		Where("target_unit_id = ?", unitID).
+		Find(&notifications).Error; err != nil {
+		return nil, err
+	}
+	return notifications, nil
+}
+
+func GetNotificationsByTargetConsortium(consortiumID uint) ([]models.Notification, error) {
+	var notifications []models.Notification
+	if err := config.DB.Preload("SenderUser").
+		Where("target_consortium_id = ?", consortiumID).
+		Find(&notifications).Error; err != nil {
+		return nil, err
+	}
+	return notifications, nil
+}
+
+func MarkNotificationAsRead(notificationID uint) error {
+	var notification models.Notification
+	if err := config.DB.First(&notification, notificationID).Error; err != nil {
+		return errors.New("notification not found")
+	}
+	notification.IsRead = true
+	if err := config.DB.Save(&notification).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func DeleteNotification(id uint) error {
-	if err := config.DB.Delete(&models.Notification{}, id).Error; err != nil {
+// DeleteNotification deletes a notification
+func DeleteNotification(notificationID uint) error {
+	if err := config.DB.Delete(&models.Notification{}, notificationID).Error; err != nil {
 		return err
 	}
 	return nil
-}
-
-func GetNotificationsByTargetRole(targetRole string) ([]models.Notification, error) {
-	var notifications []models.Notification
-	if err := config.DB.Where("target_role = ?", targetRole).Find(&notifications).Error; err != nil {
-		return nil, err
-	}
-	return notifications, nil
-}
-
-func GetNotificationsByTargetUnit(targetUnitID uint) ([]models.Notification, error) {
-	var notifications []models.Notification
-	if err := config.DB.Where("target_unit_id = ?", targetUnitID).Find(&notifications).Error; err != nil {
-		return nil, err
-	}
-	return notifications, nil
-}
-
-func GetNotificationsByTargetConsortium(targetConsortiumID uint) ([]models.Notification, error) {
-	var notifications []models.Notification
-	if err := config.DB.Where("target_consortium_id = ?", targetConsortiumID).Find(&notifications).Error; err != nil {
-		return nil, err
-	}
-	return notifications, nil
 }

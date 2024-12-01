@@ -286,31 +286,6 @@ func SeedDocuments(DB *gorm.DB) {
 	}
 }
 
-// SeedNotifications seeds notifications
-func SeedNotifications(DB *gorm.DB) {
-	var adminUser models.User
-	DB.First(&adminUser, "email = ?", "admin@example.com")
-
-	notifications := []models.Notification{
-		{
-			UserID:     adminUser.ID,
-			Message:    "Nueva actualización del reglamento interno disponible.",
-			IsRead:     false,
-			TargetRole: "admin",
-		},
-		{
-			UserID:     adminUser.ID,
-			Message:    "Servicio de mantenimiento del ascensor programado para el próximo mes.",
-			IsRead:     false,
-			TargetRole: "consortium",
-		},
-	}
-
-	for _, notification := range notifications {
-		DB.FirstOrCreate(&notification, models.Notification{Message: notification.Message})
-	}
-}
-
 func SeedData(DB *gorm.DB) {
 	SeedRoles(DB)
 	SeedAdminUser(DB)
@@ -322,5 +297,4 @@ func SeedData(DB *gorm.DB) {
 	SeedUnitCoefficients(DB)
 	SeedConsortiumServices(DB)
 	SeedDocuments(DB)
-	SeedNotifications(DB)
 }

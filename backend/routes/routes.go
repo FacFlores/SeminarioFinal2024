@@ -192,14 +192,16 @@ func SetupRoutes(router *gin.Engine) {
 
 	}
 
+	// Notification routes
 	notifications := router.Group("/notifications")
 	{
-		notifications.POST("/", controllers.CreateNotification)
-		notifications.PUT("/:id/mark-read", controllers.MarkNotificationAsRead)
-		notifications.DELETE("/:id", controllers.DeleteNotification)
-		notifications.GET("/role/:role", controllers.GetNotificationsByTargetRole)
-		notifications.GET("/unit/:unit_id", controllers.GetNotificationsByTargetUnit)
-		notifications.GET("/consortium/:consortium_id", controllers.GetNotificationsByTargetConsortium)
+		notifications.POST("/", middlewares.AuthMiddleware(), controllers.CreateNotification)
+		notifications.PUT("/:id/mark-read", middlewares.AuthMiddleware(), controllers.MarkNotificationAsRead)
+		notifications.GET("/user/:user_id", middlewares.AuthMiddleware(), controllers.GetNotificationsByUser)
+		notifications.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteNotification)
+		notifications.GET("/role/:role", middlewares.AuthMiddleware(), controllers.GetNotificationsByTargetRole)
+		notifications.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetNotificationsByTargetUnit)
+		notifications.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetNotificationsByTargetConsortium)
 	}
 
 	// Health check route

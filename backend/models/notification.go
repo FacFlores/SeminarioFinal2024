@@ -6,11 +6,13 @@ import (
 
 type Notification struct {
 	gorm.Model
-	UserID             uint   `gorm:"not null"` // Sender of the notification
-	User               User   `gorm:"foreignKey:UserID"`
-	Message            string `gorm:"not null"`
-	IsRead             bool   `gorm:"default:false"` // Flag to mark if the notification has been read
-	TargetRole         string `gorm:"not null"`      // Role targeted for the notification (e.g., "admin", "consortium")
-	TargetUnitID       uint   `gorm:"default:null"`
-	TargetConsortiumID uint   `gorm:"default:null"`
+	Title              string  `json:"title"`
+	Message            string  `json:"message"`
+	TargetUserID       *uint   `json:"target_user_id,omitempty"`
+	TargetRole         *string `json:"target_role,omitempty"`
+	TargetUnitID       *uint   `json:"target_unit_id,omitempty"`
+	TargetConsortiumID *uint   `json:"target_consortium_id,omitempty"`
+	IsRead             bool    `json:"is_read"`
+	SenderUserID       uint    `json:"sender_user_id"`
+	SenderUser         User    `json:"sender_user" gorm:"foreignKey:SenderUserID"`
 }

@@ -5,6 +5,7 @@ go 1.22.2
 require gorm.io/driver/postgres v1.5.9
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 )

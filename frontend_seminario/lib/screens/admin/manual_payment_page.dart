@@ -168,7 +168,7 @@ class ManualPaymentPageState extends State<ManualPaymentPage> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancel', style: AppTheme.textSmall),
+                  child: const Text('Cancelar', style: AppTheme.textSmall),
                 ),
                 TextButton(
                   onPressed: () {
@@ -184,7 +184,7 @@ class ManualPaymentPageState extends State<ManualPaymentPage> {
                       Navigator.of(context).pop(true);
                     }
                   },
-                  child: const Text('Confirm', style: AppTheme.textSmallBold),
+                  child: const Text('Confirmar', style: AppTheme.textSmallBold),
                 ),
               ],
             );
@@ -215,12 +215,12 @@ class ManualPaymentPageState extends State<ManualPaymentPage> {
       if (mounted) {
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Expense paid successfully')),
+            const SnackBar(content: Text('Expensa pagada exitosamente')),
           );
           _loadExpenses();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to pay expense')),
+            const SnackBar(content: Text('Fallo al pagar expensa')),
           );
           print('Error paying expense: ${response.body}');
         }
@@ -316,7 +316,7 @@ class ManualPaymentPageState extends State<ManualPaymentPage> {
                                         'Numero de Factura: ${expense['bill_number']}',
                                         style: AppTheme.textSmall),
                                     Text(
-                                        'Concept: ${expense['concept']['name']}',
+                                        'Concepto: ${expense['concept']['name']}',
                                         style: AppTheme.textSmall),
                                     Text(
                                         'Fecha de Expensa: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(expense['expense_period']))}',

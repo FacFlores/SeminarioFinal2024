@@ -61,9 +61,8 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
           : await OwnersApiService.createOwner(result);
 
       if (response.statusCode == 200) {
-        _loadOwners(); // Refresh list after update
+        _loadOwners(); 
       } else {
-        // Handle errors
       }
     }
   }
@@ -109,9 +108,8 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
     if (confirmed == true) {
       final response = await OwnersApiService.deleteOwner(ownerId);
       if (response.statusCode == 200) {
-        _loadOwners(); // Refresh list after deletion
+        _loadOwners(); 
       } else {
-        // Handle errors
       }
     }
   }
@@ -138,9 +136,8 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
     if (confirmed == true) {
       final response = await RoomerApiService.deleteRoomer(roomerId);
       if (response.statusCode == 200) {
-        _loadRoomers(); // Refresh list after deletion
+        _loadRoomers(); 
       } else {
-        // Handle errors
       }
     }
   }
@@ -192,12 +189,10 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: ListTile(
-                    title: Text(owner['name'], style: AppTheme.textMedium),
+                    title: Text(owner['name'] + ' ' + owner['surname'], style: AppTheme.textMedium),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Apellido: ${owner['surname']}',
-                            style: AppTheme.textSmall),
                         Text('Telefono: ${owner['phone']}',
                             style: AppTheme.textSmall),
                         Text('DNI: ${owner['dni']}', style: AppTheme.textSmall),
@@ -233,13 +228,11 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: ListTile(
-                    title: Text(roomer['name'], style: AppTheme.textMedium),
+                    title: Text(roomer['name'] + ' ' + roomer['surname'], style: AppTheme.textMedium),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Apellido: ${roomer['surname']}',
-                            style: AppTheme.textSmall),
-                        Text('Telefono: ${roomer['phone']}',
+                         Text('Telefono: ${roomer['phone']}',
                             style: AppTheme.textSmall),
                         Text('DNI: ${roomer['dni']}',
                             style: AppTheme.textSmall),

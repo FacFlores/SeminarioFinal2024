@@ -42,12 +42,12 @@ func GetDisabledUsers() ([]models.User, error) {
 
 func CreateUser(user models.User) (models.User, error) {
 	if !utils.IsValidPassword(user.Password) {
-		return models.User{}, errors.New("password must be at least 8 characters long, include at least one number, one lowercase letter, one uppercase letter, and one special character")
+		return models.User{}, errors.New("la contraseña debe tener al menos 8 caracteres e incluir al menos un número, una letra minúscula, una letra mayúscula y un carácter especial")
 	}
 
 	hashedPassword, err := utils.HashPassword(user.Password)
 	if err != nil {
-		return models.User{}, errors.New("failed to hash password")
+		return models.User{}, errors.New("error al hashear contraseña")
 	}
 	user.Password = hashedPassword
 
@@ -60,15 +60,15 @@ func CreateUser(user models.User) (models.User, error) {
 func AuthenticateUser(email, password string) (string, models.User, error) {
 	var user models.User
 	if err := config.DB.Preload("Role").Where("email = ?", email).First(&user).Error; err != nil {
-		return "", user, errors.New("invalid email or password")
+		return "", user, errors.New("email o contraseña invalidos")
 	}
 
 	if !utils.CheckPasswordHash(password, user.Password) {
-		return "", user, errors.New("invalid email or password")
+		return "", user, errors.New("email o contraseña invalidos")
 	}
 
 	if !user.IsActive {
-		return "", user, errors.New("user account is inactive")
+		return "", user, errors.New("su cuenta esta inactiva, contacte al adminstrador para gestionar su acceso")
 	}
 
 	token, err := middlewares.GenerateToken(user.ID)
@@ -123,34 +123,44 @@ func UpdateUser(id uint, updateUser models.User) (models.User, error) {
 }
 
 func GetUnitsByUser(userID uint) ([]models.Unit, error) {
-	var units []models.Unit
-	var unitIDs []uint
+	var ownerUnitIDs []uint
+	var roomerUnitIDs []uint
 	if err := config.DB.Table("units").
+		Select("units.id").
 		Joins("JOIN unit_owners ON units.id = unit_owners.unit_id").
 		Joins("JOIN owners ON owners.id = unit_owners.owner_id").
 		Where("owners.user_id = ?", userID).
-		Pluck("units.id", &unitIDs).Error; err != nil {
+		Where("units.deleted_at IS NULL").
+		Pluck("units.id", &ownerUnitIDs).Error; err != nil {
 		return nil, err
 	}
 	if err := config.DB.Table("units").
+		Select("units.id").
 		Joins("JOIN unit_roomers ON units.id = unit_roomers.unit_id").
 		Joins("JOIN roomers ON roomers.id = unit_roomers.roomer_id").
 		Where("roomers.user_id = ?", userID).
-		Pluck("units.id", &unitIDs).Error; err != nil {
+		Where("units.deleted_at IS NULL").
+		Pluck("units.id", &roomerUnitIDs).Error; err != nil {
 		return nil, err
 	}
 	unitIDMap := make(map[uint]bool)
-	for _, id := range unitIDs {
+	for _, id := range ownerUnitIDs {
 		unitIDMap[id] = true
 	}
-	uniqueUnitIDs := []uint{}
+	for _, id := range roomerUnitIDs {
+		unitIDMap[id] = true
+	}
+	uniqueUnitIDs := make([]uint, 0, len(unitIDMap))
 	for id := range unitIDMap {
 		uniqueUnitIDs = append(uniqueUnitIDs, id)
 	}
+
+	var units []models.Unit
 	if err := config.DB.Preload("Owners").
 		Preload("Roomers").
 		Preload("Consortium").
-		Where("id IN (?)", uniqueUnitIDs).
+		Where("id IN ?", uniqueUnitIDs).
+		Where("units.deleted_at IS NULL").
 		Find(&units).Error; err != nil {
 		return nil, err
 	}

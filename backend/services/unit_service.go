@@ -3,7 +3,7 @@ package services
 import (
 	"backend/config"
 	"backend/models"
-	"time"
+	"fmt"
 )
 
 func CreateUnit(unit models.Unit) (models.Unit, error) {
@@ -30,9 +30,21 @@ func CreateUnit(unit models.Unit) (models.Unit, error) {
 }
 
 func DeleteUnit(id string) error {
-	result := config.DB.Unscoped().Model(&models.Unit{}).Where("id = ?", id).Update("deleted_at", time.Now())
+	if err := config.DB.Where("unit_id = ?", id).Delete(&models.UnitCoefficient{}).Error; err != nil {
+		return fmt.Errorf("failed to delete related unit coefficients: %w", err)
+	}
+
+	if err := config.DB.Where("unit_id = ?", id).Delete(&models.UnitLedger{}).Error; err != nil {
+		return fmt.Errorf("failed to delete related unit ledgers: %w", err)
+	}
+
+	result := config.DB.Delete(&models.Unit{}, id)
 	if err := result.Error; err != nil {
-		return err
+		return fmt.Errorf("failed to delete unit: %w", err)
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("unit with ID %s not found", id)
 	}
 
 	return nil

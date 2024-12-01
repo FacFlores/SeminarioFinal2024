@@ -13,6 +13,7 @@ type Consortium struct {
 	Cuit       string              `json:"cuit"`
 	BillNumber uint                `json:"bill_number" gorm:"default:0"`
 	Services   []ConsortiumService `json:"services" gorm:"foreignKey:ConsortiumID"`
+	Units      []Unit              `json:"units" gorm:"foreignKey:ConsortiumID"`
 }
 
 func (Consortium) TableName() string {

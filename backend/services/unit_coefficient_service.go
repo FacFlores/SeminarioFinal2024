@@ -16,7 +16,7 @@ func UpdateUnitCoefficients(coefficientID uint, consortiumID uint, unitPercentag
 		return nil, errors.New("the coefficient is not distributable")
 	}
 	var consortiumUnits []models.Unit
-	if err := config.DB.Where("consortium_id = ?", consortiumID).Find(&consortiumUnits).Error; err != nil {
+	if err := config.DB.Where("consortium_id = ? AND deleted_at IS NULL", consortiumID).Find(&consortiumUnits).Error; err != nil {
 		return nil, err
 	}
 	consortiumUnitMap := make(map[uint]bool)

@@ -180,6 +180,10 @@ func SetupRoutes(router *gin.Engine) {
 		unitExpenses.POST("/auto-pay", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.AutoPayUnitExpensesHandler)
 	}
 
+	// Dashboard routes
+
+	router.GET("/dashboard/summary", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.GetDashboardSummary)
+
 	//TODO POSTMAN THIS
 	documents := router.Group("/documents")
 	{

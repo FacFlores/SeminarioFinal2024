@@ -22,7 +22,7 @@ func UpdateUnitCoefficients(c *gin.Context) {
 
 	updatedUnitCoefficients, err := services.UpdateUnitCoefficients(input.CoefficientID, input.ConsortiumID, input.Units)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"errsesor": err.Error()})
 		return
 	}
 

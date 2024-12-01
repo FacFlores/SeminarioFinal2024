@@ -93,7 +93,7 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
           children: [
             const Text('Propietarios:', style: AppTheme.textBold),
             ...owners.map((owner) => ListTile(
-                  title: Text(owner['name'], style: AppTheme.textSmall),
+              title: Text(owner['name'] + ' '+ owner['surname'], style: AppTheme.textSmall),
                   trailing: IconButton(
                     icon: const Icon(Icons.remove_circle,
                         color: AppTheme.dangerColor),
@@ -119,7 +119,7 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
             const SizedBox(height: 16),
             const Text('Inquilinos:', style: AppTheme.textBold),
             ...roomers.map((roomer) => ListTile(
-                  title: Text(roomer['name'], style: AppTheme.textSmall),
+              title: Text(roomer['name'] + ' '+ roomer['surname'], style: AppTheme.textSmall),
                   trailing: IconButton(
                     icon: const Icon(Icons.remove_circle,
                         color: AppTheme.dangerColor),
@@ -145,12 +145,6 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Guardar', style: AppTheme.textSmallBold),
-        ),
-      ],
       backgroundColor: AppTheme.lightBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
@@ -195,7 +189,7 @@ class SelectOwnerDialogState extends State<SelectOwnerDialog> {
           mainAxisSize: MainAxisSize.min,
           children: owners.map((owner) {
             return ListTile(
-              title: Text(owner['name'], style: AppTheme.textSmall),
+              title: Text(owner['name'] + ' '+ owner['surname'], style: AppTheme.textSmall),
               onTap: () => Navigator.of(context).pop(owner['ID']),
             );
           }).toList(),
@@ -245,7 +239,7 @@ class SelectRoomerDialogState extends State<SelectRoomerDialog> {
           mainAxisSize: MainAxisSize.min,
           children: roomers.map((roomer) {
             return ListTile(
-              title: Text(roomer['name'], style: AppTheme.textSmall),
+              title: Text(roomer['name'] + ' ' + roomer['surname'], style: AppTheme.textSmall),
               onTap: () => Navigator.of(context).pop(roomer['ID']),
             );
           }).toList(),

@@ -163,10 +163,8 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
       final response =
           await UnitExpensesApiService.deleteUnitExpense(expenseId);
       if (response.statusCode == 200) {
-        _loadUnitExpenses(); // Refresh list after deletion
-      } else {
-        // Handle errors
-      }
+        _loadUnitExpenses();
+      } 
     }
   }
 
@@ -183,7 +181,7 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Borrar', style: AppTheme.textSmallBold),
+            child: const Text('Distribuir', style: AppTheme.textSmallBold),
           ),
         ],
       ),
@@ -195,7 +193,7 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
               expenseId);
       if (mounted) {
         if (response.statusCode == 200) {
-          _loadConsortiumExpenses(); // Refresh list after distribution
+          _loadConsortiumExpenses(); 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Expensa distribuida exitosamente')),
           );
@@ -203,7 +201,6 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Fallo al distribuir')),
           );
-          // Handle errors
         }
       }
     }
@@ -218,8 +215,8 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
   Widget build(BuildContext context) {
     return BaseScaffold(
       title: 'Gestionar Expensas',
-      isAdmin: true, // Set according to the user's role
-      storageService: StorageService(), // Provide the storage service instance
+      isAdmin: true, 
+      storageService: StorageService(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

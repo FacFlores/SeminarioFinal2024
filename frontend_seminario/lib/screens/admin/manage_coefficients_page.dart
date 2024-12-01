@@ -28,9 +28,7 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
       setState(() {
         coefficients = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } else {}
   }
 
   void _createOrUpdateCoefficient([int? coefficientId]) async {
@@ -45,10 +43,8 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
           : await CoefficientApiService.createCoefficient(result);
 
       if (response.statusCode == 200) {
-        _loadCoefficients(); // Refresh list after update
-      } else {
-        // Handle errors
-      }
+        _loadCoefficients();
+      } else {}
     }
   }
 
@@ -75,10 +71,8 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
       final response =
           await CoefficientApiService.deleteCoefficient(coefficientId);
       if (response.statusCode == 200) {
-        _loadCoefficients(); // Refresh list after deletion
-      } else {
-        // Handle errors
-      }
+        _loadCoefficients();
+      } else {}
     }
   }
 
@@ -118,7 +112,7 @@ class ManageCoefficientsPageState extends State<ManageCoefficientsPage> {
                     title:
                         Text(coefficient['name'], style: AppTheme.textMedium),
                     subtitle: Text(
-                        'Distribuible? : ${coefficient['distributable']}',
+                        'Distribuible: ${coefficient['distributable'] ? 'Si' : 'No'}',
                         style: AppTheme.textSmall),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,

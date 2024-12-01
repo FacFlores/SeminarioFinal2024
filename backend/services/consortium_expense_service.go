@@ -55,11 +55,16 @@ func DistributeConsortiumExpense(expenseID uint) error {
 			return errors.New("could not find unit coefficient")
 		}
 
+		amount := expense.Amount * unitCoefficient.Percentage / 100
+		if amount == 0 {
+			continue
+		}
+
 		unitExpense := models.UnitExpense{
 			Description:         expense.Description,
 			BillNumber:          expense.BillNumber,
-			Amount:              expense.Amount * unitCoefficient.Percentage / 100,
-			LeftToPay:           expense.Amount * unitCoefficient.Percentage / 100,
+			Amount:              amount,
+			LeftToPay:           amount,
 			ConceptID:           expense.ConceptID,
 			ExpensePeriod:       expense.ExpensePeriod,
 			LiquidatePeriod:     expense.LiquidatePeriod,

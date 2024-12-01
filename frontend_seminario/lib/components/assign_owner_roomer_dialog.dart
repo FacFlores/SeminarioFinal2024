@@ -118,7 +118,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
           children: [
             const Text('Propietarios asignados:', style: AppTheme.textBold),
             ...currentOwners.map((owner) => ListTile(
-                  title: Text(owner['name'], style: AppTheme.textSmall),
+                  title: Text(owner['name'] + ' '+ owner['surname'], style: AppTheme.textSmall),
                   trailing: IconButton(
                     icon: const Icon(Icons.remove_circle,
                         color: AppTheme.dangerColor),
@@ -128,7 +128,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
             const Divider(),
             const Text('Inquilinos asignados:', style: AppTheme.textBold),
             ...currentRoomers.map((roomer) => ListTile(
-                  title: Text(roomer['name'], style: AppTheme.textSmall),
+                  title: Text(roomer['name'] + ' ' + roomer['surname'], style: AppTheme.textSmall),
                   trailing: IconButton(
                     icon: const Icon(Icons.remove_circle,
                         color: AppTheme.dangerColor),
@@ -138,7 +138,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
             const Divider(),
             const Text('Propietarios sin usuario asignado:', style: AppTheme.textBold),
             ...availableOwners.map((owner) => ListTile(
-                  title: Text(owner['name'], style: AppTheme.textSmall),
+                  title: Text(owner['name'] + ' '+ owner['surname'], style: AppTheme.textSmall),
                   trailing: IconButton(
                     icon: const Icon(Icons.add_circle,
                         color: AppTheme.successColor),
@@ -148,7 +148,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
             const Divider(),
             const Text('Inquilinos sin usuario asignado:', style: AppTheme.textBold),
             ...availableRoomers.map((roomer) => ListTile(
-                  title: Text(roomer['name'], style: AppTheme.textSmall),
+                  title: Text(roomer['name'] + ' ' + roomer['surname'], style: AppTheme.textSmall),
                   trailing: IconButton(
                     icon: const Icon(Icons.add_circle,
                         color: AppTheme.successColor),

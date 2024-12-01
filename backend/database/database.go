@@ -29,7 +29,7 @@ func SeedAdminUser(DB *gorm.DB) {
 	if err := DB.First(&adminRole, "name = ?", "Admin").Error; err != nil {
 		log.Fatalf("Admin role not found: %v", err)
 	}
-	hashedPassword, err := utils.HashPassword("adminpassword")
+	hashedPassword, err := utils.HashPassword("admin")
 	if err != nil {
 		log.Fatalf("Failed to hash password: %v", err)
 	}
@@ -56,20 +56,20 @@ func SeedRegularUser(DB *gorm.DB) {
 	if err := DB.First(&userRole, "name = ?", "User").Error; err != nil {
 		log.Fatalf("User role not found: %v", err)
 	}
-	hashedPassword, err := utils.HashPassword("userpassword")
+	hashedPassword, err := utils.HashPassword("user")
 	if err != nil {
 		log.Fatalf("Failed to hash password: %v", err)
 	}
 
 	regularUser := models.User{
-		Name:     "Usuario",
+		Name:     "Facundo",
 		Email:    "user@example.com",
-		Surname:  "Regular",
-		Phone:    "0987654321",
-		Dni:      "1111111111",
+		Surname:  "Flores",
+		Phone:    "3515510188",
+		Dni:      "42694193",
 		RoleID:   userRole.ID,
 		Password: hashedPassword,
-		IsActive: true,
+		IsActive: false,
 	}
 
 	if err := DB.FirstOrCreate(&regularUser, models.User{Email: regularUser.Email}).Error; err != nil {
@@ -80,21 +80,32 @@ func SeedRegularUser(DB *gorm.DB) {
 // SeedConsortiums seeds consortiums
 func SeedConsortiums(DB *gorm.DB) {
 	consortium := models.Consortium{
-		Name:    "Consorcio de Prueba",
+		Name:    "Edificio Prueba 42",
 		Address: "Calle Falsa 123",
-		Cuit:    "12345678901",
+		Cuit:    "1098803053",
+	}
+
+	consortium2 := models.Consortium{
+		Name:    "Consorcio Vacio",
+		Address: "Calle Inexistencia 5312",
+		Cuit:    "62624131556",
 	}
 
 	if err := DB.FirstOrCreate(&consortium, models.Consortium{Name: consortium.Name}).Error; err != nil {
 		log.Fatalf("Failed to create consortium: %v", err)
 	}
+
+	if err := DB.FirstOrCreate(&consortium2, models.Consortium{Name: consortium.Name}).Error; err != nil {
+		log.Fatalf("Failed to create consortium: %v", err)
+	}
+
 }
 
 // SeedUnits seeds units and their owners/roomers
 func SeedUnits(DB *gorm.DB) {
 	var consortium models.Consortium
-	if err := DB.First(&consortium, "name = ?", "Consorcio de Prueba").Error; err != nil {
-		log.Fatalf("Consorcio de Prueba not found: %v", err)
+	if err := DB.First(&consortium, "name = ?", "Edificio Prueba 42").Error; err != nil {
+		log.Fatalf("Edificio Prueba 42 not found: %v", err)
 	}
 
 	for i := 1; i <= 5; i++ {
@@ -114,39 +125,6 @@ func SeedUnits(DB *gorm.DB) {
 		if err := DB.FirstOrCreate(&unitLedger, models.UnitLedger{UnitID: unitLedger.UnitID}).Error; err != nil {
 			log.Fatalf("Failed to create unit ledger: %v", err)
 		}
-		userID := uint(2)
-		owner := models.Owner{
-			Name:    "Propietario " + strconv.Itoa(i),
-			Surname: "Apellido " + strconv.Itoa(i),
-			Phone:   "123456789" + strconv.Itoa(i),
-			Dni:     "000000000" + strconv.Itoa(i),
-			Cuit:    "1234567890" + strconv.Itoa(i),
-			UserID:  &userID,
-		}
-
-		if err := DB.FirstOrCreate(&owner, models.Owner{Dni: owner.Dni}).Error; err != nil {
-			log.Fatalf("Failed to create owner: %v", err)
-		}
-
-		roomer := models.Roomer{
-			Name:    "Inquilino " + strconv.Itoa(i),
-			Surname: "Apellido " + strconv.Itoa(i),
-			Phone:   "123456789" + strconv.Itoa(i),
-			Dni:     "000000000" + strconv.Itoa(i),
-			Cuit:    "1234567890" + strconv.Itoa(i),
-			UserID:  &userID,
-		}
-
-		if err := DB.FirstOrCreate(&roomer, models.Roomer{Dni: roomer.Dni}).Error; err != nil {
-			log.Fatalf("Failed to create roomer: %v", err)
-		}
-
-		if err := DB.Model(&unit).Association("Owners").Append(&owner); err != nil {
-			log.Fatalf("Failed to assign owner to unit: %v", err)
-		}
-		if err := DB.Model(&unit).Association("Roomers").Append(&roomer); err != nil {
-			log.Fatalf("Failed to assign roomer to unit: %v", err)
-		}
 	}
 }
 
@@ -156,6 +134,7 @@ func SeedCoefficients(DB *gorm.DB) {
 		{Name: "Coeficiente Distribuible", Distributable: true},
 		{Name: "Coeficiente No Distribuible", Distributable: false},
 		{Name: "Coeficiente Distribuible 2", Distributable: true},
+		{Name: "Pago", Distributable: false},
 	}
 
 	for _, coefficient := range coefficients {
@@ -165,7 +144,7 @@ func SeedCoefficients(DB *gorm.DB) {
 
 // SeedConcepts seeds concepts
 func SeedConcepts(DB *gorm.DB) {
-	var coefDistribuible, coefNoDistribuible, coefDistribuible2 models.Coefficient
+	var coefDistribuible, coefNoDistribuible, coefDistribuible2, pago models.Coefficient
 
 	if err := DB.First(&coefDistribuible, "name = ?", "Coeficiente Distribuible").Error; err != nil {
 		log.Fatalf("Coeficiente Distribuible not found: %v", err)
@@ -178,14 +157,26 @@ func SeedConcepts(DB *gorm.DB) {
 	if err := DB.First(&coefDistribuible2, "name = ?", "Coeficiente Distribuible 2").Error; err != nil {
 		log.Fatalf("Coeficiente Distribuible 2 not found: %v", err)
 	}
+	if err := DB.First(&pago, "name = ?", "Pago").Error; err != nil {
+		log.Fatalf("Pago not found: %v", err)
+	}
 
 	concepts := []models.Concept{
-		{Name: "Concepto Debe 1", Priority: 1, Origin: "Debe", Type: "Tipo1", Description: "Descripción 1", CoefficientID: coefDistribuible.ID},
-		{Name: "Concepto Debe 2", Priority: 2, Origin: "Debe", Type: "Tipo2", Description: "Descripción 2", CoefficientID: coefDistribuible2.ID},
-		{Name: "Concepto Debe 3", Priority: 3, Origin: "Debe", Type: "Tipo3", Description: "Descripción 3", CoefficientID: coefNoDistribuible.ID},
-		{Name: "Concepto Haber 1", Priority: 1, Origin: "Haber", Type: "Tipo1", Description: "Descripción 1", CoefficientID: coefDistribuible.ID},
-		{Name: "Concepto Haber 2", Priority: 2, Origin: "Haber", Type: "Tipo2", Description: "Descripción 2", CoefficientID: coefNoDistribuible.ID},
-		{Name: "Concepto Haber 3", Priority: 4, Origin: "Haber", Type: "Tipo3", Description: "Descripción 3", CoefficientID: coefDistribuible2.ID},
+		{Name: "Expensas comunes", Priority: 1, Origin: "Debe", Type: "Gasto comun", Description: "Expensas de edificio", CoefficientID: coefDistribuible.ID},
+		{Name: "Servicio de Vigilancia", Priority: 2, Origin: "Debe", Type: "Gasto comun", Description: "Servicio de seguridad del edificio", CoefficientID: coefDistribuible.ID},
+		{Name: "Imp.Inmobiliario Provincial", Priority: 3, Origin: "Debe", Type: "Gasto comun", Description: "Impuesto provincial al inmueble", CoefficientID: coefDistribuible2.ID},
+		{Name: "Aguas Cordobesas", Priority: 3, Origin: "Debe", Type: "Gasto comun", Description: "Gastos de agua comunes del edificio", CoefficientID: coefDistribuible2.ID},
+		{Name: "EPEC", Priority: 3, Origin: "Debe", Type: "Gasto comun", Description: "Gastos de luz comunes del edificio", CoefficientID: coefDistribuible2.ID},
+
+		{Name: "Alquiler", Priority: 3, Origin: "Debe", Type: "Gasto comun", Description: "Alquiler de propiedad", CoefficientID: coefNoDistribuible.ID},
+		{Name: "Luz", Priority: 3, Origin: "Debe", Type: "Gasto comun", Description: "Gastos de luz de propiedad", CoefficientID: coefNoDistribuible.ID},
+		{Name: "Internet", Priority: 3, Origin: "Debe", Type: "Gasto comun", Description: "Servicio de conexion a internet", CoefficientID: coefNoDistribuible.ID},
+		{Name: "Reparaciones", Priority: 1, Origin: "Debe", Type: "Gasto extraordinario", Description: "Cobro por averías dentro de propiedad", CoefficientID: coefNoDistribuible.ID},
+
+		{Name: "Efectivo", Priority: 2, Origin: "Haber", Type: "Pago", Description: "Pago en efectivo a administrador", CoefficientID: pago.ID},
+		{Name: "Descuento", Priority: 1, Origin: "Haber", Type: "Descuento", Description: "Descuento otorgado a expensa", CoefficientID: pago.ID},
+		{Name: "Cheque", Priority: 3, Origin: "Haber", Type: "Pago", Description: "Cheque recibido por administrador", CoefficientID: pago.ID},
+		{Name: "Transferencia", Priority: 2, Origin: "Haber", Type: "Pago", Description: "Transferencia realizada", CoefficientID: pago.ID},
 	}
 
 	for _, concept := range concepts {
@@ -206,7 +197,7 @@ func SeedUnitCoefficients(DB *gorm.DB) {
 	}
 
 	var consortium models.Consortium
-	DB.First(&consortium, "name = ?", "Consorcio de Prueba")
+	DB.First(&consortium, "name = ?", "Edificio Prueba 42")
 
 	var units []models.Unit
 	DB.Where("consortium_id = ?", consortium.ID).Find(&units)
@@ -234,43 +225,10 @@ func SeedUnitCoefficients(DB *gorm.DB) {
 	}
 }
 
-// SeedConsortiumExpenses seeds consortium expenses
-func SeedConsortiumExpenses(DB *gorm.DB) {
-	var consortium models.Consortium
-	DB.First(&consortium, "name = ?", "Consorcio de Prueba")
-
-	expenses := []models.ConsortiumExpense{
-		{Description: "Gasto de Consorcio 1", BillNumber: 1, Amount: 1000.0, ConceptID: 1, ExpensePeriod: time.Now(), LiquidatePeriod: time.Now(), Distributed: false, ConsortiumID: consortium.ID},
-		{Description: "Gasto de Consorcio 2", BillNumber: 2, Amount: 2000.0, ConceptID: 2, ExpensePeriod: time.Now(), LiquidatePeriod: time.Now(), Distributed: false, ConsortiumID: consortium.ID},
-	}
-
-	for _, expense := range expenses {
-		DB.FirstOrCreate(&expense, models.ConsortiumExpense{BillNumber: expense.BillNumber})
-	}
-}
-
-// SeedUnitExpenses seeds unit expenses
-func SeedUnitExpenses(DB *gorm.DB) {
-	var consortium models.Consortium
-	DB.First(&consortium, "name = ?", "Consorcio de Prueba")
-
-	var unit models.Unit
-	DB.First(&unit, "consortium_id = ?", consortium.ID)
-
-	expenses := []models.UnitExpense{
-		{Description: "Gasto de Unidad 1", BillNumber: 1, Amount: 500.0, LeftToPay: 500.0, ConceptID: 1, ExpensePeriod: time.Now(), LiquidatePeriod: time.Now(), Liquidated: false, Paid: false, UnitID: unit.ID},
-		{Description: "Gasto de Unidad 2", BillNumber: 2, Amount: 1500.0, LeftToPay: 1500.0, ConceptID: 2, ExpensePeriod: time.Now(), LiquidatePeriod: time.Now(), Liquidated: false, Paid: false, UnitID: unit.ID},
-	}
-
-	for _, expense := range expenses {
-		DB.FirstOrCreate(&expense, models.UnitExpense{BillNumber: expense.BillNumber})
-	}
-}
-
 // SeedConsortiumServices seeds consortium services
 func SeedConsortiumServices(DB *gorm.DB) {
 	var consortium models.Consortium
-	DB.First(&consortium, "name = ?", "Consorcio de Prueba")
+	DB.First(&consortium, "name = ?", "Edificio Prueba 42")
 
 	services := []models.ConsortiumService{
 		{
@@ -301,7 +259,7 @@ func SeedConsortiumServices(DB *gorm.DB) {
 // SeedDocuments seeds documents
 func SeedDocuments(DB *gorm.DB) {
 	var consortium models.Consortium
-	DB.First(&consortium, "name = ?", "Consorcio de Prueba")
+	DB.First(&consortium, "name = ?", "Edificio Prueba 42")
 
 	var unit models.Unit
 	DB.First(&unit, "consortium_id = ?", consortium.ID)
@@ -353,57 +311,6 @@ func SeedNotifications(DB *gorm.DB) {
 	}
 }
 
-// SeedPayments seeds payments
-func SeedPayments(DB *gorm.DB) {
-	var unitExpense models.UnitExpense
-	DB.First(&unitExpense, "bill_number = ?", 1)
-
-	var transaction models.Transaction
-	DB.First(&transaction, "unit_ledger_id = ?", unitExpense.UnitID)
-
-	payments := []models.Payment{
-		{
-			Amount:        100.0,
-			Description:   "Pago parcial del Gasto de Unidad 1",
-			UnitExpenseID: &unitExpense.ID,
-			TransactionID: transaction.ID,
-		},
-		{
-			Amount:        200.0,
-			Description:   "Pago parcial del Gasto de Unidad 2",
-			UnitExpenseID: &unitExpense.ID,
-			TransactionID: transaction.ID,
-		},
-	}
-
-	for _, payment := range payments {
-		DB.FirstOrCreate(&payment, models.Payment{Description: payment.Description})
-	}
-}
-
-// SeedTransactions seeds transactions
-func SeedTransactions(DB *gorm.DB) {
-	var unitLedger models.UnitLedger
-	DB.First(&unitLedger, "unit_id = ?", 1)
-
-	var concept models.Concept
-	DB.First(&concept, "name = ?", "Concepto Debe 1")
-
-	transactions := []models.Transaction{
-		{
-			UnitLedgerID: unitLedger.ID,
-			Amount:       100.0,
-			Description:  "Transacción inicial",
-			Date:         time.Now(),
-			ConceptID:    concept.ID,
-		},
-	}
-
-	for _, transaction := range transactions {
-		DB.FirstOrCreate(&transaction, models.Transaction{Description: transaction.Description})
-	}
-}
-
 func SeedData(DB *gorm.DB) {
 	SeedRoles(DB)
 	SeedAdminUser(DB)
@@ -413,11 +320,7 @@ func SeedData(DB *gorm.DB) {
 	SeedCoefficients(DB)
 	SeedConcepts(DB)
 	SeedUnitCoefficients(DB)
-	SeedConsortiumExpenses(DB)
-	SeedUnitExpenses(DB)
 	SeedConsortiumServices(DB)
 	SeedDocuments(DB)
 	SeedNotifications(DB)
-	SeedPayments(DB)
-	SeedTransactions(DB)
 }

@@ -107,3 +107,13 @@ Para cualquier consulta o sugerencia, puede contactar al desarrollador:
 
 - **Correo Electrónico**: <facundoalejan@hotmail.com>
 - **LinkedIn**: <https://www.linkedin.com/in/facundo-alejandro-flores/>
+
+
+
+docker run --name db `
+  -e POSTGRES_USER=postgres `
+  -e POSTGRES_PASSWORD=postgres `
+  -e POSTGRES_DB=SeminarioFF `
+  -v pgdata:/var/lib/postgresql/data `
+  -p 5432:5432 `
+  -d postgres:latest

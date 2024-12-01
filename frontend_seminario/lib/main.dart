@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:frontend_seminario/theme/theme.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
 import 'package:frontend_seminario/routes/app_router.dart';
+import 'package:intl/date_symbol_data_local.dart'; 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('es', null); 
   runApp(MyApp());
 }
 

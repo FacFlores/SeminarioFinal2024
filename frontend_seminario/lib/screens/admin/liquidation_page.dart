@@ -39,8 +39,6 @@ class LiquidationPageState extends State<LiquidationPage> {
           _consortiums = jsonDecode(response.body);
         });
       }
-    } else {
-      print('Error loading consortiums: ${response.body}');
     }
   }
 
@@ -52,8 +50,6 @@ class LiquidationPageState extends State<LiquidationPage> {
           _units = jsonDecode(response.body);
         });
       }
-    } else {
-      print('Error loading units by consortium: ${response.body}');
     }
   }
 
@@ -96,10 +92,7 @@ class LiquidationPageState extends State<LiquidationPage> {
           }).toList();
         });
       }
-    } else {
-      print('Error loading unit expenses: ${response.body}');
     }
-
     if (mounted) {
       setState(() {
         _isLoading = false;
@@ -140,7 +133,6 @@ class LiquidationPageState extends State<LiquidationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Fallo al liquidar expensas')),
         );
-        print('Error liquidating expenses: ${response.body}');
       }
 
       setState(() {
@@ -216,16 +208,21 @@ class LiquidationPageState extends State<LiquidationPage> {
                   ),
                 ),
                 value: _selectedUnitId,
-                items: _units.map<DropdownMenuItem<int>>((unit) {
-                  return DropdownMenuItem<int>(
-                    value: unit['ID'],
-                    child: Text(unit['name'], style: AppTheme.textSmall),
-                  );
-                }).toList(),
-                onChanged: (value) {
+                items: [
+                  const DropdownMenuItem<int>(
+                    value: null,
+                    child: Text('Todas', style: AppTheme.textSmall),
+                  ),
+                  ..._units.map<DropdownMenuItem<int>>((unit) {
+                    return DropdownMenuItem<int>(
+                      value: unit['ID'],
+                      child: Text(unit['name'], style: AppTheme.textSmall),
+                    );
+                  }),
+                ],
+                onChanged: (int? value) {
                   setState(() {
                     _selectedUnitId = value;
-                    _loadExpenses();
                   });
                 },
               ),

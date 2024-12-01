@@ -8,29 +8,11 @@ import (
 )
 
 func GetDashboardSummary(c *gin.Context) {
-	summary, err := services.GetDashboardSummary()
+	dashboardData, err := services.GetAdminDashboardData()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	c.JSON(http.StatusOK, dashboardData)
 
-	consortiumMetrics, err := services.GetConsortiumMetrics()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	unitMetrics, err := services.GetUnitMetrics()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	response := map[string]interface{}{
-		"summary":           summary,
-		"consortiumMetrics": consortiumMetrics,
-		"unitMetrics":       unitMetrics,
-	}
-
-	c.JSON(http.StatusOK, response)
 }

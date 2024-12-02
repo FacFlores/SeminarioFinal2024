@@ -134,8 +134,16 @@ class _UserDrawerState extends State<UserDrawer> {
             },
           ),
           ListTile(
-            leading:
-                const Icon(Icons.document_scanner, color: AppTheme.accentColor),
+            leading: const Icon(Icons.attach_money_rounded,
+                color: AppTheme.accentColor),
+            title: const Text('Comprobante de Expensas'),
+            onTap: () {
+              context.go('/user/documents/expensesPending');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.file_present_outlined,
+                color: AppTheme.accentColor),
             title: const Text('Documentos'),
             onTap: () {
               context.go('/user/documents');

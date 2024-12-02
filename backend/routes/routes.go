@@ -184,11 +184,16 @@ func SetupRoutes(router *gin.Engine) {
 
 	router.GET("/dashboard/summary", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.GetDashboardSummary)
 
-	//TODO POSTMAN THIS
+	// Documents routes
 	documents := router.Group("/documents")
 	{
-		documents.POST("", controllers.UploadDocument)
-		documents.GET("/:id", controllers.GetDocumentByID)
+		documents.GET("/:document_id", middlewares.AuthMiddleware(), controllers.ServeDocument)
+		documents.POST("/upload", middlewares.AuthMiddleware(), controllers.UploadDocument)
+		documents.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetDocumentsByConsortium)
+		documents.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetDocumentsByUnit)
+		documents.GET("/name/:document_name", middlewares.AuthMiddleware(), controllers.GetDocumentByName)
+		documents.GET("", middlewares.AuthMiddleware(), controllers.GetAllDocuments)
+		documents.DELETE("/:document_id", middlewares.AuthMiddleware(), controllers.DeleteDocumentByID)
 
 	}
 

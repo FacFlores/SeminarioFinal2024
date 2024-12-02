@@ -256,36 +256,6 @@ func SeedConsortiumServices(DB *gorm.DB) {
 	}
 }
 
-// SeedDocuments seeds documents
-func SeedDocuments(DB *gorm.DB) {
-	var consortium models.Consortium
-	DB.First(&consortium, "name = ?", "Edificio Prueba 42")
-
-	var unit models.Unit
-	DB.First(&unit, "consortium_id = ?", consortium.ID)
-
-	documents := []models.Document{
-		{
-			Name:         "Reglamento Interno",
-			ContentType:  "application/pdf",
-			Content:      []byte("Contenido del Reglamento Interno"),
-			Visibility:   models.ConsortiumVisibility,
-			ConsortiumID: &consortium.ID,
-		},
-		{
-			Name:        "Manual de Uso del Ascensor",
-			ContentType: "application/pdf",
-			Content:     []byte("Contenido del Manual de Uso del Ascensor"),
-			Visibility:  models.UnitVisibility,
-			UnitID:      &unit.ID,
-		},
-	}
-
-	for _, document := range documents {
-		DB.FirstOrCreate(&document, models.Document{Name: document.Name})
-	}
-}
-
 func SeedData(DB *gorm.DB) {
 	SeedRoles(DB)
 	SeedAdminUser(DB)
@@ -296,5 +266,4 @@ func SeedData(DB *gorm.DB) {
 	SeedConcepts(DB)
 	SeedUnitCoefficients(DB)
 	SeedConsortiumServices(DB)
-	SeedDocuments(DB)
 }

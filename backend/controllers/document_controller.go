@@ -1,61 +1,123 @@
 package controllers
 
 import (
-	"backend/models"
 	"backend/services"
-	"io/ioutil"
+	"fmt"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-// UploadDocument creates and stores a PDF document
 func UploadDocument(c *gin.Context) {
-	file, header, err := c.Request.FormFile("file")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
+	var input struct {
+		ConsortiumID *uint  `form:"consortium_id"`
+		UnitID       *uint  `form:"unit_id"`
+		DocumentType string `form:"document_type"`
+		Name         string `form:"name" binding:"required"`
+	}
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	defer file.Close()
-
-	content, err := ioutil.ReadAll(file)
+	fmt.Printf("Received input: %+v\n", input)
+	file, _, err := c.Request.FormFile("file")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read uploaded file"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file upload"})
 		return
 	}
-
-	// Example: You can extract visibility from the request or determine it based on the user's role
-	visibility := c.PostForm("visibility")
-
-	// Create document model instance
-	document := models.Document{
-		Name:        header.Filename,
-		ContentType: header.Header.Get("Content-Type"),
-		Content:     content,
-		Visibility:  visibility,
-	}
-
-	// Save the document
-	savedDocument, err := services.CreateDocument(document)
+	fmt.Println("File received:", file)
+	document, err := services.UploadDocument(input.ConsortiumID, input.UnitID, input.DocumentType, input.Name, file)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save document"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(http.StatusOK, savedDocument)
+	c.JSON(http.StatusOK, document)
 }
 
-// GetDocumentByID retrieves a document by its ID
-func GetDocumentByID(c *gin.Context) {
-	id := c.Param("id")
+func GetDocumentsByConsortium(c *gin.Context) {
+	consortiumID, err := strconv.Atoi(c.Param("consortium_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid consortium ID"})
+		return
+	}
+	documents, err := services.GetDocumentsByConsortium(uint(consortiumID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, documents)
+}
+func GetDocumentsByUnit(c *gin.Context) {
+	unitID, err := strconv.Atoi(c.Param("unit_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid unit ID"})
+		return
+	}
+	documents, err := services.GetDocumentsByUnit(uint(unitID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, documents)
+}
 
-	document, err := services.GetDocumentByID(id)
+func GetDocumentByName(c *gin.Context) {
+	documentName := c.Param("document_name")
+	document, err := services.GetDocumentByName(documentName)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, document)
+}
+
+func GetAllDocuments(c *gin.Context) {
+	documents, err := services.GetAllDocuments()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, documents)
+}
+
+func DeleteDocumentByID(c *gin.Context) {
+	documentID, err := strconv.Atoi(c.Param("document_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid document ID"})
+		return
+	}
+	err = services.DeleteDocumentByID(uint(documentID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Document deleted successfully"})
+}
+
+func ServeDocument(c *gin.Context) {
+	documentID, err := strconv.Atoi(c.Param("document_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid document ID"})
+		return
+	}
+
+	document, err := services.GetDocumentByID(uint(documentID))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Document not found"})
 		return
 	}
 
-	// Serve the document content as a downloadable file
+	file, err := os.Open(document.FilePath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open document file"})
+		return
+	}
+	defer file.Close()
+	c.Header("Content-Type", "application/pdf")
 	c.Header("Content-Disposition", "attachment; filename="+document.Name)
-	c.Data(http.StatusOK, document.ContentType, document.Content)
+	http.ServeContent(c.Writer, c.Request, document.Name, time.Now(), file)
 }

@@ -226,6 +226,15 @@ class _AdminDrawerState extends State<AdminDrawer> {
               context.go('/admin/notifications');
             },
           ),
+                    ListTile(
+            leading:
+                const Icon(Icons.file_present_outlined, color: AppTheme.accentColor),
+            title: const Text('Documentos', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/documents');
+            },
+          ),
+
           ListTile(
             leading: const Icon(Icons.logout, color: AppTheme.accentColor),
             title: const Text('Logout'),

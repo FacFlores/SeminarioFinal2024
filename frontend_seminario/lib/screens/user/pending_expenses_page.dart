@@ -78,7 +78,7 @@ class PendingExpensesPageState extends State<PendingExpensesPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Pending Expenses',
+      title: 'Expensas a Pagar',
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(

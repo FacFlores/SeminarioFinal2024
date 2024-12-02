@@ -24,6 +24,12 @@ dependencies:
   printing: ^5.13.1
   universal_html: ^2.2.4
   fl_chart: ^0.69.2
+  file_picker: ^8.1.4
+  flutter_pdfview: ^1.0.0
+  dio: ^5.0.0
+  path_provider: ^2.0.11
+  open_file: ^3.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

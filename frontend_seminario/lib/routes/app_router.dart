@@ -2,6 +2,7 @@ import 'package:frontend_seminario/screens/admin/admin_notification.dart';
 import 'package:frontend_seminario/screens/admin/assign_coefficients_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_list_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_units_page.dart';
+import 'package:frontend_seminario/screens/admin/documents_page.dart';
 import 'package:frontend_seminario/screens/admin/liquidation_page.dart';
 import 'package:frontend_seminario/screens/admin/manage_coefficients_page.dart';
 import 'package:frontend_seminario/screens/admin/manage_concepts_page.dart';
@@ -11,6 +12,7 @@ import 'package:frontend_seminario/screens/admin/owner_roomer_managment_page.dar
 import 'package:frontend_seminario/screens/admin/automatic_payment_page.dart';
 import 'package:frontend_seminario/screens/admin/unit_ledger_page.dart';
 import 'package:frontend_seminario/screens/admin/user_managment_page.dart';
+import 'package:frontend_seminario/screens/user/documents_page.dart';
 import 'package:frontend_seminario/screens/user/pdf_generation_page.dart';
 import 'package:frontend_seminario/screens/user/pending_expenses_page.dart';
 import 'package:frontend_seminario/screens/user/unit_detail_page.dart';
@@ -256,7 +258,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/user/documents',
+        path: '/user/documents/expensesPending',
         builder: (context, state) => const PdfGenerationPage(),
         redirect: (context, state) async {
           final user = await _storageService.getUserData();
@@ -283,6 +285,24 @@ class AppRouter {
           final user = await _storageService.getUserData();
           return user != null ? null : '/login';
         },
+      ),
+
+      GoRoute(
+        path: '/admin/documents',
+        builder: (context, state) => const AdminDocumentsPage(),
+        redirect: (context, state) async {
+          final user = await _storageService.getUserData();
+          return user != null ? null : '/login';
+        },
+      ),
+      GoRoute(
+        path: '/user/documents',
+        builder: (context, state) => const UserDocumentsPage(),
+        redirect: (context, state) async {
+           final user = await _storageService.getUserData();
+          return user != null ? null : '/login';
+        },
+
       ),
 
       // Fallback route for unknown paths

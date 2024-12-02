@@ -3,6 +3,7 @@ import 'package:frontend_seminario/theme/theme.dart';
 import 'package:frontend_seminario/components/admin_drawer.dart';
 import 'package:frontend_seminario/components/user_drawer.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
 
 class BaseScaffold extends StatelessWidget {
   final String title;
@@ -28,6 +29,15 @@ class BaseScaffold extends StatelessWidget {
         ),
         backgroundColor: AppTheme.primaryColor,
         iconTheme: const IconThemeData(color: AppTheme.accentColor),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              final route = isAdmin ? '/admin/notifications' : '/user/notifications';
+              context.go(route);
+            },
+          ),
+        ],
       ),
       drawer: isAdmin
           ? AdminDrawer(storageService: storageService)

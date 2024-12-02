@@ -1,3 +1,4 @@
+import 'package:frontend_seminario/screens/admin/admin_notification.dart';
 import 'package:frontend_seminario/screens/admin/assign_coefficients_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_list_page.dart';
 import 'package:frontend_seminario/screens/admin/consortiums/consortium_units_page.dart';
@@ -13,6 +14,7 @@ import 'package:frontend_seminario/screens/admin/user_managment_page.dart';
 import 'package:frontend_seminario/screens/user/pdf_generation_page.dart';
 import 'package:frontend_seminario/screens/user/pending_expenses_page.dart';
 import 'package:frontend_seminario/screens/user/unit_detail_page.dart';
+import 'package:frontend_seminario/screens/user/user_notification.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend_seminario/screens/login_screen.dart';
 import 'package:frontend_seminario/screens/register_screen.dart';
@@ -256,6 +258,27 @@ class AppRouter {
       GoRoute(
         path: '/user/documents',
         builder: (context, state) => const PdfGenerationPage(),
+        redirect: (context, state) async {
+          final user = await _storageService.getUserData();
+          return user != null ? null : '/login';
+        },
+      ),
+
+      GoRoute(
+        path: '/admin/notifications',
+        builder: (context, state) => const AdminNotificationsPage(),
+        redirect: (context, state) async {
+          final admin = await _isAdmin();
+          if (!admin) {
+            return '/';
+          }
+          return null;
+        },
+      ),
+
+      GoRoute(
+        path: '/user/notifications',
+        builder: (context, state) => const UserNotificationsPage(),
         redirect: (context, state) async {
           final user = await _storageService.getUserData();
           return user != null ? null : '/login';

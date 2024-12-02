@@ -142,6 +142,14 @@ class _UserDrawerState extends State<UserDrawer> {
             },
           ),
           ListTile(
+            leading:
+                const Icon(Icons.notifications, color: AppTheme.accentColor),
+            title: const Text('Notificaciones', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/user/notifications');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.logout, color: AppTheme.accentColor),
             title: const Text('Logout'),
             onTap: _handleLogout,

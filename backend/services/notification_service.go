@@ -15,10 +15,9 @@ func CreateNotification(notification models.Notification) (models.Notification, 
 
 func GetNotificationsByUser(userID string) ([]models.Notification, error) {
 	var notifications []models.Notification
-	if err := config.DB.Preload("SenderUser"). // Preloading sender details
-							Where("target_user_id = ?", userID).
-							Or("target_role IS NOT NULL").
-							Find(&notifications).Error; err != nil {
+	if err := config.DB.Preload("SenderUser").
+		Where("target_user_id = ?", userID).
+		Find(&notifications).Error; err != nil {
 		return nil, err
 	}
 	return notifications, nil

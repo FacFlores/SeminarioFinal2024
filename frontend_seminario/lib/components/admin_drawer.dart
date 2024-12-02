@@ -166,9 +166,9 @@ class _AdminDrawerState extends State<AdminDrawer> {
             ],
           ),
           ListTile(
-            leading: const Icon(Icons.wallet,
-                color: AppTheme.accentColor),
-            title: const Text('Balance de Unidades', style: AppTheme.textMedium),
+            leading: const Icon(Icons.wallet, color: AppTheme.accentColor),
+            title:
+                const Text('Balance de Unidades', style: AppTheme.textMedium),
             onTap: () {
               context.go('/admin/unit-balances');
             },
@@ -216,6 +216,14 @@ class _AdminDrawerState extends State<AdminDrawer> {
                 const Text('Asignar Porcentajes', style: AppTheme.textMedium),
             onTap: () {
               context.go('/admin/unit-coefficients');
+            },
+          ),
+          ListTile(
+            leading:
+                const Icon(Icons.notifications, color: AppTheme.accentColor),
+            title: const Text('Notificaciones', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/notifications');
             },
           ),
           ListTile(

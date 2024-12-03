@@ -87,11 +87,6 @@ func SetupRoutes(router *gin.Engine) {
 		consortiums.PUT("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateConsortium)
 		consortiums.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteConsortium)
 		consortiums.GET("/unit/:unit_id", middlewares.AuthMiddleware(), controllers.GetConsortiumByUnit)
-		//TODO POSTMAN THIS
-		consortiums.POST("/consortium_services", controllers.CreateConsortiumService)
-		consortiums.GET("/consortium_services/:consortium_id/services", controllers.GetConsortiumServices)
-		consortiums.PUT("/consortium_services/:service_id/status", controllers.UpdateConsortiumServiceStatus)
-		consortiums.PUT("/consortium_services/:service_id/next_maintenance", controllers.ScheduleNextMaintenance)
 		consortiums.POST("/units-with-coefficients", controllers.GetUnitsWithCoefficients)
 
 	}
@@ -110,8 +105,8 @@ func SetupRoutes(router *gin.Engine) {
 		units.PUT("/remove-roomer/:unit_id/:roomer_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RemoveRoomerFromUnit) // PUT /units/remove-roomer/:unit_id/:roomer_id
 		units.POST("/name", middlewares.AuthMiddleware(), controllers.GetUnitByName)
 		units.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetUnitsByConsortium)
-		units.GET("/:id/owners", middlewares.AuthMiddleware(), controllers.GetOwnersByUnitID)   // New endpoint
-		units.GET("/:id/roomers", middlewares.AuthMiddleware(), controllers.GetRoomersByUnitID) // New endpoint
+		units.GET("/:id/owners", middlewares.AuthMiddleware(), controllers.GetOwnersByUnitID)
+		units.GET("/:id/roomers", middlewares.AuthMiddleware(), controllers.GetRoomersByUnitID)
 
 	}
 
@@ -147,7 +142,7 @@ func SetupRoutes(router *gin.Engine) {
 		ledger.POST("/transaction", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.RecordTransaction)
 		ledger.GET("/balance/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitBalance)
 		ledger.GET("/transactions/:unit_id", middlewares.AuthMiddleware(), controllers.GetUnitTransactions)
-		ledger.DELETE("/soft-delete/:unit_id", controllers.SoftDeleteUnitLedgerByUnitID)
+		ledger.DELETE("/soft-delete/:unit_id", middlewares.AuthMiddleware(), controllers.SoftDeleteUnitLedgerByUnitID)
 
 	}
 
@@ -209,7 +204,36 @@ func SetupRoutes(router *gin.Engine) {
 		notifications.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetNotificationsByTargetConsortium)
 	}
 
+	// Service Management Routes
+	services := router.Group("/services")
+	{
+		services.POST("/", middlewares.AuthMiddleware(), controllers.CreateServiceForConsortium)
+		services.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetServicesByConsortium)
+		services.GET("/", middlewares.AuthMiddleware(), controllers.GetAllServices)
+		services.PUT("/:service_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateService)
+		services.DELETE("/:service_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteServiceByID)
+	}
+
+	// Spaces Management Routes
+	spaces := router.Group("/spaces")
+	{
+		spaces.POST("", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.CreateSpace)
+		spaces.GET("/consortium/:consortium_id", middlewares.AuthMiddleware(), controllers.GetSpacesByConsortium)
+		spaces.PUT("/:space_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.UpdateSpace)
+		spaces.DELETE("/:space_id", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), controllers.DeleteSpace)
+	}
+
+	// Reservations routes
+	reservations := router.Group("/reservations")
+	{
+		reservations.GET("", middlewares.AuthMiddleware(), controllers.GetAllReservations)
+		reservations.POST("", middlewares.AuthMiddleware(), controllers.CreateReservation)
+		reservations.GET("/history", middlewares.AuthMiddleware(), controllers.GetReservationHistory)
+		reservations.DELETE("/:reservation_id", middlewares.AuthMiddleware(), controllers.DeleteReservation)
+
+	}
+
 	// Health check route
-	router.GET("/health-check", controllers.HealthCheck) // GET /health-check
+	router.GET("/health-check", controllers.HealthCheck)
 
 }

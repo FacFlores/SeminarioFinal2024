@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'base_api_service.dart';
-import 'dart:html' as html;
 
 class DocumentApiService extends BaseApiService {
   static Future<http.Response> getAllDocuments() async {

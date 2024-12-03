@@ -50,7 +50,8 @@ class PdfGenerationPageState extends State<PdfGenerationPage> {
             final unitId = unit['ID'];
             final unitName = unit['name'];
             _unitExpenses[unitName] = expenses.where((expense) {
-              return expense['unit_id'] == unitId;
+              return expense['unit_id'] == unitId && expense['paid'] == false;
+
             }).toList();
           }
 
@@ -133,9 +134,9 @@ class PdfGenerationPageState extends State<PdfGenerationPage> {
                 'Descripción',
                 'Monto',
                 'Pendiente',
-                'Número de Factura',
-                'Fecha de Gasto',
-                'Fecha de Liquidación'
+                'N.º',
+                'Fecha Gasto',
+                'Fecha Liquidación'
               ],
               data: expenses.map((expense) {
                 return [

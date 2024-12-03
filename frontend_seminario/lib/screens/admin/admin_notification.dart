@@ -145,7 +145,7 @@ class _AdminNotificationsPageState extends State<AdminNotificationsPage> {
 
   List<dynamic> get _filteredNotifications => _notifications
       .where((notification) =>
-          notification['is_read'] == !_showUnread) // Filter by read status
+          notification['is_read'] == !_showUnread)
       .toList();
 
 void _showCreateNotificationModal() {
@@ -250,7 +250,6 @@ void _showCreateNotificationModal() {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Title Input
                     TextFormField(
                       controller: titleController,
                       style: AppTheme.textMedium,
@@ -272,8 +271,6 @@ void _showCreateNotificationModal() {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Message Input
                     TextFormField(
                       controller: messageController,
                       style: AppTheme.textMedium,
@@ -295,8 +292,6 @@ void _showCreateNotificationModal() {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Consortium Dropdown
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
                         labelText: 'Seleccione un Consorcio (Opcional)',
@@ -330,8 +325,6 @@ void _showCreateNotificationModal() {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Unit Dropdown
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
                         labelText: 'Seleccione una Propiedad',
@@ -359,8 +352,6 @@ void _showCreateNotificationModal() {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // User Dropdown
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
                         labelText: 'Seleccione un Usuario (Opcional)',
@@ -387,8 +378,6 @@ void _showCreateNotificationModal() {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Role Dropdown
                     DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Tipo de Usuario (Opcional)',

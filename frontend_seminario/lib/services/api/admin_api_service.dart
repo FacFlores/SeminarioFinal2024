@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'base_api_service.dart';
 
 class AdminApiService {
-  // Admin Login
   static Future<http.Response> adminLogin(String email, String password) async {
     return http.post(
       Uri.parse('${BaseApiService.baseUrl}/users/login'),
@@ -12,7 +11,6 @@ class AdminApiService {
     );
   }
 
-  // Register Admin
   static Future<http.Response> registerAdmin(Map<String, dynamic> adminData) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.post(
@@ -22,7 +20,6 @@ class AdminApiService {
     );
   }
 
-  // Toggle User Status
   static Future<http.Response> toggleUserStatus(int userId, Map<String, dynamic> userData) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.put(
@@ -32,7 +29,6 @@ class AdminApiService {
     );
   }
 
-  // Delete User from Database
   static Future<http.Response> deleteUser(int userId) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.delete(
@@ -41,7 +37,6 @@ class AdminApiService {
     );
   }
 
-  // Get All Admins
   static Future<http.Response> getAllAdmins() async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.get(

@@ -117,3 +117,10 @@ docker run --name db `
   -v pgdata:/var/lib/postgresql/data `
   -p 5432:5432 `
   -d postgres:latest
+
+
+
+
+
+
+  https://docs.google.com/presentation/d/1ILuLKzxNKqVxF4DZ8JxYfv17PNfMldbcqUSd_Lz7JtI/edit#slide=id.g133f6155f6d_0_30

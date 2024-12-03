@@ -157,6 +157,23 @@ class _UserDrawerState extends State<UserDrawer> {
               context.go('/user/notifications');
             },
           ),
+                              ListTile(
+            leading:
+                const Icon(Icons.room_service_sharp, color: AppTheme.accentColor),
+            title: const Text('Estado de Servicios', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/user/services');
+            },
+          ),
+                    ListTile(
+            leading:
+                const Icon(Icons.calendar_month_outlined, color: AppTheme.accentColor),
+            title: const Text('Reservas', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/user/reserves');
+            },
+          ),
+
           ListTile(
             leading: const Icon(Icons.logout, color: AppTheme.accentColor),
             title: const Text('Logout'),

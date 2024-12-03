@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'base_api_service.dart';
 
 class CoefficientApiService extends BaseApiService {
-  // Get All Coefficients
   static Future<http.Response> getAllCoefficients() async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.get(
@@ -12,7 +11,6 @@ class CoefficientApiService extends BaseApiService {
     );
   }
 
-  // Create Coefficient
   static Future<http.Response> createCoefficient(Map<String, dynamic> coefficientData) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.post(
@@ -22,7 +20,6 @@ class CoefficientApiService extends BaseApiService {
     );
   }
 
-  // Get Coefficient By ID
   static Future<http.Response> getCoefficientById(int coefficientId) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.get(
@@ -31,7 +28,6 @@ class CoefficientApiService extends BaseApiService {
     );
   }
 
-  // Delete Coefficient
   static Future<http.Response> deleteCoefficient(int coefficientId) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.delete(
@@ -40,7 +36,6 @@ class CoefficientApiService extends BaseApiService {
     );
   }
 
-  // Edit Coefficient
   static Future<http.Response> editCoefficient(int coefficientId, Map<String, dynamic> coefficientData) async {
     final headers = await BaseApiService.getCommonHeaders();
     return http.put(

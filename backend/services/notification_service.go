@@ -65,7 +65,6 @@ func MarkNotificationAsRead(notificationID uint) error {
 	return nil
 }
 
-// DeleteNotification deletes a notification
 func DeleteNotification(notificationID uint) error {
 	if err := config.DB.Delete(&models.Notification{}, notificationID).Error; err != nil {
 		return err

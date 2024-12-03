@@ -1,4 +1,3 @@
-// lib/components/admin_drawer.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -232,6 +231,22 @@ class _AdminDrawerState extends State<AdminDrawer> {
             title: const Text('Documentos', style: AppTheme.textMedium),
             onTap: () {
               context.go('/admin/documents');
+            },
+          ),
+                    ListTile(
+            leading:
+                const Icon(Icons.room_service_sharp, color: AppTheme.accentColor),
+            title: const Text('Estado de Servicios', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/services');
+            },
+          ),
+                    ListTile(
+            leading:
+                const Icon(Icons.calendar_month_outlined, color: AppTheme.accentColor),
+            title: const Text('Reservas', style: AppTheme.textMedium),
+            onTap: () {
+              context.go('/admin/reserves');
             },
           ),
 

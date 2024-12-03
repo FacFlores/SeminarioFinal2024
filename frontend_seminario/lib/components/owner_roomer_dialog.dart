@@ -31,9 +31,7 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
       setState(() {
         owners = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _loadRoomers() async {
@@ -42,44 +40,34 @@ class OwnerRoomerDialogState extends State<OwnerRoomerDialog> {
       setState(() {
         roomers = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _assignOwner(int ownerId) async {
     final response = await UnitApiService.assignOwner(widget.unitId, ownerId);
     if (response.statusCode == 200) {
-      _loadOwners(); // Refresh list after assignment
-    } else {
-      // Handle errors
+      _loadOwners();
     }
   }
 
   Future<void> _removeOwner(int ownerId) async {
     final response = await UnitApiService.removeOwner(widget.unitId, ownerId);
     if (response.statusCode == 200) {
-      _loadOwners(); // Refresh list after removal
-    } else {
-      // Handle errors
-    }
+      _loadOwners();
+    } 
   }
 
   Future<void> _assignRoomer(int roomerId) async {
     final response = await UnitApiService.assignRoomer(widget.unitId, roomerId);
     if (response.statusCode == 200) {
-      _loadRoomers(); // Refresh list after assignment
-    } else {
-      // Handle errors
-    }
+      _loadRoomers(); 
+    } 
   }
 
   Future<void> _removeRoomer(int roomerId) async {
     final response = await UnitApiService.removeRoomer(widget.unitId, roomerId);
     if (response.statusCode == 200) {
-      _loadRoomers(); // Refresh list after removal
-    } else {
-      // Handle errors
+      _loadRoomers();
     }
   }
 
@@ -175,9 +163,7 @@ class SelectOwnerDialogState extends State<SelectOwnerDialog> {
       setState(() {
         owners = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   @override
@@ -225,9 +211,7 @@ class SelectRoomerDialogState extends State<SelectRoomerDialog> {
       setState(() {
         roomers = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   @override

@@ -29,5 +29,5 @@ type ConsortiumService struct {
 	ScheduledDate   time.Time  `json:"scheduled_date" gorm:"not null"`
 	NextMaintenance time.Time  `json:"next_maintenance"`
 	ExpiryDate      time.Time  `json:"expiry_date"`
-	Status          string     `json:"status" gorm:"not null"` // e.g., "Scheduled", "Completed", "Overdue"
+	Status          string     `json:"status" gorm:"not null"`
 }

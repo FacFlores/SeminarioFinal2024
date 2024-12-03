@@ -76,35 +76,3 @@ func UpdateConsortium(id uint, updatedData models.Consortium) (models.Consortium
 
 	return consortium, nil
 }
-
-func CreateConsortiumService(consortiumID uint, name, description string, scheduledDate, expiryDate time.Time) (*models.ConsortiumService, error) {
-	service := models.ConsortiumService{
-		ConsortiumID:    consortiumID,
-		Name:            name,
-		Description:     description,
-		ScheduledDate:   scheduledDate,
-		NextMaintenance: scheduledDate, // Assuming first maintenance is the scheduled date
-		ExpiryDate:      expiryDate,
-		Status:          "Completed",
-	}
-	if err := config.DB.Create(&service).Error; err != nil {
-		return nil, err
-	}
-	return &service, nil
-}
-
-func GetConsortiumServices(consortiumID uint) ([]models.ConsortiumService, error) {
-	var services []models.ConsortiumService
-	if err := config.DB.Where("consortium_id = ?", consortiumID).Find(&services).Error; err != nil {
-		return nil, err
-	}
-	return services, nil
-}
-
-func UpdateConsortiumServiceStatus(serviceID uint, status string) error {
-	return config.DB.Model(&models.ConsortiumService{}).Where("id = ?", serviceID).Update("status", status).Error
-}
-
-func ScheduleNextMaintenance(serviceID uint, nextMaintenance time.Time) error {
-	return config.DB.Model(&models.ConsortiumService{}).Where("id = ?", serviceID).Update("next_maintenance", nextMaintenance).Error
-}

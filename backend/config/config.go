@@ -21,10 +21,8 @@ func ConnectDatabase() {
 	dbSSLMode := utils.GetEnv("DB_SSLMODE", "disable")
 	dbPassword := utils.GetEnv("DB_PASSWORD", "postgres")
 
-	// Form the connection string
 	dsn := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=%s password=%s", dbHost, dbUser, dbName, dbSSLMode, dbPassword)
 
-	// Connect to the database
 	var err error
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -32,7 +30,7 @@ func ConnectDatabase() {
 	}
 
 	fmt.Println("Database connected")
-	DB.AutoMigrate(&models.User{}, &models.Role{}, &models.Owner{}, &models.Roomer{}, &models.Consortium{}, &models.Unit{}, &models.Coefficient{}, &models.Concept{}, &models.UnitCoefficient{}, &models.UnitExpense{}, &models.ConsortiumExpense{}, &models.UnitLedger{}, &models.Transaction{}, &models.Payment{}, &models.ConsortiumService{}, &models.Notification{}, &models.Document{})
+	DB.AutoMigrate(&models.User{}, &models.Role{}, &models.Owner{}, &models.Roomer{}, &models.Consortium{}, &models.Unit{}, &models.Coefficient{}, &models.Concept{}, &models.UnitCoefficient{}, &models.UnitExpense{}, &models.ConsortiumExpense{}, &models.UnitLedger{}, &models.Transaction{}, &models.Payment{}, &models.ConsortiumService{}, &models.Notification{}, &models.Document{}, &models.Service{}, &models.Space{}, &models.Reservation{})
 	database.SeedData(DB)
 
 }

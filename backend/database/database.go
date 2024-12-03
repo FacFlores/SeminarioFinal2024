@@ -22,8 +22,6 @@ func SeedRoles(DB *gorm.DB) {
 	}
 }
 
-// / TEST DATA :D ///
-// SeedAdminUser seeds an admin user
 func SeedAdminUser(DB *gorm.DB) {
 	var adminRole models.Role
 	if err := DB.First(&adminRole, "name = ?", "Admin").Error; err != nil {
@@ -50,7 +48,7 @@ func SeedAdminUser(DB *gorm.DB) {
 	}
 }
 
-// SeedRegularUser seeds a regular user
+// TEST DATA //
 func SeedRegularUser(DB *gorm.DB) {
 	var userRole models.Role
 	if err := DB.First(&userRole, "name = ?", "User").Error; err != nil {
@@ -77,7 +75,6 @@ func SeedRegularUser(DB *gorm.DB) {
 	}
 }
 
-// SeedConsortiums seeds consortiums
 func SeedConsortiums(DB *gorm.DB) {
 	consortium := models.Consortium{
 		Name:    "Edificio Prueba 42",
@@ -101,7 +98,6 @@ func SeedConsortiums(DB *gorm.DB) {
 
 }
 
-// SeedUnits seeds units and their owners/roomers
 func SeedUnits(DB *gorm.DB) {
 	var consortium models.Consortium
 	if err := DB.First(&consortium, "name = ?", "Edificio Prueba 42").Error; err != nil {
@@ -128,7 +124,6 @@ func SeedUnits(DB *gorm.DB) {
 	}
 }
 
-// SeedCoefficients seeds coefficients
 func SeedCoefficients(DB *gorm.DB) {
 	coefficients := []models.Coefficient{
 		{Name: "Coeficiente Distribuible", Distributable: true},
@@ -142,7 +137,6 @@ func SeedCoefficients(DB *gorm.DB) {
 	}
 }
 
-// SeedConcepts seeds concepts
 func SeedConcepts(DB *gorm.DB) {
 	var coefDistribuible, coefNoDistribuible, coefDistribuible2, pago models.Coefficient
 
@@ -184,7 +178,6 @@ func SeedConcepts(DB *gorm.DB) {
 	}
 }
 
-// SeedUnitCoefficients seeds unit coefficients
 func SeedUnitCoefficients(DB *gorm.DB) {
 	var coefDistribuible, coefDistribuible2 models.Coefficient
 
@@ -225,7 +218,6 @@ func SeedUnitCoefficients(DB *gorm.DB) {
 	}
 }
 
-// SeedConsortiumServices seeds consortium services
 func SeedConsortiumServices(DB *gorm.DB) {
 	var consortium models.Consortium
 	DB.First(&consortium, "name = ?", "Edificio Prueba 42")

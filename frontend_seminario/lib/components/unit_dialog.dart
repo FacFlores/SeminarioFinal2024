@@ -30,16 +30,14 @@ class UnitDialogState extends State<UnitDialog> {
     if (response.statusCode == 200) {
       final unit = jsonDecode(response.body);
       _nameController.text = unit['name'];
-    } else {
-      // Handle errors or show error message
-    }
+    } 
   }
 
   void _saveUnit() {
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> unitData = {
         'name': _nameController.text,
-        'consortium_id': widget.consortiumId, // Ensure the field name matches the backend
+        'consortium_id': widget.consortiumId,
       };
       Navigator.of(context).pop(unitData);
     }

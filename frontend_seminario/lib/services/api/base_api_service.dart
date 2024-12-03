@@ -1,4 +1,3 @@
-// api/base_api_service.dart
 import 'package:frontend_seminario/utils/config.dart';
 import 'package:frontend_seminario/services/storage_service.dart';
 

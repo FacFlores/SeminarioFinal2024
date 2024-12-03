@@ -33,9 +33,7 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
       setState(() {
         owners = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _loadRoomers() async {
@@ -44,9 +42,7 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
       setState(() {
         roomers = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   void _createOrUpdateOwner([int? ownerId]) async {
@@ -79,10 +75,8 @@ class OwnerRoomerManagementPageState extends State<OwnerRoomerManagementPage> {
           : await RoomerApiService.createRoomer(result);
 
       if (response.statusCode == 200) {
-        _loadRoomers(); // Refresh list after update
-      } else {
-        // Handle errors
-      }
+        _loadRoomers(); 
+      } 
     }
   }
 

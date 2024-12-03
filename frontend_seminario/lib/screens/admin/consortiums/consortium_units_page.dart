@@ -39,9 +39,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
         final consortium = jsonDecode(response.body);
         consortiumName = consortium['name'];
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _loadUnits() async {
@@ -50,9 +48,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
       setState(() {
         units = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   void _createOrUpdateUnit([int? unitId]) async {
@@ -67,9 +63,8 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
           : await UnitApiService.createUnit(result);
 
       if (response.statusCode == 200) {
-        _loadUnits(); // Refresh list after update
+        _loadUnits();
       } else {
-        // Handle errors
         _showErrorDialog('Fallo al guardar la unidad.');
       }
     }
@@ -97,9 +92,8 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
     if (confirmed == true) {
       final response = await UnitApiService.deleteUnit(unitId);
       if (response.statusCode == 200) {
-        _loadUnits(); // Refresh list after deletion
+        _loadUnits(); 
       } else {
-        // Handle errors
         _showErrorDialog('Error al borrar la unidad.');
       }
     }
@@ -110,7 +104,7 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
       context: context,
       builder: (context) => OwnerRoomerDialog(unitId: unitId),
     );
-    _loadUnits(); // Refresh list after managing owners/roomers
+    _loadUnits();
   }
 
   void _showErrorDialog(String message) {
@@ -201,7 +195,6 @@ class ConsortiumUnitsPageState extends State<ConsortiumUnitsPage> {
                       ],
                     ),
                     onTap: () {
-                      // Optionally, navigate to unit details or other actions
                     },
                   ),
                 );

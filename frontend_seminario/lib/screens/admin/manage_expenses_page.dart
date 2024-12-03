@@ -44,7 +44,6 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
       setState(() {
         isLoading = false;
       });
-      // Handle error
     }
   }
 
@@ -65,7 +64,6 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
       setState(() {
         isLoading = false;
       });
-      // Handle error
     }
   }
 
@@ -83,10 +81,8 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
           : await ConsortiumExpensesApiService.createConsortiumExpense(result);
 
       if (response.statusCode == 200) {
-        _loadConsortiumExpenses(); // Refresh list after update
-      } else {
-        // Handle errors
-      }
+        _loadConsortiumExpenses(); 
+      } 
     }
   }
 
@@ -103,10 +99,8 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
           : await UnitExpensesApiService.createUnitExpense(result);
 
       if (response.statusCode == 200) {
-        _loadUnitExpenses(); // Refresh list after update
-      } else {
-        // Handle errors
-      }
+        _loadUnitExpenses();
+      } 
     }
   }
 
@@ -133,10 +127,8 @@ class ManageExpensesPageState extends State<ManageExpensesPage> {
       final response =
           await ConsortiumExpensesApiService.deleteConsortiumExpense(expenseId);
       if (response.statusCode == 200) {
-        _loadConsortiumExpenses(); // Refresh list after deletion
-      } else {
-        // Handle errors
-      }
+        _loadConsortiumExpenses(); 
+      } 
     }
   }
 

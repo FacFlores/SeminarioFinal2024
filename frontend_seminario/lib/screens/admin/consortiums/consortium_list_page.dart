@@ -29,8 +29,6 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
       setState(() {
         consortiums = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
     }
   }
 
@@ -46,10 +44,8 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
           : await ConsortiumApiService.createConsortium(result);
 
       if (response.statusCode == 200) {
-        _loadConsortiums(); // Refresh list after update
-      } else {
-        // Handle errors
-      }
+        _loadConsortiums();
+      } 
     }
   }
 
@@ -76,10 +72,8 @@ class ConsortiumListPageState extends State<ConsortiumListPage> {
       final response =
           await ConsortiumApiService.deleteConsortium(consortiumId);
       if (response.statusCode == 200) {
-        _loadConsortiums(); // Refresh list after deletion
-      } else {
-        // Handle errors
-      }
+        _loadConsortiums();
+      } 
     }
   }
 

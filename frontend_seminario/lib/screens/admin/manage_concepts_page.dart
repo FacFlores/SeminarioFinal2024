@@ -28,9 +28,7 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
       setState(() {
         concepts = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   void _createOrUpdateConcept([int? conceptId]) async {
@@ -45,9 +43,7 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
           : await ConceptApiService.createConcept(result);
 
       if (response.statusCode == 200) {
-        _loadConcepts(); // Refresh list after update
-      } else {
-        // Handle errors
+        _loadConcepts(); 
       }
     }
   }
@@ -74,10 +70,8 @@ class ManageConceptsPageState extends State<ManageConceptsPage> {
     if (confirmed == true) {
       final response = await ConceptApiService.deleteConcept(conceptId);
       if (response.statusCode == 200) {
-        _loadConcepts(); // Refresh list after deletion
-      } else {
-        // Handle errors
-      }
+        _loadConcepts();
+      } 
     }
   }
 

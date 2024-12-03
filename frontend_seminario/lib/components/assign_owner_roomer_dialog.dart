@@ -35,7 +35,6 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
         currentOwners = jsonDecode(response.body);
       });
     } else {
-      // Handle error
     }
   }
 
@@ -45,9 +44,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
       setState(() {
         currentRoomers = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _loadAvailableOwners() async {
@@ -56,9 +53,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
       setState(() {
         availableOwners = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _loadAvailableRoomers() async {
@@ -67,9 +62,7 @@ class AssignOwnerRoomerDialogState extends State<AssignOwnerRoomerDialog> {
       setState(() {
         availableRoomers = jsonDecode(response.body);
       });
-    } else {
-      // Handle error
-    }
+    } 
   }
 
   Future<void> _assignOwner(int ownerId) async {

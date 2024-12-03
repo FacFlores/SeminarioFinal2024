@@ -36,9 +36,7 @@ class ConsortiumDialogState extends State<ConsortiumDialog> {
         _addressController.text = consortium['address'];
         _cuitController.text = consortium['cuit'];
       });
-    } else {
-      // Handle errors or show error message
-    }
+    } 
   }
 
   void _saveConsortium() {
